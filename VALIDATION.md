@@ -16,7 +16,14 @@
 
 ## Documentation verification
 
-Repository-local links, AI Repository Context source coverage, and the installed readability skill should be checked against the **published GitHub snapshot** following the initial documentation commit. Until checks and their baseline are explicitly recorded here, treat the result as **unverified**.
+**Result: PASS for documentation file presence and internal links only.**
+
+- **Baseline:** published `main` snapshot at commit `861062303de56dfa39199e07f50dc287bc0952cb` (2026-11-14).
+- **Method:** fetched each of the 12 tracked Markdown documentation/skill files through the GitHub connector; checked that linked local files exist and that relative heading anchors resolve, excluding literal examples inside fenced code blocks.
+- **Observed:** 12 of 12 files retrieved; 38 relative Markdown links checked; zero unresolved links.
+- **Scope limitation:** this is a documentation consistency check, not a Markdown rendering audit, an external URL availability check, a CI run, a runtime test, or phase-closure evidence.
+
+The installed RDR reference copies use relative paths adapted for the local skill directory; the upstream instructional content is otherwise retained.
 
 ## Recording future evidence
 
