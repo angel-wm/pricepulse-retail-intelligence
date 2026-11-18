@@ -1,55 +1,57 @@
-# PricePulse — Retail Price Intelligence
+# PricePulse — Grocery Price Intelligence
 
-PricePulse is a **planned** end-to-end retail price intelligence project. It aims to collect permitted public product information with Scrapy, preserve historical price and availability observations in PostgreSQL, and analyze trends with Tableau.
+PricePulse is a **planned, documentation-first Data Engineering portfolio project** for collecting published grocery price lists, validating product identities, preserving historical retail prices, and analyzing comparable offers in PostgreSQL and Tableau.
 
-**Current status: PRE-PROJECT.** No retail source is approved; no scraper, database, pipeline, automation, or dashboard has been implemented or validated. Phase 0 (definition and feasibility) is planned but not started.
+**Current status:** Phase 0 feasibility assessment in progress. **Kaufland Croatia and SPAR Croatia are the priority candidate sources, not yet approved for implementation.** Lidl is excluded from the initial comparison. No spider, database schema, automated pipeline, or dashboard has been implemented or validated.
 
-For project context and task-specific reading guidance, see [REPO_CONTEXT.md](REPO_CONTEXT.md).
+## What PricePulse aims to answer
 
-## Why PricePulse?
+- How do published prices for the same grocery product change over time?
+- What is the price difference for the same verified GTIN/EAN between Kaufland and SPAR at comparable stores and dates?
+- Which product categories show the largest price changes or cross-retailer spreads?
+- How complete and reliable are daily retailer price-list publications?
 
-The goal is to demonstrate an engineering workflow that converts responsibly collected product observations into reproducible, quality-checked analytical data. A portfolio reviewer should eventually be able to inspect source access decisions, extraction contracts, historical modeling, test evidence, and business-facing visualizations—not just a scraping script.
+**Availability/stock tracking is not an initial KPI:** the governing regulation does not require an explicit stock field. A product missing from a list must not be described as out of stock.
 
-## Intended workflow
+## Why this data source?
 
-1. **Assess feasibility:** choose candidate retail sources and confirm permitted access, useful fields, and scope.
-2. **Extract with Scrapy:** collect structured public product observations, respecting robots guidance, site terms, and reasonable request rates.
-3. **Validate and persist:** enforce data contracts, preserve price history, and handle ingestion duplicates in PostgreSQL.
-4. **Operate reliably:** add meaningful tests, logs, failure handling, and suitable scheduling.
-5. **Analyze in Tableau:** explore price movements, availability, and defensible cross-retailer comparisons.
+Croatian retailers publish official machine-readable price lists. The regulation effective **17 November 2026** expressly provides for automated collection and CSV/XML price lists. This is stronger evidence for the acquisition use case than attempting to crawl individual product pages protected by anti-bot systems.
 
-These are planned capabilities, **not implementation claims**. No second scraping framework is part of the initial scope. Product matching across retailers requires a distinct validation strategy.
+Source discovery and historical overlap evidence are documented in [Source feasibility](SOURCE_FEASIBILITY.md). Previous music-retailer candidates were not selected because of access blocks, rate limits, or restrictions.
 
-## Planned technology
+## Planned workflow
 
-| Responsibility | Intended choice |
+1. **Phase 0 — Feasibility:** test direct access to both official sources with Scrapy, validate current file schemas, and measure **at least 100 exact, reviewable common GTIN/EAN products** for equivalent store/date/product contexts.
+2. **Phase 1 — Scrapy:** discover official price-list indexes and download a bounded number of permitted CSV/XML files using source-specific spiders.
+3. **Phase 2 — Data engineering:** parse locale-specific values, validate identifiers and units, preserve raw-file provenance, and ingest immutable, deduplicated observations into PostgreSQL.
+4. **Phase 3 — Reliability:** add pytest checks, structured logs, bounded retries, scheduled runs, and quality monitoring.
+5. **Phase 4 — Tableau:** analyze prices and longitudinal trends; publish only data and visualizations with established sharing rights.
+6. **Phase 5 — Release:** provide tested reproduction steps, measured results, documentation, and a portfolio-ready repository.
+
+These are intended deliverables, **not claims of implementation**.
+
+## Technology
+
+| Responsibility | Planned choice |
 | --- | --- |
-| Data collection | Python, Scrapy |
-| Persistence and transformations | PostgreSQL, Python, SQL |
-| Tests and scheduled checks | pytest, GitHub Actions where feasible |
-| Business intelligence | Tableau Desktop Free Edition; Tableau Public only for shareable data |
-| Version control | Git, GitHub |
+| Acquisition | Python 3.12+, Scrapy |
+| File parsing and validation | Python standard library initially; explicit data contracts |
+| Database and transformations | PostgreSQL, SQL, Python |
+| Testing and automation | pytest; GitHub Actions where feasible |
+| BI | Tableau Desktop Free Edition; Tableau Public only for appropriately shareable outputs |
+| Version control | Git and GitHub |
 
-The project prioritizes free, locally reproducible tooling. Playwright, BeautifulSoup, Scrapling, and Crawlee are **not** dependencies. A separate future Crawlee project will address a different technical problem.
+Scrapy remains the primary acquisition framework. No additional scraping framework, paid service, or infrastructure is planned.
 
-## Start here
+## Project references
 
-This is a **documentation-first** repository. There is no installation or scraper command yet.
+- [Current state](CURRENT_STATE.md) — implemented versus pending work
+- [Source feasibility](SOURCE_FEASIBILITY.md) — sources, evidence, tests, risks, and acceptance gates
+- [Project specification](PROJECT_SPEC.md) — analytical scope and data contract
+- [Roadmap](ROADMAP.md) — phase gates
+- [Architecture](ARCHITECTURE.md) — proposed design
+- [Decisions](DECISIONS.md) — recorded decisions
+- [Validation](VALIDATION.md) — actual evidence and outstanding tests
+- [Repository context](REPO_CONTEXT.md) and [agent instructions](AGENTS.md) — navigation and working conventions
 
-- [Current state](CURRENT_STATE.md): what is implemented and what remains unverified.
-- [Roadmap and phase gates](ROADMAP.md): planned sequence and approval rules.
-- [Project specification](PROJECT_SPEC.md): scope, goals, constraints, and success criteria to refine.
-- [Intended architecture](ARCHITECTURE.md): proposed responsibilities and data flow.
-- [Decision log](DECISIONS.md): recorded choices and their rationale.
-- [Validation record](VALIDATION.md): evidence status and future checks.
-- [Agent guidance](AGENTS.md): repository-specific reading and execution boundaries.
-
-## Constraints and publication
-
-Source feasibility is a Phase 0 decision. Respect applicable law, site terms, robots.txt guidance, access controls, and rate limits. Do not bypass CAPTCHAs or anti-bot protections. Do not publish scraped data until its sharing rights have been verified. Tableau Public requires public/shareable data.
-
-Repository documentation follows the [Repository Documentation Readability guide](https://github.com/angel-wm/repository-documentation-readability/blob/main/GUIDE.md) for presentation, while PricePulse's native source files remain authoritative for project facts.
-
-## Handoff
-
-The repository default branch is the intended documentation handoff location. Read the visible branch snapshot and [current state](CURRENT_STATE.md) before making claims about completed work. A planned phase is not permission to start it.
+Repository documentation follows [Repository Documentation Readability](https://github.com/angel-wm/repository-documentation-readability). **Do not begin Phase 1 on the strength of the source hypothesis alone.**

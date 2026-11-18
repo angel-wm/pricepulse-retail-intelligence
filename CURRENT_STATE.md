@@ -2,30 +2,32 @@
 
 ## Current state
 
-**Project status: PRE-PROJECT — documentation initialized.**
+**Project status: PHASE 0 — FEASIBILITY IN PROGRESS.** The user approved investigating and documenting a switch to Croatian grocery price intelligence; **no implementation phase has started**.
 
 | Item | Recorded state |
 | --- | --- |
-| Current implementation phase | **None**; Phase 0 is not started |
-| Last completed project phase | **None** |
-| Next planned phase | Phase 0 — Project Definition and Feasibility |
-| Source retailers and permission checks | Not selected or performed |
-| Scrapy spider and product schema | Not implemented |
-| PostgreSQL data model and ingestion | Not implemented |
-| Automation and tests | Not implemented |
-| Tableau dashboard | Not implemented |
-| Operational or analytical results | None recorded |
-
-Initial repository documentation and a repository-local readability skill are preparatory work, **not** completion of Phase 0.
+| Active work | Phase 0 — candidate-source evaluation and acceptance criteria |
+| Last completed phase | None |
+| Priority candidate sources | **Kaufland Croatia and SPAR Croatia** — not yet locally tested with Scrapy |
+| Initial scope exclusions | Lidl and musical-instrument retailers excluded from the initial source pair |
+| Regulatory/publication evidence | Official price-list pages and NN 132/2026 reviewed; source terms/robots and publication rights still need checks |
+| Historical overlap indication | Third-party May 2025 analysis reported >=4,126 common barcodes across six chains excluding Lidl; **not a current local pair measurement** |
+| Local feasibility evidence to date | Andertons: 3 product pages HTTP 200 with structured prices; Gear4music: 403; Bonners: 429; GigGear: 405 human verification — all **superseded candidate category**, not tests of grocery sources |
+| Data access from Kaufland and SPAR | **Not tested locally**; exact endpoints and current schemas not validated |
+| Current exact GTIN overlap | **Unknown** |
+| Scrapy spider / PostgreSQL / automation / Tableau | Not implemented |
+| Phase 1 authorization | **Not granted** |
 
 ## Next authorized action
 
-Documentation maintenance is allowed within the user's explicit request to establish the repository. Starting Phase 0 requires deliberate user authorization. No scraping, live access tests, database provisioning, scheduling, or public data publication is authorized by this document.
+Perform **bounded Phase 0 access and matching tests**, subject to official robots guidance and source restrictions; record outputs in [Validation](VALIDATION.md). Update the candidate decision once both live sources and >=100 actual recent matches have been verified. Documentation changes do not authorize coding Phase 1.
 
-## Evidence and handoff
+## Evidence and navigation
 
-- [Roadmap and gates](ROADMAP.md)
-- [Validation and evidence status](VALIDATION.md)
-- [Decision log](DECISIONS.md)
+- [Source feasibility](SOURCE_FEASIBILITY.md) — source evidence, legal baseline, validation plan
+- [Roadmap](ROADMAP.md) — phase gates
+- [Project specification](PROJECT_SPEC.md) — intended contract and metrics
+- [Validation](VALIDATION.md) — performed checks vs pending tests
+- [Decisions](DECISIONS.md) — recorded scope choices
 
-No phase closeout or implementation benchmark exists. Read the retrieved repository snapshot and record actual check results rather than assuming local or unpublished work exists.
+No Phase 0 closeout or production benchmark exists.

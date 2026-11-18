@@ -1,46 +1,66 @@
 # PricePulse project specification
 
-**Status:** initial planning brief; details remain subject to Phase 0 feasibility and approval.
+**Status:** Phase 0 feasibility in progress; final source approval and implementation remain pending.
 
-## Problem and intended value
+## Problem and value
 
-Retail prices and product availability change over time. A one-time scrape cannot establish trends. PricePulse intends to build a traceable history of **permitted public observations** that supports price-change analysis and defensible retailer comparisons.
+Retailers change published product prices over time and may vary prices by selling location. A reproducible Data Engineering pipeline should turn **source-attributed, machine-readable price-list observations** into trustworthy longitudinal analytics and defensible like-for-like comparisons.
 
-The intended audience includes engineering reviewers and analytics stakeholders interested in acquisition reliability, data quality, SQL modeling, and business-facing metrics.
+PricePulse will initially focus on grocery and household goods sold in **Croatia**, using the official price-list publications of **Kaufland Croatia and SPAR Croatia as candidate sources**. Lidl is excluded from the first release; this does not establish that Lidl is technically unusable.
 
-## Business questions (candidates)
+## Initial business questions
 
-- How do listed prices for a known product change over time?
-- Which monitored products show meaningful price increases or decreases?
-- How frequently are monitored items observed as available or unavailable?
-- Where is a comparison across retailers justified by verified product equivalence?
+- How does the listed price of a verified product change between observations?
+- For a common product and equivalent comparison context, how large is the price difference between Kaufland and SPAR?
+- Which common product categories have the largest relative price differences?
+- What fraction of source records have a valid product identifier, usable price, clear unit, and consistent provenance?
+- How frequently are expected price-list files published and successfully ingested?
 
-These questions require source availability and consistent definitions. No evidence or measured results are currently available.
+**Not initially supported:** real-time stock availability, confirmed in-store shelf availability, and a claim that missing products are out of stock.
 
-## Scope and constraints
+## Source and cohort scope
 
-**Planned in scope:** Scrapy-based public data collection; a structured product/offer/observation contract; PostgreSQL storage; historical price and availability records; Python/SQL transformations; pytest; measured reliability; Tableau analysis.
+- Country: Croatia; currency: EUR.
+- Candidate retailers: Kaufland and SPAR (priority pair; not yet technically validated locally).
+- Primary sample: one comparable physical store per retailer, preferably within the same city/area, using price lists for the same publication date.
+- Matching: validate GTIN/EAN checksums and compare exact, normalized identifiers; review package size, brand, quantity, and variant. Keep unmatched or ambiguous records separate.
+- Initial measurable goal: **at least 100 distinct, valid, verified shared products** on a recent common date, not merely a historical third-party estimate.
+- Full national store coverage, promotion-adjusted baskets, and spatial analysis are possible extensions, not initial requirements.
 
-**Out of scope initially:** user accounts or authenticated scraping, anti-bot circumvention, real-time pricing guarantees, large-scale distributed infrastructure, another scraping framework, and a second Crawlee project.
+## Proposed data contract (subject to actual-file validation)
 
-Source selection, publication rights, product matching rules, and refresh frequency remain **undecided**.
+| Attribute | Purpose | Rules / uncertainty |
+| --- | --- | --- |
+| source_chain, source_url, source_file_hash | Provenance | Retain exact acquisition evidence |
+| source_store_id, store_location | Selling location | Required for store-level comparison; parsing rules depend on source |
+| price_list_date, source_published_at, collected_at_utc | Time | Separate effective/publication date from retrieval time; no fabricated timestamps |
+| retailer_product_code | Source-local identity | Never assume cross-retailer uniqueness |
+| gtin_ean, title, brand | Product matching | GTIN/EAN is optional in the regulation; reject invalid/ambiguous match claims |
+| net_quantity, unit, category | Comparability | Nullable if missing; normalize units before comparing |
+| retail_price_eur, unit_price_eur | Price metrics | Decimal precision; reject invalid or negative values |
+| sale_indicator, baseline_price_eur | Context | Preserve exactly what each source publishes; baseline is not historical observation |
+| raw_row, ingestion_status | Audit and quality | Preserve evidence of invalid rows without silently converting them |
 
-## Proposed observation contract (not finalized)
+Fields are conceptual mappings, not a declaration that both live formats have passed validation. The 17 Nov 2026 regulation provides a CSV/XML, UTF-8 and semicolon-delimited foundation; existing retailers' actual structures may differ during transition.
 
-Candidate attributes: retailer/source, source product identifier, product title, product URL, listed price, currency, availability state, and observed-at timestamp. Optional fields and normalization rules require explicit Phase 0 definition.
+## Quality and acceptance targets (proposed)
 
-Distinguish **product identity** from a **retailer-specific offer** and a **time-stamped observation**. Do not interpret failure to extract a price as a zero price; do not equate a missing page with confirmed unavailability.
+1. Confirm robots/terms and direct Scrapy access to official indexes and representative files; no CAPTCHA, WAF bypass, or unapproved authentication.
+2. Successfully identify and parse representative current files for both retailers, with source metadata and deterministic conversions.
+3. Count and document >=100 distinct validated overlapping GTIN/EAN products at the same recent publication date, in compatible store contexts.
+4. Inspect at least 30 randomly/reproducibly selected matched records to verify identity, package size, price and unit semantics. Target >=95% correct parsed required fields in that sample; report confidence and errors.
+5. Demonstrate at least two dated observations or reproducible historical snapshots for the selected sources before claiming viable trends.
+6. Verify source-data retention, reasonable request rates, and publication rights separately from local acquisition rights.
 
-## Success criteria to specify
+Do not infer a passing gate from a previous third-party study alone.
 
-Phase 0 must choose measurable acceptance criteria for extraction completeness, correctness of field parsing, duplicate prevention, permitted request behavior, historical retention, test coverage, pipeline observability, and dashboard validity. Numeric targets are **not defined** yet.
+## Constraints
 
-## Risks requiring feasibility work
+- Python and Scrapy first; PostgreSQL for historical records; Tableau for BI.
+- Prefer free, locally reproducible workflows and bounded daily batch ingestion.
+- Respect website terms, robots guidance, access controls and fair request pacing.
+- Do not copy third-party crawler implementations or datasets without assessing their licenses.
+- Do not publish raw price lists or individual-source datasets to Tableau Public without verifying sharing rights.
+- No Phase 1 code implementation until Phase 0 exit evidence is reviewed.
 
-- Source terms or robots guidance may restrict extraction.
-- Dynamic content or access controls may rule out Scrapy-only extraction at a source.
-- Cross-retailer comparisons may be misleading without validated matching.
-- Scraped data may not be licensed for public redistribution.
-- Retail prices can vary by time, region, product variant, and presentation context.
-
-Any unsupported source should be excluded or replaced by another approved source, not bypassed.
+See [Source feasibility](SOURCE_FEASIBILITY.md), [Roadmap](ROADMAP.md), and [Validation](VALIDATION.md).

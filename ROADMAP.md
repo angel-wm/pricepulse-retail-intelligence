@@ -1,36 +1,36 @@
 # Roadmap
 
-This roadmap is a **plan**, not an implementation progress report.
+This is the phase-gated **plan**, not an implementation progress report.
 
 ## Work model and approval rules
 
-The native work unit is a **phase**. Work proceeds sequentially: **planned → explicitly authorized → in progress → validated → closed**.
+The work unit is a **phase**: **planned → explicitly authorized → in progress → validated → closed**.
 
-- Planning or writing documentation does **not** authorize starting implementation.
-- Authorize each phase deliberately, after reviewing scope and prerequisites.
-- Close a phase only when its documented exit criteria have evidence; update [current state](CURRENT_STATE.md) and [validation](VALIDATION.md).
-- Do not mark work as tested, complete, or released from intent alone.
-- An external Jira board may track tasks, but this repository's documented state and evidence remain the source of truth until an explicit integration and authority change are recorded.
+- **Phase 0 — Source feasibility is in progress** following the user's request to investigate and document the replacement data category.
+- **Phase 1 implementation has not been authorized.** Planning, research, documentation and bounded user-executed feasibility tests do not authorize building spiders or a database.
+- Close a phase only with the results and evidence recorded in [Validation](VALIDATION.md) and [Current state](CURRENT_STATE.md).
+- An external Jira board may track tasks; do not treat issue statuses as runtime verification.
 
 ## Planned phases
 
-| Phase | Planned deliverable | Exit gate (evidence required) |
+| Phase | Planned deliverable | Exit gate |
 | --- | --- | --- |
-| 0 — Definition and feasibility | Business questions, sources and permissions, success criteria, scope and architecture | Source access and publication constraints documented; architecture reviewed |
-| 1 — Scrapy development | One approved-source spider and explicit extraction contract | Repeatable representative extraction; error paths and rate limits checked |
-| 2 — Data engineering | PostgreSQL schema, ingestion, quality checks, price-history model | Idempotent ingestion and historical observations independently validated |
-| 3 — Automation and reliability | Scheduling, logs, failure handling, CI/tests where suitable | Recorded executions, failure recovery, and test results |
-| 4 — Tableau analytics | Local workbook and shareable portfolio dashboard when permitted | Verified measures, filters, and publication permissions |
-| 5 — Validation and portfolio release | Reproducibility, evidence, architecture, README and screenshots where relevant | End-to-end validation and documented release handoff |
+| 0 — Grocery source feasibility | Verify Kaufland + SPAR access, schemas, current GTIN overlap, constraints and KPI scope | Two usable source files, >=100 validated shared GTINs, documented acceptable acquisition/publication boundaries |
+| 1 — Scrapy acquisition | Source-specific list-index and file-download spiders; bounded, resilient runs | Repeatable downloads from both approved sources, recorded sample tests |
+| 2 — Data engineering | File provenance, parsing, validated PostgreSQL schema, daily immutable observations | Checked idempotency, duplicate handling, historical integrity and data-quality tests |
+| 3 — Reliability | Scheduling, logs, monitoring, failure recovery, pytest and CI as appropriate | Recorded successful and failed runs with measured behavior |
+| 4 — Tableau analytics | Source-backed price comparison and trend dashboards | Verified metrics, correct matching/grain, sharing permission verified for publication |
+| 5 — Validation and release | README, architecture, test evidence, reproducible local setup and portfolio presentation | End-to-end tests, release documentation and explicit closeout |
 
-## Phase 0 questions to resolve
+## Phase 0 sequence
 
-- Which retail categories and business questions warrant price-history tracking?
-- Which exact sources are accessible and suitable under their terms and robots guidance?
-- What constitutes a stable product identifier and an observation timestamp?
-- What currencies, units, availability states, and outliers need explicit contracts?
-- Can products from different retailers be matched responsibly?
-- What data, if any, may be published on Tableau Public?
-- What scale and refresh frequency are feasible for a free, local workflow?
+1. Review official regulatory framework effective **2026-11-17**, including availability of automated retrieval, changing file formats and minimum 15-day archive availability.
+2. Retrieve **robots.txt and live index/file responses using Scrapy** from official Kaufland and SPAR domains; honor access rules and stop upon blocks.
+3. Select one physical store per chain in a comparable region, for the same recent date.
+4. Measure unique valid GTINs in each store file, intersections, collisions, missing identifiers, unmatched variants and usable prices. **Pass target: >=100 validated products**.
+5. Verify reproducible acquisition on another date, or retrieve an admissible historical publication; separate price-list timestamps from collection timestamps.
+6. Document source terms and publication boundaries and close Phase 0 only when supported by evidence and approval.
 
-Proceed to Phase 1 only after Phase 0 has been authorized and closed with evidence.
+**Fallback:** if either source fails the gate, assess another Croatian chain with official downloadable price lists before changing the engineering stack or scraping framework. Lidl remains excluded from the first cohort by scope decision.
+
+Related detail: [Source feasibility](SOURCE_FEASIBILITY.md), [Project specification](PROJECT_SPEC.md).

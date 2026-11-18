@@ -1,38 +1,56 @@
 # Validation and evidence
 
-## Evidence status
+## Status
 
-**Implementation validation: NOT RUN.** No scraper, ingestion job, PostgreSQL schema, automated workflow, or Tableau workbook exists.
+**Phase 0: IN PROGRESS.** Evidence exists for the earlier retailer feasibility exploration and public-source research; **no live Kaufland/SPAR Scrapy or paired-file overlap test has passed yet**.
 
-| Area | Current result | Evidence |
+## Evidence ledger
+
+| Area | Result | Basis / limitation |
 | --- | --- | --- |
-| Source permissions and access | Not assessed | Phase 0 not started |
-| Extraction correctness | Not run | No spider |
-| Data-quality contract | Not run | No approved contract |
-| History and idempotency | Not run | No database implementation |
-| Automated tests / CI | Not run | No test suite or workflow |
-| Tableau metrics and interactions | Not run | No workbook |
-| End-to-end reproducibility | Not run | No implemented pipeline |
+| Official source publications | CONFIRMED AS PUBLISHED | Kaufland Croatia and SPAR Croatia public price-list pages consulted on 2026-11-18 |
+| Machine-readable legal framework | CONFIRMED BY OFFICIAL TEXT | NN 132/2026-1584, effective 2026-11-17: automated tools supported; CSV/XML; UTF-8; semicolon; archive 15 days |
+| Historical overlap potential | SECONDARY HISTORICAL EVIDENCE | 2025-05-21 third-party analysis: 583 barcodes common across seven chains, 4,126 across six excluding Lidl; not a November 2026 direct pair count |
+| Kaufland robots + Scrapy access | NOT TESTED | Browser-readable page is not proof of direct Scrapy/CSV access |
+| SPAR robots + Scrapy access | NOT TESTED | Direct index URL described by third-party code, not independently validated |
+| Current Kaufland–SPAR GTIN intersection | NOT MEASURED | Must count from same-date official files |
+| Current schema and parser accuracy | NOT TESTED | Live representative CSV/XML samples not downloaded and checked |
+| Repeatability and history | NOT TESTED | No dated snapshots or local acquisition runs |
+| Source reuse and Tableau publication | UNRESOLVED | Automated retrieval support does not imply an unrestricted redistribution license |
+| PostgreSQL, automated tests, Tableau | NOT IMPLEMENTED | No runtime or dashboards |
 
-## Documentation verification
+## Earlier source exploration — user-reported local logs, 2026-11-18
 
-**Result: PASS for documentation file presence and internal links only.**
+These tests concerned an **abandoned musical-instruments source category** and do not validate the new pair.
 
-- **Baseline:** published `main` snapshot at commit `861062303de56dfa39199e07f50dc287bc0952cb` (2026-11-14).
-- **Method:** fetched each of the 12 tracked Markdown documentation/skill files through the GitHub connector; checked that linked local files exist and that relative heading anchors resolve, excluding literal examples inside fenced code blocks.
-- **Observed:** 12 of 12 files retrieved; 38 relative Markdown links checked; zero unresolved links.
-- **Scope limitation:** this is a documentation consistency check, not a Markdown rendering audit, an external URL availability check, a CI run, a runtime test, or phase-closure evidence.
+- Andertons: three separate Scrapy product requests HTTP 200; JSON-LD product fields for Boss, Ibanez and Lee Oskar including product SKU, GBP price, brand and availability.
+- Gear4music: product HTTP 403 with human-verification page.
+- Bonners Music: product HTTP 429 rate-limit response.
+- GigGear: robots and product HTTP 405 with human verification / AWS WAF CAPTCHA.
+- guitarguitar: contractual automated price collection restriction noted in feasibility review.
 
-The installed RDR reference copies use relative paths adapted for the local skill directory; the upstream instructional content is otherwise retained.
+These results were supplied in the conversation by the user, not independently replayed in CI.
 
-## Recording future evidence
+## Phase 0 validation plan (not execution results)
 
-For each phase, record:
+1. **Access and access policy:** check both official `robots.txt` files and terms; request one index page and one representative publication per retailer using Scrapy, with bounded concurrency, no anti-bot bypass and recorded statuses.
+2. **Current files:** select a common recent publication date and one comparable physical store in each chain; capture source URLs, hashes, date/time, store IDs, headers, encoding, file count and currency.
+3. **Matching:** count unique normalized valid GTINs in each chosen file, strict intersection size, malformed IDs, ambiguous duplicates, variant/quantity disagreements and retained valid matches. **Require >=100 validated matches**.
+4. **Accuracy:** deterministic 30-record identity/price/quantity sample; document parsing completeness and rejected rows, aiming for >=95% usable required-field extraction.
+5. **History:** verify a second source publication date or a valid retained archive. Compare listed source dates rather than confusing them with download timestamps.
+6. **Publication rights:** determine what may be stored and shared in a public Tableau portfolio; withhold raw public dataset if unverified.
 
-1. The specific phase and baseline (commit or reproducible version).
-2. Commands or procedures actually executed.
-3. Expected behavior and observed results.
-4. Failures, limitations, and follow-up actions.
-5. Whether its exit criteria are met and who approved closure.
+Record each actual command, date, URL, HTTP status, file hash and result. Never report a proposed target as a measured success.
 
-A checklist is not test evidence; a passing unit test is not an end-to-end reliability claim.
+## Documentation checks
+
+Earlier GitHub documentation review (baseline `861062303de56dfa39199e07f50dc287bc0952cb`, 2026-11-14): 12/12 Markdown documents fetched, 38 relative links checked with no unresolved links. **That result applies only to the cited baseline**, not the current revisions; new links still require verification.
+
+## Sources referenced during Phase 0
+
+- Regulation: https://narodne-novine.nn.hr/clanci/sluzbeni/2026_11_132_1584.html
+- Revocation of earlier 2025 requirements: https://narodne-novine.nn.hr/clanci/sluzbeni/2026_11_132_1578.html
+- Kaufland: https://www.kaufland.hr/akcije-novosti/popis-mpc.html
+- SPAR: https://www.spar.hr/usluge/cjenici
+- Historical third-party cross-chain study: https://analiza.usporedicijene.info/
+- Independent project reference (not our implementation): https://github.com/senko/cijene-api
