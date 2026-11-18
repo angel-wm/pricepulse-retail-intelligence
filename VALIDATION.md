@@ -13,7 +13,7 @@
 | Historical overlap potential | SECONDARY HISTORICAL EVIDENCE | 2025-05-21 third-party analysis: 583 barcodes common across seven chains, 4,126 across six excluding Lidl; not a November 2026 direct pair count |
 | Kaufland robots + Scrapy access | PARTIAL PASS — 2026-11-18 user-local run | HTML index 200, assets JSON index 200, one 2026-11-17 Zagreb CSV 200; direct parsed rows 23,593; 23,238 usable product rows. Current-day 2026-11-18 filename match returned zero in index. |
 | SPAR robots + Scrapy access | PARTIAL PASS — 2026-11-18 user-local run | JSON indexes 200 on 2026-11-17 and 2026-11-18, each advertising 144 files; three CSV downloads 200, parsed successfully. |
-| Current Kaufland–SPAR GTIN intersection | NOT MEASURED | Must count from same-date official files |
+| Current Kaufland–SPAR GTIN intersection | INITIAL PASS — 8,263 | Same-date 2026-11-17, SPAR Zagreb Jankomir vs Kaufland Zagreb Antuna Šoljana 43; 8,263 unique checksum-valid EANs with prices passing initial parsing. Does not yet validate all product/packaging equivalence. |
 | Current schema and parser accuracy | INITIAL PARSE PASS; SEMANTIC VALIDATION PENDING | SPAR: cp1250, semicolon; Kaufland: utf-8-sig, tab. EAN checksums and prices parsed in four CSVs; malformed/blank price values and unexpected headers still need review. |
 | Repeatability and history | PARTIAL | Separate publication dates retrieved for SPAR, plus Kaufland 2026-11-17. Same-store two-date comparisons and current-date Kaufland availability still unverified. |
 | Source reuse and Tableau publication | UNRESOLVED | Automated retrieval support does not imply an unrestricted redistribution license |
@@ -35,6 +35,19 @@
 - Script selected and downloaded four CSVs; all HTTP 200 and parsed by its initial heuristics. No duplicate GTINs reported within these selected files after initial check; semantic validation of input fields is still outstanding.
 - **Critical gap:** the script only intersected files for 2026-11-18. With no Kaufland file selected for that date, it returned **no cross-retailer overlap metric**. It must be rerun for 2026-11-17 using one comparable store per chain before the >=100-product acceptance gate can be evaluated.
 - Source files were processed transiently; the log does not include full product rows and cannot itself support a barcode intersection computation.
+
+## Same-date intersection — user-local log, 2026-11-18
+
+The user executed the bounded second Phase 0 probe with main date **2026-11-17** and previous date **2026-11-16**. Observations:
+
+- SPAR and Kaufland indexes responded HTTP 200; SPAR 144 published store lists per date; Kaufland 53 lists on each of the chosen dates.
+- Six official CSV files selected and downloaded HTTP 200 (SPAR: three; Kaufland: three), across 2026-11-16 and 2026-11-17.
+- **8,263 checksum-valid normalized EANs with parseable positive retail prices** overlapped between SPAR Jankomir (store ID 8702) and Kaufland Zagreb Antuna Šoljana 43 (store ID 5630) on 2026-11-17. This is an initial exact-code overlap, **not a full same-variant/manual matching validation**.
+- The randomly selected 30-row sample includes at least one apparent package discrepancy: Garnier product **250 ml at SPAR** versus **200 ml at Kaufland** with the same normalized code. Other records warrant unit/brand review. Price differences cannot yet be treated as reliable like-for-like comparisons without row checks.
+- The previous-date SPAR sample and current-date SPAR sample were not necessarily the **same store**, so same-store price trends remain **unvalidated**. Same-store 2026-11-16 and 2026-11-17 downloads must be selected explicitly.
+- SPAR initial parser rejected approximately 9–11% of retail-price values across sampled files; no cause analysis is yet supported. Actual source values and special-price semantics must be investigated.
+- CSV format evidence: SPAR `cp1250` + semicolon; Kaufland `utf-8-sig` + tab. Source-specific parser contracts must preserve these actual observations rather than assume uniform CSV dialect.
+- **Phase 0 remains open**, pending selected-store history, price diagnostics, sampled matching audit and publication-rights decision.
 
 ## Earlier source exploration — user-reported local logs, 2026-11-18
 
