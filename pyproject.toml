@@ -2,4 +2,11 @@
 name = "pricepulse-retail-intelligence"
 version = "0.1.0"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "scrapy>=2.20.0",
+]
+
+[dependency-groups]
+dev = [
+    "pytest>=9.2.0",
+]
