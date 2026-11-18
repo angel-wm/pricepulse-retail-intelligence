@@ -10,7 +10,7 @@
 | Last completed phase | None |
 | Priority candidate sources | **Kaufland Croatia and SPAR Croatia** — initial download and overlap verified; formal Phase 0 closeout pending targeted QA |
 | Initial scope exclusions | Lidl and musical-instrument retailers excluded from the initial source pair |
-| Regulatory/publication evidence | Official price-list pages and NN 132/2026 reviewed; first Scrapy probe obeyed robots and downloaded four CSVs; publication rights still need separate checks |
+| Regulatory/publication evidence | Official publication sources and NN 132/2026 reviewed; SPAR general terms section 2.1 restrict reproduction/distribution. Local data testing continues; public release of genuine datasets is on hold pending verified sharing rights. |
 | Historical overlap indication | Third-party May 2025 analysis reported >=4,126 common barcodes across six chains excluding Lidl; **not a current local pair measurement** |
 | Local feasibility evidence to date | Andertons: 3 product pages HTTP 200 with structured prices; Gear4music: 403; Bonners: 429; GigGear: 405 human verification — all **superseded candidate category**, not tests of grocery sources |
 | Data access from Kaufland and SPAR | **Confirmed initial access**: both indexes HTTP 200; 6 official CSV files downloaded HTTP 200 spanning 2026-11-16 to 2026-11-18. Format/parsing correctness subject to QA. |

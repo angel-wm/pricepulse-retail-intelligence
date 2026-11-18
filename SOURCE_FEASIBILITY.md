@@ -24,7 +24,7 @@ The official Croatian [Regulation on publication of product price lists, NN 132/
 - Article 6(2) requires the replacement list at the **same page/location URL**; acquisition must preserve file version/content hash and dates, not rely solely on URL changes.
 - The earlier [NN 75/2025 rule was revoked effective 2026-11-17](https://narodne-novine.nn.hr/clanci/sluzbeni/2026_11_132_1578.html).
 
-**Rights boundary:** technical/legislative support for fetching is not an unrestricted license for publishing complete raw datasets. Preserve attribution, inspect source terms and decide what Tableau Public can share. No mandatory retailer email is part of the feasibility workflow.
+**Rights boundary:** technical/legislative support for fetching is not an unrestricted license for publishing complete raw datasets. [SPAR's current general website terms](https://www.spar.hr/o-nama/opci-uvjeti-koristenja), section 2.1, restrict use of its website content to personal information purposes and require prior express written approval for modification, reproduction, distribution or inclusion in another site/medium/system. The regulation's automated-access mandate and these general terms are different issues and their legal interaction has not been resolved by this engineering review. **Public release of real SPAR price lists or a derived public Tableau dataset is not authorized by this source assessment.** Prefer a clearly labeled synthetic Tableau Public demo if no separate verified sharing basis is established. This plan does **not** require the user to request permission by email in order to continue bounded local feasibility research.
 
 ## Official retailer evidence
 

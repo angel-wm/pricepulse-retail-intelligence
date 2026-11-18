@@ -16,7 +16,7 @@
 | Current Kaufland–SPAR GTIN intersection | INITIAL PASS — 8,263 | Same-date 2026-11-17, SPAR Zagreb Jankomir vs Kaufland Zagreb Antuna Šoljana 43; 8,263 unique checksum-valid EANs with prices passing initial parsing. Does not yet validate all product/packaging equivalence. |
 | Current schema and parser accuracy | STRUCTURAL PASS; SEMANTIC WORK REMAINS | SPAR: cp1250, semicolon; Kaufland: utf-8-sig, tab. SPAR missing base price is explained by populated special-price field in all rejected rows in both sampled days; effective-price selection needs explicit rules and tests. |
 | Repeatability and history | INITIAL TWO-DATE PASS | Same SPAR store 8702 and Kaufland store 5630 downloaded for 2026-11-16 and 2026-11-17; 28,217 and 15,533 common day-to-day GTINs respectively. Only two days observed, not production reliability. |
-| Source reuse and Tableau publication | UNRESOLVED | Automated retrieval support does not imply an unrestricted redistribution license |
+| Source reuse and Tableau publication | PUBLIC DATASET ON HOLD | SPAR website terms section 2.1 restrict reproduction/distribution without written approval. NN 132/2026 supports automated collection but does not itself establish unrestricted redistribution rights. Plan local technical validation and synthetic-only Tableau Public demo until sharing basis is verified. |
 | PostgreSQL, automated tests, Tableau | NOT IMPLEMENTED | No runtime or dashboards |
 
 ## Croatian grocery sources — user-local acquisition evidence (2026-11-18)
@@ -123,6 +123,12 @@ Earlier GitHub documentation review (baseline `861062303de56dfa39199e07f50dc287b
 - **Method:** retrieved the ten changed Markdown documents through the GitHub connector; checked the existence of local relative Markdown link targets in the revised document inventory.
 - **Observed:** 10 of 10 documents retrieved; 52 local relative link targets found and checked; zero unresolved file paths.
 - **Limitations:** heading-anchor links, external URLs, Markdown rendering, live price-list requests and runtime behavior were not checked by this documentation test. This is not a Phase 0 source-access pass.
+
+## Public-release boundary reviewed on 2026-11-18
+
+- [SPAR's general terms, section 2.1](https://www.spar.hr/o-nama/opci-uvjeti-koristenja) describe website content, including data, as covered and limit use to personal information; they require prior written permission for modification, reproduction, distribution or incorporation into other sites or media.
+- [Croatian regulation NN 132/2026, article 5](https://narodne-novine.nn.hr/clanci/sluzbeni/2026_11_132_1584.html) requires technical accessibility to automated collection; it does not directly grant unrestricted republication rights.
+- Engineering conclusion: **do not publish the genuine price-list files or a real-data Tableau Public extract without an independently verified sharing basis**. A synthetic public showcase can demonstrate the pipeline and dashboard design without copying source data. This is a publication constraint, **not** a reason to cancel bounded local source feasibility checks.
 
 ## Sources referenced during Phase 0
 
