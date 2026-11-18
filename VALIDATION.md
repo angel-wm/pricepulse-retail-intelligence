@@ -46,6 +46,14 @@ Record each actual command, date, URL, HTTP status, file hash and result. Never 
 
 Earlier GitHub documentation review (baseline `861062303de56dfa39199e07f50dc287bc0952cb`, 2026-11-14): 12/12 Markdown documents fetched, 38 relative links checked with no unresolved links. **That result applies only to the cited baseline**, not the current revisions; new links still require verification.
 
+
+### Current documentation revision check — 2026-11-18
+
+- **Baseline:** commit `02465fd1b426821797feb8c352105fce15f2836d` (Phase 0 grocery scope revision).
+- **Method:** retrieved the ten changed Markdown documents through the GitHub connector; checked the existence of local relative Markdown link targets in the revised document inventory.
+- **Observed:** 10 of 10 documents retrieved; 52 local relative link targets found and checked; zero unresolved file paths.
+- **Limitations:** heading-anchor links, external URLs, Markdown rendering, live price-list requests and runtime behavior were not checked by this documentation test. This is not a Phase 0 source-access pass.
+
 ## Sources referenced during Phase 0
 
 - Regulation: https://narodne-novine.nn.hr/clanci/sluzbeni/2026_11_132_1584.html
