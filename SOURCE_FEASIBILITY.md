@@ -1,6 +1,6 @@
 # Source feasibility — Croatian grocery price lists
 
-**Assessment date:** 2026-11-18. **Status:** Phase 0 candidate evaluation; NOT an approved or implemented production data source.
+**Assessment date:** 2026-11-18. **Status:** initial source access and historical feasibility evidenced; exact product-equivalence and price semantics still need QA before Phase 0 closeout. No production spider is implemented.
 
 ## Decision snapshot
 
@@ -8,9 +8,9 @@
 - **Priority candidate pair:** [Kaufland Croatia](https://www.kaufland.hr/akcije-novosti/popis-mpc.html) + [SPAR Croatia](https://www.spar.hr/usluge/cjenici).
 - **Excluded from initial cohort:** Lidl (scope choice); abandoned UK musical-instrument retailer page scraping after repeated blocks or constraints.
 - **Name:** retain **PricePulse**. Changing the project category does not require renaming a brand-neutral name.
-- **Next gate:** current official files must be retrievable with Scrapy and yield >=100 validated shared GTIN/EAN products at comparable date and store grain.
+- **Evidence attained:** official files retrievable with Scrapy; same-date intersection **8,263 GTIN candidates**; same-store two-day history observed. **Remaining:** 100-product product-equivalence cohort, price semantics and publication boundaries.
 
-This document records the *hypothesis, regulatory research and tests to run*. It must not be mistaken for evidence of a successful current crawl.
+This document records the *research, completed limited acquisition tests, and remaining acceptance conditions*. Success of a bounded feasibility probe is **not** proof of a production-ready pipeline.
 
 ## Regulatory baseline effective 2026-11-17
 
@@ -30,8 +30,8 @@ The official Croatian [Regulation on publication of product price lists, NN 132/
 
 | Chain | Official publication | Evidence | Live Scrapy status |
 | --- | --- | --- | --- |
-| Kaufland | https://www.kaufland.hr/akcije-novosti/popis-mpc.html | Public page states daily updated retail price lists in digital formats | **Not tested** |
-| SPAR | https://www.spar.hr/usluge/cjenici | Public page states daily CSV lists; semicolon delimiter and decimal comma | **Not tested** |
+| Kaufland | https://www.kaufland.hr/akcije-novosti/popis-mpc.html | Public page states daily updated retail price lists in digital formats | **HTTP 200 index and official CSV; Scrapy locally tested 2026-11-18** |
+| SPAR | https://www.spar.hr/usluge/cjenici | Public page states daily CSV lists; semicolon delimiter and decimal comma | **HTTP 200 JSON indexes and official CSV; Scrapy locally tested 2026-11-18** |
 
 ### Discovery implementation hints — not verified public APIs
 
@@ -50,6 +50,15 @@ These are **third-party implementation clues, not guaranteed endpoints, approved
 - **4,126** barcodes common across the remaining six when Lidl was excluded.
 
 Since both Kaufland and SPAR were among those six, the 2025-05-21 pair intersection was **at least 4,126** in that processed analysis. These numbers do **not** establish November 2026 availability, validity of every GTIN, same-store comparability or current price-file accessibility. They also do not mean that removing Lidl creates new products in either retailer.
+
+## Direct November 2026 validation evidence
+
+- User-executed limited Scrapy probes on 2026-11-18 confirmed HTTP 200 for both source indexes and official price files; see [Validation](VALIDATION.md) for counts and limitations.
+- 2026-11-17 SPAR Zagreb Jankomir 8702 and Kaufland Zagreb Antuna Šoljana 43 5630 yielded **8,263 valid checksum GTIN matches with initially parsed prices**; a 30-pair anomaly sample is documented, including genuine potential pack-size inconsistencies.
+- Both identical store IDs were observed on 2026-11-16 and 2026-11-17, allowing real two-day price-change analysis on stable-code cohorts.
+- SPAR files have a split normal/promotional price representation: 3,103 of 32,347 rows on 2026-11-17 have blank primary price but valid special price; do not treat these as missing actual selling prices without considering their promotional field.
+- Kaufland's store-level published row count jumped **47.9%** on 2026-11-17; audit for regulatory scope changes before reporting retailer-level assortment trends.
+- Files differ in encoding and delimiter; use real dialect detection and source-specific contracts, not a single assumed UTF-8/semicolon parser.
 
 ## Proposed feasibility experiment — run before approval
 

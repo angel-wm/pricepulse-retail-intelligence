@@ -46,6 +46,14 @@ A decision records approved direction and trade-offs; it does **not** imply impl
 - **Rationale:** NN 132/2026 specifies prices, product identifiers and baseline price but does not guarantee a stock indicator. Absence from a price list is not evidence of being out of stock.
 - **Tradeoff:** narrower first dashboard, but fewer false claims and a more defensible data model.
 
+### D-008 — Adopt official CSV acquisition and source-specific promotion parsing (2026-11-18)
+
+- **Status:** proposed data-contract decision; not implemented or tested in production.
+- **Evidence:** bounded live-download tests succeeded on both Kaufland and SPAR, with 8,263 checksum-valid code overlap candidates at comparable store/date grain and two-day same-store histories. SPAR primary price is blank on 3,103 of 32,347 rows on 2026-11-17, but those rows have valid special prices. The current parser omits them from first-pass usable products.
+- **Decision direction:** distinguish regular price, special/promotion price, and effective advertised price with explicit source lineage. Never infer missing-price or out-of-stock from a blank normal-price field alone.
+- **Tradeoff:** more sophisticated field precedence/validation and coverage accounting; no need for a new scraping framework.
+- **QA gate:** confirm effective-price precedence when both fields are populated, and verify exact package/brand equivalence in >=100 selected cross-retailer matches before Phase 0 closeout. Treat the 8,263 overlap as candidates, not fully verified products.
+
 ## Future changes
 
 Add dated decisions with rationale, trade-offs and any superseded choice. Update [Current state](CURRENT_STATE.md) and [Validation](VALIDATION.md) from evidence rather than overwriting older history.
