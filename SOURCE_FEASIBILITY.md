@@ -1,6 +1,6 @@
 # Source feasibility — Croatian grocery price lists
 
-**Assessment date:** 2026-11-18. **Status:** initial source access and historical feasibility evidenced; exact product-equivalence and price semantics still need QA before Phase 0 closeout. No production spider is implemented.
+**Assessment date:** 2026-11-18. **Status:** bounded technical feasibility **passed** for Kaufland and SPAR Croatia, pending formal Phase 0 closure and explicit Phase 1 authorization. No production spiders exist; release of real retail observations is on hold.
 
 ## Decision snapshot
 
@@ -8,7 +8,7 @@
 - **Priority candidate pair:** [Kaufland Croatia](https://www.kaufland.hr/akcije-novosti/popis-mpc.html) + [SPAR Croatia](https://www.spar.hr/usluge/cjenici).
 - **Excluded from initial cohort:** Lidl (scope choice); abandoned UK musical-instrument retailer page scraping after repeated blocks or constraints.
 - **Name:** retain **PricePulse**. Changing the project category does not require renaming a brand-neutral name.
-- **Evidence attained:** official files retrievable with Scrapy; same-date intersection **8,263 GTIN candidates**; same-store two-day history observed. **Remaining:** 100-product product-equivalence cohort, price semantics and publication boundaries.
+- **Evidence attained:** official CSV files retrievable with Scrapy; **8,869** priced same-date code matches, **7,772** stable on four source files, **4,155** automatic strict candidates. A conservative private manual review of 160 selected source-description pairs found **102 consistent** and **58 unresolved**. Historical price observations for identical stores across two days were measured. Public reuse of original/derived retailer records remains restricted.
 
 This document records the *research, completed limited acquisition tests, and remaining acceptance conditions*. Success of a bounded feasibility probe is **not** proof of a production-ready pipeline.
 
@@ -59,6 +59,14 @@ Since both Kaufland and SPAR were among those six, the 2025-05-21 pair intersect
 - SPAR files have a split normal/promotional price representation: 3,103 of 32,347 rows on 2026-11-17 have blank primary price but valid special price; do not treat these as missing actual selling prices without considering their promotional field.
 - Kaufland's store-level published row count jumped **47.9%** on 2026-11-17; audit for regulatory scope changes before reporting retailer-level assortment trends.
 - Files differ in encoding and delimiter; use real dialect detection and source-specific contracts, not a single assumed UTF-8/semicolon parser.
+
+## Final source evaluation — 2026-11-18
+
+The independent user-local Phase 0 script downloaded price files for the same SPAR and Kaufland Zagreb stores on 2026-11-16 and 2026-11-17. **8,869** checksum-valid codes had usable same-date prices after handling regular-only, special-only and equal dual-price fields. **7,772** codes appeared in all four store/date files; **4,155** passed automatic strict brand/packaging rules. A private manual audit of 160 sampled strict candidates identified **102 documentary matches** and 58 unresolved. The 102 threshold is an indication of **description/brand/package consistency, not manufacturer/GS1 certification**. No precision claim can be extrapolated to the full catalog from this prefiltered sample.
+
+Price-field cases in the four downloaded CSVs showed SPAR regular-only or special-only pricing and Kaufland regular-only or both-equal pricing. Future two-different-price cases must be reviewed. The two-day histories are real observations, not evidence of ongoing scheduling reliability. SPAR uses cp1250 with semicolons; Kaufland UTF-8 BOM with tabs. Both will need explicit parsers and schema drift tests.
+
+**Engineering outcome:** the pair is sufficiently grounded for **planned local source-acquisition development**; no additional retailer discovery is indicated. Formal Phase 0 closeout still requires user approval and no further real-data publication may be inferred from technical access rights. See [Validation](VALIDATION.md).
 
 ## Proposed feasibility experiment — run before approval
 
