@@ -12,7 +12,7 @@ PricePulse is a **documentation-first, phase-gated** project. A written plan, so
 
 ## Project constraints
 
-- Initial source category: Croatian grocery/household price lists. Priority **candidate** pair: Kaufland Croatia and SPAR Croatia; Lidl excluded from the first cohort.
+- Initial source category: Croatian grocery/household price lists. **Technically qualified source pair:** Kaufland Croatia and SPAR Croatia via bounded Phase 0 tests; Lidl excluded from v1. This is not Phase 1 implementation approval.
 - Use Python and Scrapy as the initial acquisition approach. Do not introduce Playwright, BeautifulSoup, Selenium, Scrapling or other scraping frameworks without technical justification and explicit approval.
 - Use PostgreSQL for proposed historical persistence and Tableau as primary BI.
 - Handle files, encoding, delimiters, decimal locale, GTIN validity, per-store price context, publication dates and provenance explicitly.
