@@ -6,7 +6,7 @@ This is the phase-gated **plan**, not an implementation progress report.
 
 The work unit is a **phase**: **planned → explicitly authorized → in progress → validated → closed**.
 
-- **Phase 0 — Source feasibility is in progress** following the user's request to investigate and document the replacement data category.
+- **Phase 0 — bounded source feasibility validated; formal closeout review ready**. The supporting counts and limits are recorded in [Validation](VALIDATION.md).
 - **Phase 1 implementation has not been authorized.** Planning, research, documentation and bounded user-executed feasibility tests do not authorize building spiders or a database.
 - Close a phase only with the results and evidence recorded in [Validation](VALIDATION.md) and [Current state](CURRENT_STATE.md).
 - An external Jira board may track tasks; do not treat issue statuses as runtime verification.
@@ -15,7 +15,7 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 
 | Phase | Planned deliverable | Exit gate |
 | --- | --- | --- |
-| 0 — Grocery source feasibility | Verify Kaufland + SPAR access, schemas, current GTIN overlap, constraints and KPI scope | Two usable source files, >=100 validated shared GTINs, documented acceptable acquisition/publication boundaries |
+| 0 — Grocery source feasibility | Kaufland + SPAR source access, actual price fields, two-day history and descriptor matching | **Evidence compiled:** four store/date files; 102 conservative description-consistent cases in a 160-pair sample; publication of genuine retailer data on hold. User closeout approval pending. |
 | 1 — Scrapy acquisition | Source-specific list-index and file-download spiders; bounded, resilient runs | Repeatable downloads from both approved sources, recorded sample tests |
 | 2 — Data engineering | File provenance, parsing, validated PostgreSQL schema, daily immutable observations | Checked idempotency, duplicate handling, historical integrity and data-quality tests |
 | 3 — Reliability | Scheduling, logs, monitoring, failure recovery, pytest and CI as appropriate | Recorded successful and failed runs with measured behavior |
