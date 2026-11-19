@@ -2,25 +2,25 @@
 
 ## Current state
 
-**Project status: PHASE 0 — TECHNICAL FEASIBILITY VALIDATED; CLOSEOUT REVIEW READY.** Kaufland and SPAR have passed bounded source-access, price-history and documentary matching tests. **Formal closeout and Phase 1 implementation are not authorized yet.**
+**Project status (2026-11-18): PHASE 0 — BOUNDED TECHNICAL FEASIBILITY VALIDATED; FORMAL CLOSEOUT PENDING.** The two sources can support initial engineering. This does not authorize Phase 1 implementation, real-data republication, or production reliability claims.
 
 | Item | Recorded state |
 | --- | --- |
-| Active work | Phase 0 — final evidence and closeout decision |
+| Active work | Phase 0 — owner review of evidence and closeout gate |
 | Last completed phase | None |
-| Priority candidate sources | **Kaufland Croatia and SPAR Croatia** — qualified for planned local engineering by bounded feasibility tests |
+| Planned source pair | **SPAR Croatia (store 8702, Jankomir)** and **Kaufland Croatia (store 5630, Antuna Šoljana)** — bounded feasibility qualified, not production onboarded |
 | Initial scope exclusions | Lidl and musical-instrument retailers excluded from the initial source pair |
-| Regulatory/publication evidence | Official publication sources and NN 132/2026 reviewed; SPAR general terms section 2.1 restrict reproduction/distribution. Local data testing continues; public release of genuine datasets is on hold pending verified sharing rights. |
-| Historical overlap indication | Third-party May 2025 analysis reported >=4,126 common barcodes across six chains excluding Lidl; **not a current local pair measurement** |
-| Local feasibility evidence to date | Andertons: 3 product pages HTTP 200 with structured prices; Gear4music: 403; Bonners: 429; GigGear: 405 human verification — all **superseded candidate category**, not tests of grocery sources |
-| Data access from Kaufland and SPAR | **Confirmed initial access**: both indexes HTTP 200; 6 official CSV files downloaded HTTP 200 spanning 2026-11-16 to 2026-11-18. Format/parsing correctness subject to QA. |
+| Policy / sharing boundary | Official publication pages and NN 132/2026 reviewed; SPAR website terms restrict reproduction/redistribution. Bounded local tests succeeded; publishing real source files or a real-data Tableau extract remains blocked without separately verified rights. |
+| Historical background | Secondary May 2025 analysis reported >=4,126 common barcodes across six chains excluding Lidl; **current 2026 results below supersede this as the primary feasibility evidence**. |
+| Superseded candidates | UK music-retailer tests are archived in [Validation](VALIDATION.md); they do not define the current scope. |
+| Acquisition evidence | Scrapy fetched both retailer indexes and **four fixed-store/date files** for 2026-11-16/17 with HTTP 200 (plus earlier exploratory CSV samples). Only bounded local tests, not scheduled reliability. |
 | Current exact GTIN overlap | **8,869** shared priced GTIN candidates on 2026-11-17 (SPAR 8702 × Kaufland 5630); **7,772** present on both dates, **4,155** strict algorithmic candidates. |
 | Same-store two-date history | **Promotion-aware initial check:** SPAR 31,277 code-stable entries (14 up, 54 down); Kaufland 15,533 (9 up, 69 down) from 2026-11-16/17. |
-| Private descriptive identity audit | **102/160** pairs consistent on available description/brand/package; **58/160** require review. Not independent manufacturer verification. |\n| Price parsing rule | SPAR regular-only/special-only; Kaufland regular-only or both-equal. No dual-price conflict observed in four files. |\n| Production Scrapy, PostgreSQL, automation and Tableau | **Not implemented** |\n| Phase 1 authorization | **Not granted** |
+| Product identity QA | **102/160** descriptor-consistent sampled pairs; **58/160** held as ambiguous. Filtered sample, not GS1/manufacturer certification or full-catalog precision estimate. |\n| Price parsing rule | SPAR regular-only/special-only; Kaufland regular-only or both-equal. No dual-price conflict observed in four files. |\n| Production Scrapy, PostgreSQL, automation and Tableau | **Not implemented**; feasibility scripts were temporary, outside this repository |\n| Phase 1 authorization | **Not granted** |
 
 ## Next authorized action
 
-**Review and approve Phase 0 closeout.** The initial feasible pair is Kaufland + SPAR Croatia. Design and implement source-specific Scrapy spiders, price-origin fields, versioned file manifests, store identity and parser tests **only after explicit Phase 1 authorization**. Continue to block public release of genuine source observations pending verified sharing rights.
+**Next approval gate:** owner reviews Phase 0 evidence and explicitly closes the phase; **Phase 1 must then be explicitly authorized** before coding. The first Phase 1 scope is two Scrapy source adapters, file manifests and SHA-256 provenance, source-specific CSV dialects, price-origin contracts, representative fixtures, GTIN/package exception handling and non-evasive retry/rate policies. No genuine source observations may be distributed publicly without verified rights.
 
 ## Evidence and navigation
 

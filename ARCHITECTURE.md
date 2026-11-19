@@ -1,6 +1,6 @@
 # Intended architecture
 
-**Status: proposed, not implemented or tested.** Source-specific acquisition details require live validation.
+**Status: proposed for production; not implemented.** Temporary user-local Scrapy probes have demonstrated bounded access and two-date source-file parsing. Source discovery patterns and actual CSV dialects are now evidenced, but no reusable spider, PostgreSQL pipeline or Tableau workbook has been built.
 
 ## Proposed data flow
 
@@ -36,9 +36,9 @@ Kaufland Croatia price-list index     SPAR Croatia price-list index
 
 | Component | Responsibility | Exclusion |
 | --- | --- | --- |
-| Scrapy | Discover official source files, obey robots, fetch bounded batches and log HTTP response/provenance | No CAPTCHA bypass, identity matching or silent retry storms |
+| Scrapy | Implement two source adapters: SPAR dated JSON manifest and Kaufland asset list; obey robots, fetch bounded store/date batches, log HTTP/provenance | No CAPTCHA bypass, identity matching, or uncontrolled retries |
 | Raw manifest | Track original URL, publication date, store, fetch time, checksum, source response | Does not imply that publication timestamp equals fetch timestamp |
-| Parser/validator | Normalize source-specific headers, encoding, locale decimals, GTINs, quantities and price semantics | Does not invent missing fields or infer stock |
+| Parser/validator | Handle actual SPAR cp1250/semicolon and Kaufland UTF-8 BOM/tab; preserve raw regular/special price columns, locale decimals, GTINs and package exceptions | No invented missing fields, stock, or guessed dual-price precedence |
 | PostgreSQL | Preserve immutable price observations at **retailer × store × product × publication date/version** grain; deduplicate exact re-ingestions | Does not collapse distinct stores, dates or promotions into one price |
 | Matching | Verified GTIN/EAN plus quantity/variant checks, exception reports for ambiguous IDs | Does not join product titles indiscriminately |
 | SQL analytics / Tableau | Same-date, same-product, comparable-store price spreads; true longitudinal trends | Does not assume one price represents an entire retailer or a baseline price equals historical data |
@@ -47,11 +47,20 @@ Kaufland Croatia price-list index     SPAR Croatia price-list index
 ## Data characteristics to design for
 
 - Official price lists are **files**, not product-card HTML, so file download is the primary scraping unit.
-- Under Croatia's **NN 132/2026** publication regulation (effective 2026-11-17), the listed format is CSV/XML, UTF-8, semicolon-delimited and optionally compressed; reality must still be validated per source.
+- Under Croatia's **NN 132/2026** price-list regulation (effective 2026-11-17), the required format and automated access underpin the acquisition design. **Observed** sources used SPAR cp1250/semicolon and Kaufland UTF-8 BOM/tab on 2026-11-16/17; treat incompatible changes as schema drift rather than invent a homogeneous format.
 - Required public fields include retail price and baseline price. **Stock availability is not an assured field**; exclude inventory KPIs until a source explicitly provides meaningful inventory data.
 - A retailer may publish distinct price lists per store; matching only by chain and GTIN discards location variation.
-- A replaced source file is required to remain available for only **15 days** under the new regulation; historical retention must be our own, subject to applicable usage terms.
+- Replaced files need remain available for only **15 days** under the reviewed regulation; create local versioned manifests and capture timestamps/hashes, subject to source-use constraints.
 - Keep data source adapters separate so retailers can be replaced without rebuilding schema or dashboards.
+
+## Initial data-quality contracts
+
+- **Grain:** observation key is retailer + physical store + source product identifier/GTIN + publication date + source file version. Same barcode in different shops must never overwrite another store's observation.
+- **Prices:** regular-only → regular; special-only → special; two fields equal → numeric value with both fields preserved; two fields different → flag and withhold from like-for-like pricing until semantics are verified. All monetary values use exact decimals.
+- **Identifiers:** preserve raw codes as strings, validate checksums, normalize for comparison and isolate duplicate/colliding GTINs. Matching is separate from acquisition.
+- **Quantity:** maintain source net quantity and unit separately from text-derived package size; explicitly handle multipacks, drained weights and ambiguous variant labels. Never equate a source-local `KOM` unit to the physical product volume.
+- **Coverage:** track total rows, valid GTINs, field completeness and store/date counts; a +47.9% row-count discontinuity was observed in a Kaufland sample at the regulatory transition, making drift alerting necessary.
+- **Publication:** local analytics may use validly accessed source observations within applicable terms, but genuine retailer files/real-data public extracts are not cleared for Tableau Public. Use synthetic public demo data unless a separate rights basis is established.
 
 ## Architectural constraints
 

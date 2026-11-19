@@ -1,6 +1,6 @@
 # PricePulse project specification
 
-**Status:** Phase 0 technical source feasibility supported by bounded tests; formal closeout and Phase 1 implementation authorization remain pending.
+**Status (2026-11-18):** Kaufland + SPAR Croatia passed **bounded** source feasibility, including a 102-pair descriptor-consistency gate. Formal Phase 0 closure and Phase 1 implementation remain separately unapproved.
 
 ## Problem and value
 
@@ -21,10 +21,10 @@ PricePulse focuses on grocery and household goods sold in **Croatia**, using off
 ## Source and cohort scope
 
 - Country: Croatia; currency: EUR.
-- Candidate retailers: Kaufland and SPAR (priority pair; not yet technically validated locally).
-- Primary sample: one comparable physical store per retailer, preferably within the same city/area, using price lists for the same publication date.
-- Matching: validate GTIN/EAN checksums and compare exact, normalized identifiers; review package size, brand, quantity, and variant. Keep unmatched or ambiguous records separate.
-- Initial measurable goal: **at least 100 conservative product-description matches** on a shared date; 102 cases were judged consistent from 160 manually reviewed prefiltered candidates. External manufacturer/GS1 certification, ongoing identity quality and source terms are separate controls.
+- Qualified first pair: **SPAR Croatia (Jankomir 8702)** and **Kaufland Croatia (Antuna Šoljana 5630)**; bounded local tests passed, continuous operational access is not proven.
+- Initial cohort: one physical Zagreb store per retailer, matching *publication date* for cross-store comparisons and *store ID* across dates for time-series checks.
+- Matching: validate GTIN-8/12/13/14 checksums; preserve raw identifiers and documented 14-digit normalized keys; require brand/package/variant consistency. Review conflicting quantities, multipacks and gross vs drained weights. Keep ambiguous matches separate.
+- Initial measurable goal: >=100 **description-consistent** matched products on a common day. **102/160** deterministically selected strict candidates passed conservative text review; 58 remain unresolved. This is neither independent GS1/manufacturer certification nor a population accuracy estimate.
 - Full national store coverage, promotion-adjusted baskets, and spatial analysis are possible extensions, not initial requirements.
 
 ## Proposed data contract (subject to actual-file validation)
@@ -37,22 +37,24 @@ PricePulse focuses on grocery and household goods sold in **Croatia**, using off
 | retailer_product_code | Source-local identity | Never assume cross-retailer uniqueness |
 | gtin_ean, title, brand | Product matching | GTIN/EAN is optional in the regulation; reject invalid/ambiguous match claims |
 | net_quantity, unit, category | Comparability | Nullable if missing; normalize units before comparing |
-| retail_price_eur, unit_price_eur | Price metrics | Decimal precision; reject invalid or negative values |
-| sale_indicator, baseline_price_eur | Context | Preserve exactly what each source publishes; baseline is not historical observation |
+| regular_price_eur, special_price_eur, effective_price_eur, price_origin, unit_price_eur | Price metrics | Keep original source fields; positive Decimal amounts; effective price comes from the sole provided field or two equal fields; dual-different amounts require explicit exception handling |
+| sale_indicator, baseline_price_eur | Context | Keep source-specific sale meaning; baseline/anchor price is not a time-stamped historical observation |
 | raw_row, ingestion_status | Audit and quality | Preserve evidence of invalid rows without silently converting them |
 
-Fields are conceptual mappings, not a declaration that both live formats have passed validation. The 17 Nov 2026 regulation provides a CSV/XML, UTF-8 and semicolon-delimited foundation; existing retailers' actual structures may differ during transition.
+Fields remain a **planned PostgreSQL contract**, not an implemented schema. Measured CSV dialects differ: **SPAR cp1250 + semicolon**, **Kaufland UTF-8 BOM + tab**. Version header mappings, unit semantics and price selection; quarantine unexpected dual-different price observations rather than guessing precedence.
 
-## Quality and acceptance targets (proposed)
+## Phase 0 evidence and implementation quality gates
 
-1. Confirm robots/terms and direct Scrapy access to official indexes and representative files; no CAPTCHA, WAF bypass, or unapproved authentication.
-2. Successfully identify and parse representative current files for both retailers, with source metadata and deterministic conversions.
-3. Count and document >=100 distinct validated overlapping GTIN/EAN products at the same recent publication date, in compatible store contexts.
-4. Inspect at least 30 randomly/reproducibly selected matched records to verify identity, package size, price and unit semantics. Target >=95% correct parsed required fields in that sample; report confidence and errors.
-5. Demonstrate at least two dated observations or reproducible historical snapshots for the selected sources before claiming viable trends.
-6. Verify source-data retention, reasonable request rates, and publication rights separately from local acquisition rights.
+| Gate | Observed result | Remaining boundary |
+| --- | --- | --- |
+| Live bounded Scrapy access to both retailers | **Passed**; official indexes and selected CSVs returned HTTP 200 | Must monitor policy, HTTP errors, schema changes and availability over time |
+| Same-day price-bearing GTIN intersection | **8,869** on 2026-11-17; **4,155** strict automated candidates | Codes alone are not a guarantee of identical variants |
+| 100 documented comparable-product candidates | **102/160** descriptor-consistent after conservative manual review; **58 unresolved** | Independent manufacturer/GS1 checks and full-catalog precision not established |
+| Two-date same-store price history | **Passed** for both store IDs, 2026-11-16/17 | Not evidence of scheduled operational reliability |
+| SPAR promotional price recovery | **Passed** on two store files, all blank primary-price rows had populated special-price fields | Both-different price cases were not observed; require exception strategy |
+| Redistribution clearance | **Not established** | Real data and source-derived public extracts remain blocked; use synthetic public Tableau demo |
 
-Do not infer a passing gate from a previous third-party study alone.
+**Phase 1 acceptance must be measured independently:** source-specific spiders and contracts, test fixtures, correct source-file provenance, bounded request handling, field-level validation and reproducible evidence. Do not treat the temporary Phase 0 scripts as a production implementation.
 
 ## Constraints
 
