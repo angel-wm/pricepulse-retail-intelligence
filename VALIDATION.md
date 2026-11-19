@@ -2,7 +2,7 @@
 
 ## Status
 
-**Phase 0: IN PROGRESS.** Source access, same-date GTIN intersection and two-day same-store history have passed **initial bounded user-local tests**. Product-equivalence exceptions, effective promotional price semantics, source coverage drift and public redistribution remain unresolved. Phase 1 has not started.
+**Phase 0: TECHNICAL FEASIBILITY EVIDENCED; CLOSEOUT REVIEW READY.** Bounded acquisition, four-file price-field analysis and two-day same-store history support Kaufland and SPAR as the first local-engineering pair. In a private sample of 160 previously filtered code pairs, **102 descriptions were manually judged consistent and 58 held for review**. This is not external manufacturer/GTIN proof, production reliability or redistribution authorization. Phase 1 has not started.
 
 ## Evidence ledger
 
@@ -13,9 +13,9 @@
 | Historical overlap potential | SECONDARY HISTORICAL EVIDENCE | 2025-05-21 third-party analysis: 583 barcodes common across seven chains, 4,126 across six excluding Lidl; not a November 2026 direct pair count |
 | Kaufland robots + Scrapy access | PARTIAL PASS — 2026-11-18 user-local run | HTML index 200, assets JSON index 200, one 2026-11-17 Zagreb CSV 200; direct parsed rows 23,593; 23,238 usable product rows. Current-day 2026-11-18 filename match returned zero in index. |
 | SPAR robots + Scrapy access | PARTIAL PASS — 2026-11-18 user-local run | JSON indexes 200 on 2026-11-17 and 2026-11-18, each advertising 144 files; three CSV downloads 200, parsed successfully. |
-| Current Kaufland–SPAR GTIN intersection | INITIAL PASS — 8,263 | Same-date 2026-11-17, SPAR Zagreb Jankomir vs Kaufland Zagreb Antuna Šoljana 43; 8,263 unique checksum-valid EANs with prices passing initial parsing. Does not yet validate all product/packaging equivalence. |
-| Current schema and parser accuracy | STRUCTURAL PASS; SEMANTIC WORK REMAINS | SPAR: cp1250, semicolon; Kaufland: utf-8-sig, tab. SPAR missing base price is explained by populated special-price field in all rejected rows in both sampled days; effective-price selection needs explicit rules and tests. |
-| Repeatability and history | INITIAL TWO-DATE PASS | Same SPAR store 8702 and Kaufland store 5630 downloaded for 2026-11-16 and 2026-11-17; 28,217 and 15,533 common day-to-day GTINs respectively. Only two days observed, not production reliability. |
+| Current Kaufland–SPAR GTIN intersection | **8,869** priced code matches after promotion-aware parsing | Of 7,772 code matches stable on four files, 4,155 passed automatic strict rules. A reproducible 160-pair audit found 102 descriptor-consistent and 58 unresolved. |
+| Current schema and parser accuracy | INITIAL PRICE RULE SUPPORTED | SPAR: cp1250/semicolon, only regular-only or special-only prices; Kaufland: UTF-8 BOM/tab, regular-only or dual-equal. No dual-different prices in four files; future cases must be flagged. |
+| Repeatability and history | INITIAL TWO-DATE PASS | Same SPAR store 8702 and Kaufland store 5630 across 2026-11-16 and 2026-11-17; promotion-aware stable cohorts 31,277 and 15,533 respectively. Only two days observed. |
 | Source reuse and Tableau publication | PUBLIC DATASET ON HOLD | SPAR website terms section 2.1 restrict reproduction/distribution without written approval. NN 132/2026 supports automated collection but does not itself establish unrestricted redistribution rights. Plan local technical validation and synthetic-only Tableau Public demo until sharing basis is verified. |
 | PostgreSQL, automated tests, Tableau | NOT IMPLEMENTED | No runtime or dashboards |
 
@@ -88,6 +88,43 @@ In the tested files, **every** row rejected by the initial `MPC (EUR)` parser ha
 - Data format differs from uniform legal ideal in these sampled files (SPAR cp1250/semicolon; Kaufland UTF-8 BOM/tab). Observed source formats must be accepted explicitly by parsers and monitored for changes.
 
 **Next closeout gate:** approve effective-price semantics, verified matching/quantity/brand rules and a reliably identified cohort of >=100 genuine like-for-like products, and define public dashboard sharing bounds. No further retailer search is currently indicated.
+
+## Final Phase 0 price and product-description audit — 2026-11-18
+
+**Evidence:** user-uploaded `pricepulse_phase0_final_audit_result.txt`, reporting actual local bounded Scrapy downloads. The 160-product manual descriptor adjudication is held as a **private non-repository file**, to avoid public distribution of raw retailer titles, identifiers or prices.
+
+| Measure | Count | Interpretation |
+| --- | ---: | --- |
+| Same-date retailer GTINs with initially usable prices, 2026-11-17 | **8,869** | Counts with SPAR special-only prices included |
+| GTINs present in both chosen stores across 2026-11-16 and 2026-11-17 | **7,772** | Four-file overlap, not full product verification |
+| Strict algorithmic candidates | **4,155** | Matching brand text, extracted packaging and four-file stability |
+| Deterministic candidate sample manually reviewed from source descriptions | **160** | Sample is prefiltered, not random across all retailer items |
+| Descriptions judged consistent for product and pack | **102** | Conservative text-based evidence, not manufacturer/GS1 authentication |
+| Unresolved due to unit conflicts or ambiguous variants | **58** | Retained as exceptions; do not publish as confirmed like-for-like |
+
+**Initial >=100 matching gate:** satisfied **at descriptor-consistency level only** by the 102 cases. Do not extrapolate their observed agreement rate to the full catalog. The 58 unresolved cases are not automatically false matches; many result from incomparable source quantity fields. Two canned-product examples were judged consistent using gross-versus-drained-weight semantics.
+
+### Price fields across four downloaded CSV files
+
+| Chain and date | Regular-only | Special-only | Both equal | Both different | Neither |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| SPAR 2026-11-16 | 29,231 | 3,091 | 0 | 0 | 0 |
+| SPAR 2026-11-17 | 29,244 | 3,103 | 0 | 0 | 0 |
+| Kaufland 2026-11-16 | 14,939 | 0 | 1,014 | 0 | 0 |
+| Kaufland 2026-11-17 | 21,995 | 0 | 1,598 | 0 | 0 |
+
+**Observed price selection:** regular-only → regular; special-only → special; both equal → preserve both origins and use same numeric amount; both different → flag for review, not silently resolve. Keep the original two price fields and their provenance. These rules are supported by **four sampled files**, not yet by a production pipeline.
+
+### Two-day promotion-aware comparison
+
+| Chain/store | Code-stable products | Price rises | Price decreases | Unchanged |
+| --- | ---: | ---: | ---: | ---: |
+| SPAR Jankomir 8702 | **31,277** | 14 | 54 | 31,209 |
+| Kaufland Zagreb 5630 | **15,533** | 9 | 69 | 15,455 |
+
+**Quality caveats:** The unusual +47.9% Kaufland row-count change across the regulation transition is a source coverage issue to monitor. SPAR files used cp1250 and semicolon, Kaufland UTF-8 BOM and tab; never assume homogeneous CSV dialects. Published presence is not inventory availability. Site publication rights constrain releasing real retailer source extracts; use a synthetic public portfolio demo unless sharing rights are verified.
+
+**Status:** Technical source feasibility is supported. **Formal Phase 0 closure requires user approval; Phase 1 development is not authorized by these observations alone.**
 
 ## Earlier source exploration — user-reported local logs, 2026-11-18
 
