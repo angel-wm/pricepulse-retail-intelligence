@@ -16,7 +16,7 @@
 | Data access from Kaufland and SPAR | **Confirmed initial access**: both indexes HTTP 200; 6 official CSV files downloaded HTTP 200 spanning 2026-11-16 to 2026-11-18. Format/parsing correctness subject to QA. |
 | Current exact GTIN overlap | **8,869** shared priced GTIN candidates on 2026-11-17 (SPAR 8702 × Kaufland 5630); **7,772** present on both dates, **4,155** strict algorithmic candidates. |
 | Same-store two-date history | **Promotion-aware initial check:** SPAR 31,277 code-stable entries (14 up, 54 down); Kaufland 15,533 (9 up, 69 down) from 2026-11-16/17. |
-| Phase 1 authorization | **Not granted** |
+| Private descriptive identity audit | **102/160** pairs consistent on available description/brand/package; **58/160** require review. Not independent manufacturer verification. |\n| Price parsing rule | SPAR regular-only/special-only; Kaufland regular-only or both-equal. No dual-price conflict observed in four files. |\n| Production Scrapy, PostgreSQL, automation and Tableau | **Not implemented** |\n| Phase 1 authorization | **Not granted** |
 
 ## Next authorized action
 
