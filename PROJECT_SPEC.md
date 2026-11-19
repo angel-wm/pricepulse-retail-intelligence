@@ -1,12 +1,12 @@
 # PricePulse project specification
 
-**Status:** Phase 0 feasibility in progress; final source approval and implementation remain pending.
+**Status:** Phase 0 technical source feasibility supported by bounded tests; formal closeout and Phase 1 implementation authorization remain pending.
 
 ## Problem and value
 
 Retailers change published product prices over time and may vary prices by selling location. A reproducible Data Engineering pipeline should turn **source-attributed, machine-readable price-list observations** into trustworthy longitudinal analytics and defensible like-for-like comparisons.
 
-PricePulse will initially focus on grocery and household goods sold in **Croatia**, using the official price-list publications of **Kaufland Croatia and SPAR Croatia as candidate sources**. Lidl is excluded from the first release; this does not establish that Lidl is technically unusable.
+PricePulse focuses on grocery and household goods sold in **Croatia**, using official **Kaufland Croatia and SPAR Croatia** price lists now technically qualified for planned local development. Lidl is excluded from the first release by scope choice, not because of a demonstrated technical blocker.
 
 ## Initial business questions
 
@@ -24,7 +24,7 @@ PricePulse will initially focus on grocery and household goods sold in **Croatia
 - Candidate retailers: Kaufland and SPAR (priority pair; not yet technically validated locally).
 - Primary sample: one comparable physical store per retailer, preferably within the same city/area, using price lists for the same publication date.
 - Matching: validate GTIN/EAN checksums and compare exact, normalized identifiers; review package size, brand, quantity, and variant. Keep unmatched or ambiguous records separate.
-- Initial measurable goal: **at least 100 distinct, valid, verified shared products** on a recent common date, not merely a historical third-party estimate.
+- Initial measurable goal: **at least 100 conservative product-description matches** on a shared date; 102 cases were judged consistent from 160 manually reviewed prefiltered candidates. External manufacturer/GS1 certification, ongoing identity quality and source terms are separate controls.
 - Full national store coverage, promotion-adjusted baskets, and spatial analysis are possible extensions, not initial requirements.
 
 ## Proposed data contract (subject to actual-file validation)
