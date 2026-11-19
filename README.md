@@ -2,7 +2,7 @@
 
 PricePulse is a **planned, documentation-first Data Engineering portfolio project** for collecting published grocery price lists, validating product identities, preserving historical retail prices, and analyzing comparable offers in PostgreSQL and Tableau.
 
-**Current status:** Phase 0 feasibility assessment in progress. **Kaufland Croatia and SPAR Croatia are the priority candidate sources, not yet approved for implementation.** Lidl is excluded from the initial comparison. No spider, database schema, automated pipeline, or dashboard has been implemented or validated.
+**Current status:** **Phase 0 technical feasibility evidenced; formal closeout review ready.** Bounded Scrapy tests downloaded genuine Kaufland and SPAR Croatia price lists for two days. A private 160-pair review found **102 consistent product descriptions** and 58 unresolved. Lidl is excluded from v1. No production spider, database, automation or Tableau dashboard is implemented; Phase 1 requires explicit approval.
 
 ## What PricePulse aims to answer
 
@@ -17,7 +17,7 @@ PricePulse is a **planned, documentation-first Data Engineering portfolio projec
 
 Croatian retailers publish official machine-readable price lists. The regulation effective **17 November 2026** expressly provides for automated collection and CSV/XML price lists. This is stronger evidence for the acquisition use case than attempting to crawl individual product pages protected by anti-bot systems.
 
-Source discovery and historical overlap evidence are documented in [Source feasibility](SOURCE_FEASIBILITY.md). Previous music-retailer candidates were not selected because of access blocks, rate limits, or restrictions.
+Actual local source-access, two-date history, and price/identity evidence is in [Validation](VALIDATION.md) and [Source feasibility](SOURCE_FEASIBILITY.md). Initial same-date codes with price totaled 8,869 after promotional-price handling, but these are **not all verified product matches**. Previous music-retailer candidates were dropped after access blocks or restrictions. Public real-data redistribution remains on hold; a synthetic Tableau Public demo is the default.
 
 ## Planned workflow
 
@@ -54,4 +54,4 @@ Scrapy remains the primary acquisition framework. No additional scraping framewo
 - [Validation](VALIDATION.md) — actual evidence and outstanding tests
 - [Repository context](REPO_CONTEXT.md) and [agent instructions](AGENTS.md) — navigation and working conventions
 
-Repository documentation follows [Repository Documentation Readability](https://github.com/angel-wm/repository-documentation-readability). **Do not begin Phase 1 on the strength of the source hypothesis alone.**
+Repository documentation follows [Repository Documentation Readability](https://github.com/angel-wm/repository-documentation-readability). Source feasibility evidence now exists, but **Phase 1 implementation and any publication of genuine retailer data remain separate approval gates.**
