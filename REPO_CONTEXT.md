@@ -2,10 +2,10 @@
 
 ## Project
 
-- Project: **PricePulse**, a planned Scrapy-based **Croatian grocery price-list intelligence** Data Engineering portfolio project.
+- Project: **PricePulse**, a phase-gated Scrapy-based **Croatian grocery price-list intelligence** Data Engineering portfolio project.
 - Convention version: **0.1**.
 - Description: [README](README.md).
-- Work Unit: **phase**; documentation maintenance can occur within the authorized Phase 0 feasibility study.
+- Work Unit: **phase**; Phase 0 has bounded technical evidence but still requires formal owner closeout. No Phase 1 coding approval is implied.
 - Work Model: [roadmap and approval rules](ROADMAP.md#work-model-and-approval-rules).
 
 ## Published state
@@ -18,10 +18,10 @@ Remote readers describe only the published snapshot retrieved; unseen local work
 
 | Topic / purpose | Source | Authority | Read when |
 | --- | --- | --- | --- |
-| Current state | [Current state](CURRENT_STATE.md#current-state) | Implementation and phase-state authority | Status / next steps |
+| Current state | [Current state](CURRENT_STATE.md#current-state) | Authoritative phase and implementation status, including owner approval gates | Status / next steps |
 | Planned work | [Roadmap](ROADMAP.md#planned-phases) | Phase order and gates, **not** execution permission | Planning |
 | Scope / contract | [Project specification](PROJECT_SPEC.md) | Intended scope, definitions and success criteria | Business questions, contracts |
-| Candidate sources / regulatory basis | [Source feasibility](SOURCE_FEASIBILITY.md) | Detailed evidence and pending feasibility gates, **not** proof of operational access | Source selection and matching |
+| Retailer sources / regulatory basis | [Source feasibility](SOURCE_FEASIBILITY.md) | Source qualification, rights boundary and feasibility evidence; **not** a production reliability guarantee | Source selection and matching |
 | Architecture | [Architecture](ARCHITECTURE.md) | Intended responsibilities, not implemented code | Design changes |
 | Decisions | [Decisions](DECISIONS.md) | Approved directions and explicit provisional choices | Rationale and trade-offs |
 | Validation / evidence | [Validation](VALIDATION.md) | Actual checks, outcomes and known gaps | Quality, closeout |

@@ -37,7 +37,7 @@ A decision records approved direction and trade-offs; it does **not** imply impl
 - **Rationale:** official machine-readable publications and a regulatory framework explicitly allowing automated collection are more promising than scraping product pages. A May 2025 third-party study found >=4,126 barcode matches across six chains excluding Lidl, which establishes historical potential but **does not** establish today's Kaufland–SPAR overlap.
 - **Tradeoff:** per-store file processing and data-quality issues replace product-page parsing; GTIN validity, store comparability and retention require explicit modeling.
 - **Approval gate:** recent source-file access and >=100 validated same-date shared GTINs, plus rights and historical-feasibility checks.
-- **Revisit when:** the two sources fail Phase 0 acceptance or a better documented public source becomes available.
+- **Revisit when:** either source later fails monitored technical access, quality gates, or source-use constraints.
 
 ### D-007 — Prefer published store-level prices; defer stock KPI (2026-11-18)
 
@@ -49,10 +49,10 @@ A decision records approved direction and trade-offs; it does **not** imply impl
 ### D-008 — Adopt official CSV acquisition and source-specific promotion parsing (2026-11-18)
 
 - **Status:** accepted preliminary price-field contract direction from four files; not implemented in production.
-- **Evidence:** bounded live-download tests succeeded on both Kaufland and SPAR, with 8,263 checksum-valid code overlap candidates at comparable store/date grain and two-day same-store histories. SPAR primary price is blank on 3,103 of 32,347 rows on 2026-11-17, but those rows have valid special prices. The current parser omits them from first-pass usable products.
+- **Evidence:** initial base-price-only parse found 8,263 code matches and overlooked 3,103 SPAR special-only prices. The final four-file audit recovered those prices, yielding **8,869** shared priced codes. No differing simultaneously populated regular/special prices were observed in the sampled files.
 - **Decision direction:** distinguish regular price, special/promotion price, and effective advertised price with explicit source lineage. Never infer missing-price or out-of-stock from a blank normal-price field alone.
 - **Tradeoff:** more sophisticated field precedence/validation and coverage accounting; no need for a new scraping framework.
-- **QA gate:** confirm effective-price precedence when both fields are populated, and verify exact package/brand equivalence in >=100 selected cross-retailer matches before Phase 0 closeout. Treat the 8,263 overlap as candidates, not fully verified products.
+- **QA rule:** regular-only → regular; special-only → special; both equal → preserve both fields, same amount; both present/different → flag as ambiguous. The 160-pair descriptor review supports **102 consistent pairs**, not manufacturer-certified products. Preserve unresolved cases for downstream testing.
 
 ### D-009 — Qualify Kaufland + SPAR Croatia as initial source pair (2026-11-18)
 

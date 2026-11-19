@@ -2,7 +2,7 @@
 
 ## Status
 
-**Phase 0: TECHNICAL FEASIBILITY EVIDENCED; CLOSEOUT REVIEW READY.** Bounded acquisition, four-file price-field analysis and two-day same-store history support Kaufland and SPAR as the first local-engineering pair. In a private sample of 160 previously filtered code pairs, **102 descriptions were manually judged consistent and 58 held for review**. This is not external manufacturer/GTIN proof, production reliability or redistribution authorization. Phase 1 has not started.
+**Phase 0 technical feasibility supported by bounded user-local tests; formal owner closeout pending (2026-11-18).** The pair is **SPAR Croatia / store 8702** and **Kaufland Croatia / store 5630**. The initial matching gate is **102 descriptor-consistent product pairs from 160 reviewed strict candidates**, with 58 unresolved. This is **not** external manufacturer/GS1 identity certification, production reliability evidence, permission to redistribute real data, or Phase 1 implementation authorization.
 
 ## Evidence ledger
 
@@ -13,13 +13,13 @@
 | Historical overlap potential | SECONDARY HISTORICAL EVIDENCE | 2025-05-21 third-party analysis: 583 barcodes common across seven chains, 4,126 across six excluding Lidl; not a November 2026 direct pair count |
 | Kaufland robots + Scrapy access | PARTIAL PASS — 2026-11-18 user-local run | HTML index 200, assets JSON index 200, one 2026-11-17 Zagreb CSV 200; direct parsed rows 23,593; 23,238 usable product rows. Current-day 2026-11-18 filename match returned zero in index. |
 | SPAR robots + Scrapy access | PARTIAL PASS — 2026-11-18 user-local run | JSON indexes 200 on 2026-11-17 and 2026-11-18, each advertising 144 files; three CSV downloads 200, parsed successfully. |
-| Current Kaufland–SPAR GTIN intersection | **8,869** priced code matches after promotion-aware parsing | Of 7,772 code matches stable on four files, 4,155 passed automatic strict rules. A reproducible 160-pair audit found 102 descriptor-consistent and 58 unresolved. |
+| Current Kaufland–SPAR GTIN intersection | **8,869** priced shared codes (2026-11-17) | **7,772** present in both stores across two days; **4,155** strict candidates; **102/160** review-consistent on available descriptions; not an independent manufacturer/GTIN product registry check. |
 | Current schema and parser accuracy | INITIAL PRICE RULE SUPPORTED | SPAR: cp1250/semicolon, only regular-only or special-only prices; Kaufland: UTF-8 BOM/tab, regular-only or dual-equal. No dual-different prices in four files; future cases must be flagged. |
 | Repeatability and history | INITIAL TWO-DATE PASS | Same SPAR store 8702 and Kaufland store 5630 across 2026-11-16 and 2026-11-17; promotion-aware stable cohorts 31,277 and 15,533 respectively. Only two days observed. |
-| Source reuse and Tableau publication | PUBLIC DATASET ON HOLD | SPAR website terms section 2.1 restrict reproduction/distribution without written approval. NN 132/2026 supports automated collection but does not itself establish unrestricted redistribution rights. Plan local technical validation and synthetic-only Tableau Public demo until sharing basis is verified. |
+| Source reuse and Tableau publication | REAL-DATA PUBLICATION ON HOLD | SPAR website terms restrict reproduction/distribution; NN 132/2026 automated-access text does not imply a general redistribution license. A clearly labeled synthetic Tableau Public demonstration is the default unless legal sharing basis is verified. |
 | PostgreSQL, automated tests, Tableau | NOT IMPLEMENTED | No runtime or dashboards |
 
-## Croatian grocery sources — user-local acquisition evidence (2026-11-18)
+## Initial grocery acquisition probe — user-local evidence (2026-11-18)
 
 **Method:** user executed the standalone Scrapy Phase 0 probe script with robots obedience, 10-second per-domain delay, single-domain concurrency, no retries, and bounded discovery/CSV download. User provided a console-log file. These are **user-observed test results**, not CI or independently repeated executions.
 
@@ -33,10 +33,10 @@
 - SPAR JSON index HTTP 200 on both 2026-11-18 and 2026-11-17; 144 files advertised on each date.
 - Kaufland index HTML and JSON both HTTP 200; JSON advertised 2,227 assets. Date filter found **zero matching filenames for 2026-11-18** and **53 for 2026-11-17**. The zero match might involve publication timing or filename conventions; it is not proof of zero available 2026-11-18 products.
 - Script selected and downloaded four CSVs; all HTTP 200 and parsed by its initial heuristics. No duplicate GTINs reported within these selected files after initial check; semantic validation of input fields is still outstanding.
-- **Critical gap:** the script only intersected files for 2026-11-18. With no Kaufland file selected for that date, it returned **no cross-retailer overlap metric**. It must be rerun for 2026-11-17 using one comparable store per chain before the >=100-product acceptance gate can be evaluated.
+- **Initial-probe limitation, subsequently resolved:** this first probe tried a 2026-11-18 intersection while Kaufland's label filter selected no file. The later same-store 2026-11-17 probe successfully measured cross-retailer overlap; see the dated sections below.
 - Source files were processed transiently; the log does not include full product rows and cannot itself support a barcode intersection computation.
 
-## Same-date intersection — user-local log, 2026-11-18
+## Intermediate same-date intersection — user-local log, 2026-11-18
 
 The user executed the bounded second Phase 0 probe with main date **2026-11-17** and previous date **2026-11-16**. Observations:
 
@@ -47,7 +47,7 @@ The user executed the bounded second Phase 0 probe with main date **2026-11-17**
 - The previous-date SPAR sample and current-date SPAR sample were not necessarily the **same store**, so same-store price trends remain **unvalidated**. Same-store 2026-11-16 and 2026-11-17 downloads must be selected explicitly.
 - SPAR initial parser rejected approximately 9–11% of retail-price values across sampled files; no cause analysis is yet supported. Actual source values and special-price semantics must be investigated.
 - CSV format evidence: SPAR `cp1250` + semicolon; Kaufland `utf-8-sig` + tab. Source-specific parser contracts must preserve these actual observations rather than assume uniform CSV dialect.
-- **Phase 0 remains open**, pending selected-store history, price diagnostics, sampled matching audit and publication-rights decision.
+- **Historical checkpoint (now superseded):** at this intermediate test stage the sample had not yet been audited. The final review below establishes same-store history, a bounded price rule, and 102 descriptor-consistent cases. **Formal owner closeout is still pending**.
 
 ## Price semantics, same-store history and product sample — user-local log (2026-11-18)
 
@@ -138,16 +138,13 @@ These tests concerned an **abandoned musical-instruments source category** and d
 
 These results were supplied in the conversation by the user, not independently replayed in CI.
 
-## Phase 0 validation plan (not execution results)
+## Phase 0 closeout evidence and remaining limits
 
-1. **Access and access policy:** check both official `robots.txt` files and terms; request one index page and one representative publication per retailer using Scrapy, with bounded concurrency, no anti-bot bypass and recorded statuses.
-2. **Current files:** select a common recent publication date and one comparable physical store in each chain; capture source URLs, hashes, date/time, store IDs, headers, encoding, file count and currency.
-3. **Matching:** count unique normalized valid GTINs in each chosen file, strict intersection size, malformed IDs, ambiguous duplicates, variant/quantity disagreements and retained valid matches. **Require >=100 validated matches**.
-4. **Accuracy:** deterministic 30-record identity/price/quantity sample; document parsing completeness and rejected rows, aiming for >=95% usable required-field extraction.
-5. **History:** verify a second source publication date or a valid retained archive. Compare listed source dates rather than confusing them with download timestamps.
-6. **Publication rights:** determine what may be stored and shared in a public Tableau portfolio; withhold raw public dataset if unverified.
+**Pass, within tested scope:** (1) official index and store file retrieval under Scrapy with robots obedience; (2) actual per-chain file parsing and prices; (3) two-day same-store history; (4) more than 100 conservative descriptor-consistent cross-retailer pairs from a reproducibly sampled, prefiltered cohort; (5) documented source terms and constrained public release policy.
 
-Record each actual command, date, URL, HTTP status, file hash and result. Never report a proposed target as a measured success.
+**Not tested or authorized:** continuous scheduling/retry reliability; end-to-end PostgreSQL idempotency; external manufacturer/GS1 resolution for the 58 unresolved pairs; full-catalog matching precision; ambiguous dual-different source prices; data publication rights; Tableau workbook. **Phase 0 awaits explicit owner closeout; Phase 1 development is not started.**
+
+**Evidence provenance:** the original CSV data were downloaded and processed during user-executed temporary Scrapy feasibility scripts. Audit logs were supplied in conversation; source-row detail and private 160-item review notes are **not committed to this repository**, avoiding unnecessary public exposure or redistribution.
 
 ## Documentation checks
 

@@ -1,6 +1,6 @@
 # Source feasibility — Croatian grocery price lists
 
-**Assessment date:** 2026-11-18. **Status:** bounded technical feasibility **passed** for Kaufland and SPAR Croatia, pending formal Phase 0 closure and explicit Phase 1 authorization. No production spiders exist; release of real retail observations is on hold.
+**Assessment baseline: 2026-11-18. Status: bounded Phase 0 technical feasibility passed; explicit owner closeout pending.** The qualified development pair is SPAR Zagreb Jankomir (store 8702) plus Kaufland Zagreb Antuna Šoljana (store 5630). No reusable production spider exists; sharing real retailer extracts publicly is not cleared.
 
 ## Decision snapshot
 
@@ -33,14 +33,14 @@ The official Croatian [Regulation on publication of product price lists, NN 132/
 | Kaufland | https://www.kaufland.hr/akcije-novosti/popis-mpc.html | Public page states daily updated retail price lists in digital formats | **HTTP 200 index and official CSV; Scrapy locally tested 2026-11-18** |
 | SPAR | https://www.spar.hr/usluge/cjenici | Public page states daily CSV lists; semicolon delimiter and decimal comma | **HTTP 200 JSON indexes and official CSV; Scrapy locally tested 2026-11-18** |
 
-### Discovery implementation hints — not verified public APIs
+### Source discovery interfaces verified in bounded local tests
 
 A third-party open-source reference, [senko/cijene-api](https://github.com/senko/cijene-api), includes independently maintained crawlers. Source inspection performed 2026-11-18 suggests:
 
 - SPAR: date-specific JSON index pattern `https://www.spar.hr/datoteke_cjenici/CjenikYYYYMMDD.json`, exposing file names and URLs; files are then parsed as semicolon-delimited CSV.
 - Kaufland: official price-list page may expose a `data-component=AssetList` element whose configuration points to a JSON asset index containing CSV URLs; source-file values may be tab-separated in an older format.
 
-These are **third-party implementation clues, not guaranteed endpoints, approved interfaces or current live tests**. Scrapy access, current post-2026-11-17 formats and `robots.txt` must be checked independently. Do not copy that project's code or datasets without reviewing applicable licenses.
+The initial patterns were suggested by a third-party repository, then **the official SPAR and Kaufland indexes and a sample of the resulting CSV links returned HTTP 200 under bounded user-local Scrapy tests** on 2026-11-18. Interfaces are **not contractual APIs**: monitor schema and access changes, obey robots guidance, and do not copy third-party code without license review.
 
 ## Historical intersection evidence — not a current count
 
@@ -68,27 +68,29 @@ Price-field cases in the four downloaded CSVs showed SPAR regular-only or specia
 
 **Engineering outcome:** the pair is sufficiently grounded for **planned local source-acquisition development**; no additional retailer discovery is indicated. Formal Phase 0 closeout still requires user approval and no further real-data publication may be inferred from technical access rights. See [Validation](VALIDATION.md).
 
-## Proposed feasibility experiment — run before approval
+## Verification checklist and Phase 0 closeout conditions
 
-1. **Policy/access:** obtain actual `robots.txt` from both domains; review source terms and use non-evasive, clearly identified Scrapy requests. Stop upon persistent 403/429 or CAPTCHA.
-2. **Discovery:** for a chosen recent date, retrieve each index/manifest and **one representative official price-list file per chain**, recording direct URLs, status, actual encoding, delimiters, raw file hash, file size and published/store identifiers. Avoid bulk crawling.
-3. **Comparable stores:** select one physical store for each chain, ideally in the same city/area (for example Zagreb), and the **same price-list date**. No store IDs or locations are assumed until read from actual source filenames/data.
-4. **File/schema validation:** inspect column names and actual types; handle decimal comma, nonbreaking spaces, UTF-8/BOM, quoted delimiters, optional compression and unknown columns. Verify price and product identifiers from raw rows.
-5. **GTIN intersection:** preserve codes as strings; distinguish local product numbers from valid GTIN/EAN; validate check digits; normalize valid variants to a documented canonical form; count unique codes per store and strict intersection. Exclude ambiguous collisions and incompatible package sizes.
-6. **Acceptance:** document `valid_gtins_kaufland`, `valid_gtins_spar`, `shared_gtins_exact`, `shared_gtins_validated`, `ambiguous_matches`, `price_parse_success`, plus at least 30 reproducibly sampled matches. **Require >=100 validated distinct matches** and aim for >=95% correctly usable required fields in the sample.
-7. **History:** verify at least two separately dated publications or valid public archives. Track acquisition time separately from publication/effective dates. A stable price is a valid observation; do not invent price changes.
-8. **Permission/publication:** document technical access terms and use a safe publication strategy; no public release of raw historical retail observations until rights have been verified.
+| Test | Actual status and evidence |
+| --- | --- |
+| Bounded index/CSV retrieval with Scrapy | **Passed**: both retailer indexes and selected files HTTP 200, robots obedience enabled. No bot-defense bypass. |
+| Same-day store and currency comparability | **Passed as an initial Zagreb sample**: SPAR 8702 and Kaufland 5630, 2026-11-17, EUR. |
+| Valid codes and source-price handling | **Passed on tested files**: 8,869 shared priced code candidates; SPAR empty regular field was fully supplemented by special field in each sampled date. |
+| Cross-date continuity | **Passed as a two-date feasibility test**: the same store IDs were used on 2026-11-16 and 2026-11-17; not proof of long-term availability. |
+| Matching quality gate | **102** description-consistent items in a deterministic 160-pair sample selected from 4,155 strict candidates; **58** held for review. Independent manufacturer/GS1 verification remains beyond the bounded gate. |
+| Formatting and drift | **Source-specific**: SPAR cp1250/semicolon; Kaufland UTF-8 BOM/tab. Store-size shifts and optional fields require monitoring. |
+| Source rights and public Tableau release | **Restricted**: no public redistribution of source files or derived real-source extracts is approved. A synthetic public dashboard is the safe default. |
+| Formal closeout and Phase 1 implementation | **Pending explicit owner approval**. No phase completion or spider implementation may be inferred from these tests. |
 
-If this pair fails, investigate another official Croatian chain rather than bypassing restrictions or changing Scrapy prematurely.
+The checks are traceable in [Validation](VALIDATION.md), which distinguishes user-local test logs, inferred matching and independently unverified product properties. If access/terms change, source qualification must be revisited rather than circumventing restrictions.
 
 ## Distinct risks
 
-- A public page may be readable in a browser/search engine but blocked to direct Scrapy/CSV downloads.
+- Initial Scrapy access succeeded, but the source could later return access controls or altered endpoints; stop rather than bypass.
 - Website paths, index JSON schemas and file formats may shift after the 2026-11-17 regulation.
 - Same GTIN at different stores or dates is not a controlled price comparison; select comparable store and day.
 - Retailers' optional EAN fields may be absent or contain invalid/internal codes; product naming and package quantities can conflict.
 - Product not listed does not imply out-of-stock status.
-- A single day's files cannot establish a time series; historical snapshots must be retained deliberately.
+- Two days of same-store snapshots demonstrated historical feasibility, but durable retention and idempotent ingestion remain Phase 2 implementation work.
 - Local historical storage and redistribution/public Tableau publication have different constraints.
 
 ## References
