@@ -16,8 +16,9 @@ Kaufland Croatia price-list index     SPAR Croatia price-list index
                 (source, store, timestamps, hash)
                                    |
                       Python validation and parsing
-                     (UTF-8, ;, decimal comma,
-                      field mapping, GTIN checks)
+                    (SPAR: cp1250, semicolon)
+                    (Kaufland: UTF-8 BOM, tab)
+                 (locale decimals, fields, GTIN checks)
                                    |
                           PostgreSQL staging
                                    |

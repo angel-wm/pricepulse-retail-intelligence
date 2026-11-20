@@ -19,6 +19,23 @@ Croatian retailers publish official machine-readable price lists. The regulation
 
 Actual local source-access, two-date history, and price/identity evidence is in [Validation](VALIDATION.md) and [Source feasibility](SOURCE_FEASIBILITY.md). Initial same-date codes with price totaled 8,869 after promotional-price handling, but these are **not all verified product matches**. Previous music-retailer candidates were dropped after access blocks or restrictions. Public real-data redistribution remains on hold; a synthetic Tableau Public demo is the default.
 
+## Local quick start (Windows PowerShell)
+
+**Prerequisites:** Git and `uv` installed; the repository targets Python **3.12**. These commands set up the Python environment but **do not** start production scraping or create a PostgreSQL database.
+
+```powershell
+cd "C:\Users\angel\Documents\Proyectos\pricepulse-retail-intelligence"
+git pull --ff-only
+uv sync
+uv run python --version
+uv run scrapy version
+```
+
+- `uv sync` creates or updates the project's `.venv` using `pyproject.toml` and `uv.lock`. No separate `uv venv` command is required for the usual project setup.
+- `uv run <command>` uses the project environment **without requiring activation**. If you prefer activating it in the current PowerShell session, run `.\.venv\Scripts\Activate.ps1`; use `deactivate` to exit.
+- Git commands (`status`, `pull`, `add`, `commit`, `push`) do **not** require an activated Python virtual environment. Check `git status` before committing or pulling if local changes exist.
+- The repository currently contains **project configuration and feasibility documentation**, not implemented spiders or an automated pipeline. The temporary Phase 0 probe scripts were run outside the repository.
+
 ## Planned workflow
 
 1. **Phase 0 — Feasibility:** bounded source access, two-date per-store price history, price-field parsing, and at least 100 descriptor-consistent product pairs — **technically evidenced; formal closeout pending**.

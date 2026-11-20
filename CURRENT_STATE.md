@@ -16,7 +16,10 @@
 | Acquisition evidence | Scrapy fetched both retailer indexes and **four fixed-store/date files** for 2026-11-16/17 with HTTP 200 (plus earlier exploratory CSV samples). Only bounded local tests, not scheduled reliability. |
 | Current exact GTIN overlap | **8,869** shared priced GTIN candidates on 2026-11-17 (SPAR 8702 × Kaufland 5630); **7,772** present on both dates, **4,155** strict algorithmic candidates. |
 | Same-store two-date history | **Promotion-aware initial check:** SPAR 31,277 code-stable entries (14 up, 54 down); Kaufland 15,533 (9 up, 69 down) from 2026-11-16/17. |
-| Product identity QA | **102/160** descriptor-consistent sampled pairs; **58/160** held as ambiguous. Filtered sample, not GS1/manufacturer certification or full-catalog precision estimate. |\n| Price parsing rule | SPAR regular-only/special-only; Kaufland regular-only or both-equal. No dual-price conflict observed in four files. |\n| Production Scrapy, PostgreSQL, automation and Tableau | **Not implemented**; feasibility scripts were temporary, outside this repository |\n| Phase 1 authorization | **Not granted** |
+| Product identity QA | **102/160** descriptor-consistent sampled pairs; **58/160** held as ambiguous. Filtered sample, not GS1/manufacturer certification or full-catalog precision estimate. |
+| Price parsing rule | SPAR regular-only/special-only; Kaufland regular-only or both-equal. No dual-price conflict observed in four files. |
+| Production Scrapy, PostgreSQL, automation and Tableau | **Not implemented**; feasibility scripts were temporary, outside this repository |
+| Phase 1 authorization | **Not granted** |
 
 ## Next authorized action
 
