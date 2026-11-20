@@ -1,6 +1,6 @@
 # Source feasibility — Croatian grocery price lists
 
-**Assessment baseline: 2026-11-18. Status: bounded Phase 0 technical feasibility passed; explicit owner closeout pending.** The qualified development pair is SPAR Zagreb Jankomir (store 8702) plus Kaufland Zagreb Antuna Šoljana (store 5630). No reusable production spider exists; sharing real retailer extracts publicly is not cleared.
+**Assessment baseline: 2026-11-18. Status on 2026-11-19: Phase 0 formally CLOSED by explicit owner approval after bounded technical feasibility passed.** The qualified development pair is SPAR Zagreb Jankomir (store 8702) plus Kaufland Zagreb Antuna Šoljana (store 5630). No reusable production spider exists; sharing real retailer extracts publicly is not cleared.
 
 ## Decision snapshot
 
@@ -66,7 +66,11 @@ The independent user-local Phase 0 script downloaded price files for the same SP
 
 Price-field cases in the four downloaded CSVs showed SPAR regular-only or special-only pricing and Kaufland regular-only or both-equal pricing. Future two-different-price cases must be reviewed. The two-day histories are real observations, not evidence of ongoing scheduling reliability. SPAR uses cp1250 with semicolons; Kaufland UTF-8 BOM with tabs. Both will need explicit parsers and schema drift tests.
 
-**Engineering outcome:** the pair is sufficiently grounded for **planned local source-acquisition development**; no additional retailer discovery is indicated. Formal Phase 0 closeout still requires user approval and no further real-data publication may be inferred from technical access rights. See [Validation](VALIDATION.md).
+**Engineering outcome:** the pair is sufficiently grounded for **planned local source-acquisition development**; no additional retailer discovery is indicated. Formal Phase 0 closeout was explicitly approved on **2026-11-19**; this approval does **not** authorize Phase 1 implementation or publication of real source data. See [Validation](VALIDATION.md).
+
+## Owner closeout decision (2026-11-19)
+
+The project owner explicitly approved **formal Phase 0 closure** and synchronization of GitHub documentation and Jira. This decision accepts bounded source access, the documented 102 descriptor-consistent matches, the unresolved identity exceptions, and the restrictions on real-source public redistribution. **It does not authorize Phase 1 or publishing real retail-source extracts.**
 
 ## Verification checklist and Phase 0 closeout conditions
 
@@ -79,7 +83,7 @@ Price-field cases in the four downloaded CSVs showed SPAR regular-only or specia
 | Matching quality gate | **102** description-consistent items in a deterministic 160-pair sample selected from 4,155 strict candidates; **58** held for review. Independent manufacturer/GS1 verification remains beyond the bounded gate. |
 | Formatting and drift | **Source-specific**: SPAR cp1250/semicolon; Kaufland UTF-8 BOM/tab. Store-size shifts and optional fields require monitoring. |
 | Source rights and public Tableau release | **Restricted**: no public redistribution of source files or derived real-source extracts is approved. A synthetic public dashboard is the safe default. |
-| Formal closeout and Phase 1 implementation | **Pending explicit owner approval**. No phase completion or spider implementation may be inferred from these tests. |
+| Formal closeout and Phase 1 implementation | **Phase 0 formally CLOSED by owner approval on 2026-11-19.** Phase 1 remains **not authorized**; no production spider is implemented. |
 
 The checks are traceable in [Validation](VALIDATION.md), which distinguishes user-local test logs, inferred matching and independently unverified product properties. If access/terms change, source qualification must be revisited rather than circumventing restrictions.
 
