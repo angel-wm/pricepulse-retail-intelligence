@@ -2,7 +2,13 @@
 
 ## Status
 
-**Phase 0 technical feasibility supported by bounded user-local tests; formal owner closeout pending (2026-11-18).** The pair is **SPAR Croatia / store 8702** and **Kaufland Croatia / store 5630**. The initial matching gate is **102 descriptor-consistent product pairs from 160 reviewed strict candidates**, with 58 unresolved. This is **not** external manufacturer/GS1 identity certification, production reliability evidence, permission to redistribute real data, or Phase 1 implementation authorization.
+**Phase 0 formally CLOSED by explicit owner approval on 2026-11-19**, based on bounded user-local technical feasibility evidence dated 2026-11-18. The pair is **SPAR Croatia / store 8702** and **Kaufland Croatia / store 5630**. The initial matching gate is **102 descriptor-consistent product pairs from 160 reviewed strict candidates**, with 58 unresolved. This is **not** external manufacturer/GS1 identity certification, production reliability evidence, permission to redistribute real data, or Phase 1 implementation authorization.
+
+## Owner closeout decision (2026-11-19)
+
+**Approved:** formal closure of **Phase 0 — Project Definition and Source Feasibility** for SPAR Croatia (Zagreb Jankomir, store 8702) and Kaufland Croatia (Zagreb Antuna Šoljana, store 5630). The approved evidence scope is bounded Scrapy access, four fixed-store/date CSV snapshots, observed price-field behavior, and **102 description-consistent pairs among 160 prefiltered pairs reviewed**. The owner authorized updating GitHub documentation and Jira.
+
+**Limitations retained:** 58 unresolved product-identity pairs; no external manufacturer/GS1 validation or production reliability proof; no PostgreSQL ingest or Tableau workbook; no inferred stock availability or rights to publicly redistribute source observations. **The owner explicitly withheld authorization to start Phase 1.**
 
 ## Evidence ledger
 
@@ -47,7 +53,7 @@ The user executed the bounded second Phase 0 probe with main date **2026-11-17**
 - The previous-date SPAR sample and current-date SPAR sample were not necessarily the **same store**, so same-store price trends remain **unvalidated**. Same-store 2026-11-16 and 2026-11-17 downloads must be selected explicitly.
 - SPAR initial parser rejected approximately 9–11% of retail-price values across sampled files; no cause analysis is yet supported. Actual source values and special-price semantics must be investigated.
 - CSV format evidence: SPAR `cp1250` + semicolon; Kaufland `utf-8-sig` + tab. Source-specific parser contracts must preserve these actual observations rather than assume uniform CSV dialect.
-- **Historical checkpoint (now superseded):** at this intermediate test stage the sample had not yet been audited. The final review below establishes same-store history, a bounded price rule, and 102 descriptor-consistent cases. **Formal owner closeout is still pending**.
+- **Historical checkpoint (now superseded):** at this intermediate test stage the sample had not yet been audited. The final review below establishes same-store history, a bounded price rule, and 102 descriptor-consistent cases. **Formal owner closeout was subsequently approved on 2026-11-19**.
 
 ## Price semantics, same-store history and product sample — user-local log (2026-11-18)
 
@@ -87,7 +93,7 @@ In the tested files, **every** row rejected by the initial `MPC (EUR)` parser ha
 - SPAR store 8702: **32,322 rows on 2026-11-16** vs **32,347 on 2026-11-17** (+25).
 - Data format differs from uniform legal ideal in these sampled files (SPAR cp1250/semicolon; Kaufland UTF-8 BOM/tab). Observed source formats must be accepted explicitly by parsers and monitored for changes.
 
-**Next closeout gate:** approve effective-price semantics, verified matching/quantity/brand rules and a reliably identified cohort of >=100 genuine like-for-like products, and define public dashboard sharing bounds. No further retailer search is currently indicated.
+**Historical next-gate note (superseded on 2026-11-19):** the final 160-pair review established 102 descriptor-consistent matches and 58 unresolved pairs. The owner approved bounded Phase 0 closeout while retaining identity exceptions, unusual price cases and public sharing restrictions as downstream controls.
 
 ## Final Phase 0 price and product-description audit — 2026-11-18
 
@@ -124,7 +130,7 @@ In the tested files, **every** row rejected by the initial `MPC (EUR)` parser ha
 
 **Quality caveats:** The unusual +47.9% Kaufland row-count change across the regulation transition is a source coverage issue to monitor. SPAR files used cp1250 and semicolon, Kaufland UTF-8 BOM and tab; never assume homogeneous CSV dialects. Published presence is not inventory availability. Site publication rights constrain releasing real retailer source extracts; use a synthetic public portfolio demo unless sharing rights are verified.
 
-**Status:** Technical source feasibility is supported. **Formal Phase 0 closure requires user approval; Phase 1 development is not authorized by these observations alone.**
+**Status:** Technical source feasibility supported; **Phase 0 formally closed by owner approval on 2026-11-19. Phase 1 development remains unauthorized.**
 
 ## Earlier source exploration — user-reported local logs, 2026-11-18
 
@@ -142,7 +148,7 @@ These results were supplied in the conversation by the user, not independently r
 
 **Pass, within tested scope:** (1) official index and store file retrieval under Scrapy with robots obedience; (2) actual per-chain file parsing and prices; (3) two-day same-store history; (4) more than 100 conservative descriptor-consistent cross-retailer pairs from a reproducibly sampled, prefiltered cohort; (5) documented source terms and constrained public release policy.
 
-**Not tested or authorized:** continuous scheduling/retry reliability; end-to-end PostgreSQL idempotency; external manufacturer/GS1 resolution for the 58 unresolved pairs; full-catalog matching precision; ambiguous dual-different source prices; data publication rights; Tableau workbook. **Phase 0 awaits explicit owner closeout; Phase 1 development is not started.**
+**Not tested or authorized:** continuous scheduling/retry reliability; end-to-end PostgreSQL idempotency; external manufacturer/GS1 resolution for the 58 unresolved pairs; full-catalog matching precision; ambiguous dual-different source prices; data publication rights; Tableau workbook. **Phase 0 formally closed on 2026-11-19; Phase 1 development is not started or authorized.**
 
 **Evidence provenance:** the original CSV data were downloaded and processed during user-executed temporary Scrapy feasibility scripts. Audit logs were supplied in conversation; source-row detail and private 160-item review notes are **not committed to this repository**, avoiding unnecessary public exposure or redistribution.
 
