@@ -5,7 +5,7 @@
 - Project: **PricePulse**, a phase-gated Scrapy-based **Croatian grocery price-list intelligence** Data Engineering portfolio project.
 - Convention version: **0.1**.
 - Description: [README](README.md).
-- Work Unit: **phase**; Phase 0 has bounded technical evidence but still requires formal owner closeout. No Phase 1 coding approval is implied.
+- Work Unit: **phase**; Phase 0 formally closed by owner approval on 2026-11-19 after bounded technical evidence. No Phase 1 coding approval is implied.
 - Work Model: [roadmap and approval rules](ROADMAP.md#work-model-and-approval-rules).
 
 ## Published state
