@@ -56,12 +56,21 @@ A decision records approved direction and trade-offs; it does **not** imply impl
 
 ### D-009 — Qualify Kaufland + SPAR Croatia as initial source pair (2026-11-18)
 
-- **Status:** bounded Phase 0 **technical feasibility passed**; formal closeout awaiting user approval. No Phase 1 implementation is authorized.
+- **Status:** bounded technical feasibility passed; **Phase 0 formally closed by owner approval on 2026-11-19**. No Phase 1 implementation is authorized.
 - **Decision:** retain **PricePulse**, qualify SPAR Zagreb Jankomir (store 8702) and Kaufland Zagreb Antuna Šoljana (store 5630) for initial local-source engineering, and keep Lidl out of the first release.
 - **Evidence:** Scrapy downloaded price-list CSVs from both stores for 2026-11-16/17. Promotion-aware parsing yielded 8,869 same-date priced code matches, 7,772 four-file-stable codes and 4,155 strict automatic candidates. A private manual review of 160 selected descriptions classified **102 consistent** and **58 unresolved**; this is not independent physical-manufacturer verification. See [Validation](VALIDATION.md).
 - **Contract:** preserve regular and special price columns, origin and source store/date. Unknown conflicting dual-populated prices must fail closed until their semantics are confirmed. Monitor source-specific encoding/delimiters and store-level row-count changes.
 - **Public use:** genuine SPAR-source lists or real-data extracts are not approved for publication under currently reviewed terms. A clearly synthetic Tableau Public portfolio demo is the default unless sharing rights are verified.
 - **Tradeoff:** source-specific ingestion and match exceptions require quality monitoring but no additional scraping framework.
+
+### D-010 — Formally close Phase 0; retain the Phase 1 authorization gate (2026-11-19)
+
+- **Status:** approved by explicit project-owner decision.
+- **Decision:** formally close **Phase 0 — Project Definition and Source Feasibility** based on bounded Scrapy source access, same-store two-date history, observed price-field behavior, and a conservative 102/160 descriptor-consistency audit.
+- **Authorized action:** synchronize GitHub documentation and Jira status with this closure.
+- **Not authorized:** Phase 1 implementation, scheduled production scraping, PostgreSQL provisioning, or public redistribution of real retail-source observations. The 58 unresolved pairs remain exceptions, not blockers to bounded feasibility closure.
+- **Next gate:** a separate explicit owner authorization for **Phase 1 — Scrapy Official Price-List Acquisition**.
+- **Evidence:** [Validation](VALIDATION.md) and [Source feasibility](SOURCE_FEASIBILITY.md).
 
 ## Future changes
 
