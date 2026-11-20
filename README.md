@@ -2,7 +2,7 @@
 
 PricePulse is a **documentation-first Data Engineering portfolio project** to acquire official Croatian grocery price-list files responsibly with Scrapy, validate product identities, store durable historical observations in PostgreSQL, and analyze comparable offers in Tableau.
 
-**Current status (2026-11-19): Phase 0 formally CLOSED by explicit owner approval after bounded technical feasibility passed.** Bounded user-local Scrapy tests retrieved official files for **SPAR Croatia (Zagreb Jankomir, store 8702)** and **Kaufland Croatia (Zagreb Antuna Šoljana, store 5630)** for 16–17 November 2026. The 17 November files had **8,869 common priced GTINs**; a deterministic audit of 160 prefiltered pairs classified **102 description-consistent** and **58 unresolved**. This is not manufacturer verification or a claim about all 8,869 pairs. **No production spider, PostgreSQL pipeline, automation, or Tableau dashboard is implemented. Phase 1 remains To Do and requires separate explicit authorization.**
+**Current status (2026-11-19): Phase 0 formally CLOSED by explicit owner approval after bounded technical feasibility passed.** Bounded user-local Scrapy tests retrieved official files for **SPAR Croatia (Zagreb Jankomir, store 8702)** and **Kaufland Croatia (Zagreb Antuna Šoljana, store 5630)** for 16–17 November 2026. The 17 November files had **8,869 common priced GTINs**; a deterministic audit of 160 prefiltered pairs classified **102 description-consistent** and **58 unresolved**. This is not manufacturer verification or a claim about all 8,869 pairs. **Phase 1 was authorized on 2026-11-19 and is in progress.** Bounded Scrapy adapters have been implemented and smoke-tested; PostgreSQL, automation and Tableau are not implemented.
 
 ## What PricePulse aims to answer
 
@@ -34,12 +34,12 @@ uv run scrapy version
 - `uv sync` creates or updates the project's `.venv` using `pyproject.toml` and `uv.lock`. No separate `uv venv` command is required for the usual project setup.
 - `uv run <command>` uses the project environment **without requiring activation**. If you prefer activating it in the current PowerShell session, run `.\.venv\Scripts\Activate.ps1`; use `deactivate` to exit.
 - Git commands (`status`, `pull`, `add`, `commit`, `push`) do **not** require an activated Python virtual environment. Check `git status` before committing or pulling if local changes exist.
-- The repository currently contains **project configuration and feasibility documentation**, not implemented spiders or an automated pipeline. The temporary Phase 0 probe scripts were run outside the repository.
+- The repository contains two bounded Scrapy acquisition adapters and synthetic tests. PostgreSQL, scheduling and Tableau are not implemented. See [Acquisition](ACQUISITION.md).
 
 ## Planned workflow
 
 1. **Phase 0 — Feasibility:** bounded source access, two-date per-store price history, price-field parsing, and at least 100 descriptor-consistent product pairs — **formally closed on 2026-11-19**.
-2. **Phase 1 — Scrapy (not started):** build **two source-specific spiders** to discover SPAR's dated JSON manifests and Kaufland's asset index, then fetch permitted store price lists with bounded request rates and explicit parsing/error contracts.
+2. **Phase 1 — Scrapy (in progress):** build **two source-specific spiders** to discover SPAR's dated JSON manifests and Kaufland's asset index, then fetch permitted store price lists with bounded request rates and explicit parsing/error contracts.
 3. **Phase 2 — Data engineering:** preserve file provenance and hashes; parse **SPAR cp1250/semicolon** and **Kaufland UTF-8 BOM/tab** sources; handle regular/special price origins, GTIN and package checks, and ingest immutable, deduplicated store/date observations into PostgreSQL.
 4. **Phase 3 — Reliability:** add pytest checks, structured logs, bounded retries, scheduled runs, and quality monitoring.
 5. **Phase 4 — Tableau:** analyze same-store price history and verified cross-retailer comparisons. Use **synthetic data** for a public portfolio demonstration unless source-data redistribution rights are separately verified.
@@ -71,4 +71,4 @@ Scrapy remains the primary acquisition framework. No additional scraping framewo
 - [Validation](VALIDATION.md) — actual evidence and outstanding tests
 - [Repository context](REPO_CONTEXT.md) and [agent instructions](AGENTS.md) — navigation and working conventions
 
-Repository documentation follows [Repository Documentation Readability](https://github.com/angel-wm/repository-documentation-readability). **Phase 0 was formally closed on 2026-11-19.** Phase 1 implementation and any release of genuine retailer data remain separate, unapproved gates.
+Repository documentation follows [Repository Documentation Readability](https://github.com/angel-wm/repository-documentation-readability). **Phase 0 was formally closed on 2026-11-19.** Phase 1 implementation was authorized on 2026-11-19; public release of genuine retailer data remains unapproved.

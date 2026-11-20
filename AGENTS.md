@@ -1,6 +1,6 @@
 # Agent instructions
 
-PricePulse is a **documentation-first, phase-gated** project. **Bounded Phase 0 feasibility tests succeeded and the owner formally closed Phase 0 on 2026-11-19**, but separate Phase 1 implementation authorization has **not** been granted. Do not equate tests in user-local temporary scripts with a production spider or pipeline.
+PricePulse is a **documentation-first, phase-gated** project. **Bounded Phase 0 feasibility tests succeeded and the owner formally closed Phase 0 on 2026-11-19**, and the owner authorized Phase 1 implementation on 2026-11-19. Do not equate tests in user-local temporary scripts with a production spider or pipeline.
 
 ## Read before working
 
@@ -22,7 +22,7 @@ PricePulse is a **documentation-first, phase-gated** project. **Bounded Phase 0 
 - Prefer free, locally reproducible tooling and measured evidence. Do not invent implementation progress or test results.
 - Keep documentation **in English**; communicate with the user **in Spanish**, unless requested otherwise.
 - A separate Crawlee project must solve a different problem.
-- The owner **explicitly approved formal Phase 0 closeout** and synchronization of GitHub/Jira on **2026-11-19**, but explicitly **did not authorize Phase 1 coding**, scheduled production scraping, database provisioning, or data publication.
+- The owner **explicitly approved formal Phase 0 closeout** and synchronization of GitHub/Jira on **2026-11-19**, and authorized Phase 1 coding on 2026-11-19. Scheduled production scraping, database provisioning, and data publication remain outside that authorization.
 
 ## Handoff discipline
 

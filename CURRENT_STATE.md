@@ -1,37 +1,9 @@
 # Current state
 
-## Current state
+**Phase 1 — IN PROGRESS**, explicitly authorized by the owner on 2026-11-19. Phase 0 was formally closed on the same date.
 
-**Project status (2026-11-19): PHASE 0 — FORMALLY CLOSED BY EXPLICIT OWNER APPROVAL.** Bounded technical feasibility supports SPAR and Kaufland Croatia as the initial source pair. This does not authorize Phase 1 implementation, real-data republication, or production reliability claims.
+PULSE-12 implements bounded SPAR 8702 and Kaufland 5630 Scrapy acquisition, source-specific parsing and synthetic tests. One file per retailer for 2026-11-17 was retrieved and parsed in bounded local smoke tests. See [Validation](VALIDATION.md) and [Acquisition](ACQUISITION.md). These checks do not establish production reliability.
 
-| Item | Recorded state |
-| --- | --- |
-| Active work | Phase 0 closed; awaiting separate Phase 1 authorization |
-| Last completed phase | **Phase 0 — Project Definition and Source Feasibility**, closed **2026-11-19** |
-| Planned source pair | **SPAR Croatia (store 8702, Jankomir)** and **Kaufland Croatia (store 5630, Antuna Šoljana)** — bounded feasibility qualified, not production onboarded |
-| Initial scope exclusions | Lidl and musical-instrument retailers excluded from the initial source pair |
-| Policy / sharing boundary | Official publication pages and NN 132/2026 reviewed; SPAR website terms restrict reproduction/redistribution. Bounded local tests succeeded; publishing real source files or a real-data Tableau extract remains blocked without separately verified rights. |
-| Historical background | Secondary May 2025 analysis reported >=4,126 common barcodes across six chains excluding Lidl; **current 2026 results below supersede this as the primary feasibility evidence**. |
-| Superseded candidates | UK music-retailer tests are archived in [Validation](VALIDATION.md); they do not define the current scope. |
-| Acquisition evidence | Scrapy fetched both retailer indexes and **four fixed-store/date files** for 2026-11-16/17 with HTTP 200 (plus earlier exploratory CSV samples). Only bounded local tests, not scheduled reliability. |
-| Current exact GTIN overlap | **8,869** shared priced GTIN candidates on 2026-11-17 (SPAR 8702 × Kaufland 5630); **7,772** present on both dates, **4,155** strict algorithmic candidates. |
-| Same-store two-date history | **Promotion-aware initial check:** SPAR 31,277 code-stable entries (14 up, 54 down); Kaufland 15,533 (9 up, 69 down) from 2026-11-16/17. |
-| Product identity QA | **102/160** descriptor-consistent sampled pairs; **58/160** held as ambiguous. Filtered sample, not GS1/manufacturer certification or full-catalog precision estimate. |
-| Price parsing rule | SPAR regular-only/special-only; Kaufland regular-only or both-equal. No dual-price conflict observed in four files. |
-| Production Scrapy, PostgreSQL, automation and Tableau | **Not implemented**; feasibility scripts were temporary, outside this repository |
-| Phase 0 closeout approval | **Granted by the owner on 2026-11-19** after bounded feasibility review |
-| Phase 1 authorization | **Not granted**; no production implementation may begin |
+PostgreSQL, scheduling, Tableau, long-term reliability and Phase 1 closeout remain pending. Publication of genuine retailer data is not cleared; use synthetic public examples. Missing products do not imply stock status.
 
-## Next authorized action
-
-**Next approval gate:** Phase 0 is closed. **Phase 1 must be explicitly authorized separately** before coding. The first Phase 1 scope is two Scrapy source adapters, file manifests and SHA-256 provenance, source-specific CSV dialects, price-origin contracts, representative fixtures, GTIN/package exception handling and non-evasive retry/rate policies. No genuine source observations may be distributed publicly without verified rights.
-
-## Evidence and navigation
-
-- [Source feasibility](SOURCE_FEASIBILITY.md) — source evidence, legal baseline, validation plan
-- [Roadmap](ROADMAP.md) — phase gates
-- [Project specification](PROJECT_SPEC.md) — intended contract and metrics
-- [Validation](VALIDATION.md) — performed checks vs pending tests
-- [Decisions](DECISIONS.md) — recorded scope choices
-
-**Phase 0 was formally closed on 2026-11-19.** No production reliability or performance benchmark exists; Phase 1 has not started.
+**Next gate:** finish remaining Phase 1 work and validate its exit criteria before seeking owner approval to close the phase. Phase 2 implementation is a separate phase gate.

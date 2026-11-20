@@ -32,7 +32,7 @@ A decision records approved direction and trade-offs; it does **not** imply impl
 
 ### D-006 — Pivot to Croatian grocery price-list intelligence (2026-11-18)
 
-- **Status:** **accepted scope direction; two sources qualified in bounded technical feasibility tests**; no Phase 1 authorization.
+- **Status:** **accepted scope direction; two sources qualified in bounded technical feasibility tests**; Phase 1 was subsequently authorized (D-011).
 - **Decision:** retain project name **PricePulse**; replace the initially explored musical-instruments category with Croatian grocery and household price intelligence. Prioritize **Kaufland Croatia and SPAR Croatia** as a candidate source pair; exclude **Lidl** from the first release.
 - **Rationale:** official machine-readable publications and a regulatory framework explicitly allowing automated collection are more promising than scraping product pages. A May 2025 third-party study found >=4,126 barcode matches across six chains excluding Lidl, which establishes historical potential but **does not** establish today's Kaufland–SPAR overlap.
 - **Tradeoff:** per-store file processing and data-quality issues replace product-page parsing; GTIN validity, store comparability and retention require explicit modeling.
@@ -56,7 +56,7 @@ A decision records approved direction and trade-offs; it does **not** imply impl
 
 ### D-009 — Qualify Kaufland + SPAR Croatia as initial source pair (2026-11-18)
 
-- **Status:** bounded technical feasibility passed; **Phase 0 formally closed by owner approval on 2026-11-19**. No Phase 1 implementation is authorized.
+- **Status:** bounded technical feasibility passed; **Phase 0 formally closed by owner approval on 2026-11-19**. Phase 1 was subsequently authorized (D-011).
 - **Decision:** retain **PricePulse**, qualify SPAR Zagreb Jankomir (store 8702) and Kaufland Zagreb Antuna Šoljana (store 5630) for initial local-source engineering, and keep Lidl out of the first release.
 - **Evidence:** Scrapy downloaded price-list CSVs from both stores for 2026-11-16/17. Promotion-aware parsing yielded 8,869 same-date priced code matches, 7,772 four-file-stable codes and 4,155 strict automatic candidates. A private manual review of 160 selected descriptions classified **102 consistent** and **58 unresolved**; this is not independent physical-manufacturer verification. See [Validation](VALIDATION.md).
 - **Contract:** preserve regular and special price columns, origin and source store/date. Unknown conflicting dual-populated prices must fail closed until their semantics are confirmed. Monitor source-specific encoding/delimiters and store-level row-count changes.
@@ -68,10 +68,14 @@ A decision records approved direction and trade-offs; it does **not** imply impl
 - **Status:** approved by explicit project-owner decision.
 - **Decision:** formally close **Phase 0 — Project Definition and Source Feasibility** based on bounded Scrapy source access, same-store two-date history, observed price-field behavior, and a conservative 102/160 descriptor-consistency audit.
 - **Authorized action:** synchronize GitHub documentation and Jira status with this closure.
-- **Not authorized:** Phase 1 implementation, scheduled production scraping, PostgreSQL provisioning, or public redistribution of real retail-source observations. The 58 unresolved pairs remain exceptions, not blockers to bounded feasibility closure.
-- **Next gate:** a separate explicit owner authorization for **Phase 1 — Scrapy Official Price-List Acquisition**.
+- **At closeout, not authorized:** Phase 1 implementation, scheduled production scraping, PostgreSQL provisioning, or public redistribution of real retail-source observations. Phase 1 implementation was subsequently authorized (D-011). The 58 unresolved pairs remain exceptions, not blockers to bounded feasibility closure.
+- **Next gate at closeout:** separate explicit owner authorization for Phase 1; subsequently granted (D-011).
 - **Evidence:** [Validation](VALIDATION.md) and [Source feasibility](SOURCE_FEASIBILITY.md).
 
 ## Future changes
 
 Add dated decisions with rationale, trade-offs and any superseded choice. Update [Current state](CURRENT_STATE.md) and [Validation](VALIDATION.md) from evidence rather than overwriting older history.
+
+### D-011 — Authorize Phase 1 acquisition (2026-11-19)
+
+The owner explicitly authorized Phase 1 and requested PULSE-12 and its subtasks. This supersedes D-010 only for Phase 1 implementation. Production scheduling, database provisioning and redistribution of genuine source data remain outside this authorization.

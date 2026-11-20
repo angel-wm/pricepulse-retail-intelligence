@@ -1,6 +1,6 @@
 # Source feasibility — Croatian grocery price lists
 
-**Assessment baseline: 2026-11-18. Status on 2026-11-19: Phase 0 formally CLOSED by explicit owner approval after bounded technical feasibility passed.** The qualified development pair is SPAR Zagreb Jankomir (store 8702) plus Kaufland Zagreb Antuna Šoljana (store 5630). No reusable production spider exists; sharing real retailer extracts publicly is not cleared.
+**Assessment baseline: 2026-11-18. Status on 2026-11-19: Phase 0 formally CLOSED by explicit owner approval after bounded technical feasibility passed.** The qualified development pair is SPAR Zagreb Jankomir (store 8702) plus Kaufland Zagreb Antuna Šoljana (store 5630). Bounded Phase 1 acquisition adapters now exist; sharing real retailer extracts publicly is not cleared.
 
 ## Decision snapshot
 
@@ -83,7 +83,7 @@ The project owner explicitly approved **formal Phase 0 closure** and synchroniza
 | Matching quality gate | **102** description-consistent items in a deterministic 160-pair sample selected from 4,155 strict candidates; **58** held for review. Independent manufacturer/GS1 verification remains beyond the bounded gate. |
 | Formatting and drift | **Source-specific**: SPAR cp1250/semicolon; Kaufland UTF-8 BOM/tab. Store-size shifts and optional fields require monitoring. |
 | Source rights and public Tableau release | **Restricted**: no public redistribution of source files or derived real-source extracts is approved. A synthetic public dashboard is the safe default. |
-| Formal closeout and Phase 1 implementation | **Phase 0 formally CLOSED by owner approval on 2026-11-19.** Phase 1 remains **not authorized**; no production spider is implemented. |
+| Formal closeout and Phase 1 implementation | **Phase 0 formally CLOSED by owner approval on 2026-11-19.** Phase 1 implementation was authorized on 2026-11-19; bounded adapters are implemented and smoke-tested. |
 
 The checks are traceable in [Validation](VALIDATION.md), which distinguishes user-local test logs, inferred matching and independently unverified product properties. If access/terms change, source qualification must be revisited rather than circumventing restrictions.
 

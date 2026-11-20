@@ -1,14 +1,22 @@
 # Validation and evidence
 
+## Phase 1 PULSE-12 — 2026-11-19
+
+The owner authorized Phase 1 and PULSE-12 on 2026-11-19. Synthetic pytest checks passed: **4 tests**, covering both encodings and delimiters, regular/special/equal/conflicting and invalid prices, GTIN validation, unknown headers, store/date selection and URL restriction. Fixtures are synthetic and do not redistribute retailer products.
+
+Bounded live Scrapy runs on 2026-11-19 (local time) requested the 2026-11-17 file for each selected store. Both returned HTTP 200 and emitted manifests: SPAR 8702 **32,347** rows and Kaufland 5630 **23,593** rows. SPAR's downloaded SHA-256 matched its index. An initial SPAR run identified 286 prices written with a leading comma; after supporting that form and repeating the run, all rows in both samples had usable prices under the current rules. This is a parser observation, not independent verification of all prices or product identities.
+
+**Pending:** broader dates and schema drift, durable failure manifests and exit signaling, operational retry and scheduling reliability, independent data quality review, PostgreSQL and Tableau. No phase closeout or publication rights are implied. Real output remains local and ignored by Git.
+
 ## Status
 
-**Phase 0 formally CLOSED by explicit owner approval on 2026-11-19**, based on bounded user-local technical feasibility evidence dated 2026-11-18. The pair is **SPAR Croatia / store 8702** and **Kaufland Croatia / store 5630**. The initial matching gate is **102 descriptor-consistent product pairs from 160 reviewed strict candidates**, with 58 unresolved. This is **not** external manufacturer/GS1 identity certification, production reliability evidence, permission to redistribute real data, or Phase 1 implementation authorization.
+**Phase 0 formally CLOSED by explicit owner approval on 2026-11-19**, based on bounded user-local technical feasibility evidence dated 2026-11-18. The pair is **SPAR Croatia / store 8702** and **Kaufland Croatia / store 5630**. The initial matching gate is **102 descriptor-consistent product pairs from 160 reviewed strict candidates**, with 58 unresolved. This is **not** external manufacturer/GS1 identity certification, production reliability evidence, permission to redistribute real data, or evidence of Phase 1 implementation.
 
 ## Owner closeout decision (2026-11-19)
 
 **Approved:** formal closure of **Phase 0 — Project Definition and Source Feasibility** for SPAR Croatia (Zagreb Jankomir, store 8702) and Kaufland Croatia (Zagreb Antuna Šoljana, store 5630). The approved evidence scope is bounded Scrapy access, four fixed-store/date CSV snapshots, observed price-field behavior, and **102 description-consistent pairs among 160 prefiltered pairs reviewed**. The owner authorized updating GitHub documentation and Jira.
 
-**Limitations retained:** 58 unresolved product-identity pairs; no external manufacturer/GS1 validation or production reliability proof; no PostgreSQL ingest or Tableau workbook; no inferred stock availability or rights to publicly redistribute source observations. **The owner explicitly withheld authorization to start Phase 1.**
+**Limitations retained:** 58 unresolved product-identity pairs; no external manufacturer/GS1 validation or production reliability proof; no PostgreSQL ingest or Tableau workbook; no inferred stock availability or rights to publicly redistribute source observations. Phase 1 was separately authorized later on 2026-11-19.
 
 ## Evidence ledger
 
@@ -23,7 +31,7 @@
 | Current schema and parser accuracy | INITIAL PRICE RULE SUPPORTED | SPAR: cp1250/semicolon, only regular-only or special-only prices; Kaufland: UTF-8 BOM/tab, regular-only or dual-equal. No dual-different prices in four files; future cases must be flagged. |
 | Repeatability and history | INITIAL TWO-DATE PASS | Same SPAR store 8702 and Kaufland store 5630 across 2026-11-16 and 2026-11-17; promotion-aware stable cohorts 31,277 and 15,533 respectively. Only two days observed. |
 | Source reuse and Tableau publication | REAL-DATA PUBLICATION ON HOLD | SPAR website terms restrict reproduction/distribution; NN 132/2026 automated-access text does not imply a general redistribution license. A clearly labeled synthetic Tableau Public demonstration is the default unless legal sharing basis is verified. |
-| PostgreSQL, automated tests, Tableau | NOT IMPLEMENTED | No runtime or dashboards |
+| PostgreSQL and Tableau | NOT IMPLEMENTED | No database pipeline or dashboards |
 
 ## Initial grocery acquisition probe — user-local evidence (2026-11-18)
 
@@ -130,7 +138,7 @@ In the tested files, **every** row rejected by the initial `MPC (EUR)` parser ha
 
 **Quality caveats:** The unusual +47.9% Kaufland row-count change across the regulation transition is a source coverage issue to monitor. SPAR files used cp1250 and semicolon, Kaufland UTF-8 BOM and tab; never assume homogeneous CSV dialects. Published presence is not inventory availability. Site publication rights constrain releasing real retailer source extracts; use a synthetic public portfolio demo unless sharing rights are verified.
 
-**Status:** Technical source feasibility supported; **Phase 0 formally closed by owner approval on 2026-11-19. Phase 1 development remains unauthorized.**
+**Status:** Technical source feasibility supported; **Phase 0 formally closed by owner approval on 2026-11-19. Phase 1 was separately authorized later on 2026-11-19.**
 
 ## Earlier source exploration — user-reported local logs, 2026-11-18
 
@@ -148,7 +156,7 @@ These results were supplied in the conversation by the user, not independently r
 
 **Pass, within tested scope:** (1) official index and store file retrieval under Scrapy with robots obedience; (2) actual per-chain file parsing and prices; (3) two-day same-store history; (4) more than 100 conservative descriptor-consistent cross-retailer pairs from a reproducibly sampled, prefiltered cohort; (5) documented source terms and constrained public release policy.
 
-**Not tested or authorized:** continuous scheduling/retry reliability; end-to-end PostgreSQL idempotency; external manufacturer/GS1 resolution for the 58 unresolved pairs; full-catalog matching precision; ambiguous dual-different source prices; data publication rights; Tableau workbook. **Phase 0 formally closed on 2026-11-19; Phase 1 development is not started or authorized.**
+**Not tested or authorized:** continuous scheduling/retry reliability; end-to-end PostgreSQL idempotency; external manufacturer/GS1 resolution for the 58 unresolved pairs; full-catalog matching precision; ambiguous dual-different source prices; data publication rights; Tableau workbook. **Phase 0 formally closed on 2026-11-19; Phase 1 was subsequently authorized and is in progress.**
 
 **Evidence provenance:** the original CSV data were downloaded and processed during user-executed temporary Scrapy feasibility scripts. Audit logs were supplied in conversation; source-row detail and private 160-item review notes are **not committed to this repository**, avoiding unnecessary public exposure or redistribution.
 

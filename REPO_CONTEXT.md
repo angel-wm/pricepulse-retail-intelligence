@@ -5,7 +5,7 @@
 - Project: **PricePulse**, a phase-gated Scrapy-based **Croatian grocery price-list intelligence** Data Engineering portfolio project.
 - Convention version: **0.1**.
 - Description: [README](README.md).
-- Work Unit: **phase**; Phase 0 formally closed by owner approval on 2026-11-19 after bounded technical evidence. No Phase 1 coding approval is implied.
+- Work Unit: **phase**; Phase 0 formally closed by owner approval on 2026-11-19 after bounded technical evidence. Phase 1 implementation was explicitly authorized on 2026-11-19.
 - Work Model: [roadmap and approval rules](ROADMAP.md#work-model-and-approval-rules).
 
 ## Published state
@@ -22,7 +22,7 @@ Remote readers describe only the published snapshot retrieved; unseen local work
 | Planned work | [Roadmap](ROADMAP.md#planned-phases) | Phase order and gates, **not** execution permission | Planning |
 | Scope / contract | [Project specification](PROJECT_SPEC.md) | Intended scope, definitions and success criteria | Business questions, contracts |
 | Retailer sources / regulatory basis | [Source feasibility](SOURCE_FEASIBILITY.md) | Source qualification, rights boundary and feasibility evidence; **not** a production reliability guarantee | Source selection and matching |
-| Architecture | [Architecture](ARCHITECTURE.md) | Intended responsibilities, not implemented code | Design changes |
+| Architecture | [Architecture](ARCHITECTURE.md) | Design and implemented acquisition boundaries | Design changes |
 | Decisions | [Decisions](DECISIONS.md) | Approved directions and explicit provisional choices | Rationale and trade-offs |
 | Validation / evidence | [Validation](VALIDATION.md) | Actual checks, outcomes and known gaps | Quality, closeout |
 | Repository guidance | [Agent instructions](AGENTS.md); [RDR skill](.agents/skills/repository-documentation-readability/SKILL.md) | Working instructions and presentation style | Documentation changes |

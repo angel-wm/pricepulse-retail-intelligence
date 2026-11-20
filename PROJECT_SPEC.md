@@ -1,6 +1,6 @@
 # PricePulse project specification
 
-**Status (2026-11-19):** **Phase 0 formally CLOSED by owner approval.** Kaufland + SPAR Croatia passed bounded source feasibility, including a 102-pair descriptor-consistency gate. **Phase 1 implementation remains unapproved.**
+**Status (2026-11-19):** **Phase 0 formally CLOSED by owner approval.** Kaufland + SPAR Croatia passed bounded source feasibility, including a 102-pair descriptor-consistency gate. **Phase 1 implementation was authorized on 2026-11-19 and is in progress.**
 
 ## Problem and value
 
@@ -63,6 +63,6 @@ Fields remain a **planned PostgreSQL contract**, not an implemented schema. Meas
 - Respect website terms, robots guidance, access controls and fair request pacing.
 - Do not copy third-party crawler implementations or datasets without assessing their licenses.
 - Do not publish raw price lists or individual-source datasets to Tableau Public without verifying sharing rights.
-- Phase 0 exit evidence was reviewed and approved on 2026-11-19. **No Phase 1 code implementation until separate owner authorization.**
+- Phase 0 exit evidence was reviewed and approved on 2026-11-19. Phase 1 implementation was separately authorized on 2026-11-19.
 
 See [Source feasibility](SOURCE_FEASIBILITY.md), [Roadmap](ROADMAP.md), and [Validation](VALIDATION.md).

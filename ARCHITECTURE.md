@@ -1,6 +1,6 @@
 # Intended architecture
 
-**Status: proposed for production; not implemented.** Temporary user-local Scrapy probes have demonstrated bounded access and two-date source-file parsing. Source discovery patterns and actual CSV dialects are now evidenced, but no reusable spider, PostgreSQL pipeline or Tableau workbook has been built.
+**Status: Phase 1 acquisition adapters implemented and bounded smoke-tested.** See [Acquisition](ACQUISITION.md) and [Validation](VALIDATION.md). PostgreSQL, scheduling and Tableau remain proposed.
 
 ## Proposed data flow
 
