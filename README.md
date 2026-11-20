@@ -2,7 +2,7 @@
 
 PricePulse is a **documentation-first Data Engineering portfolio project** to acquire official Croatian grocery price-list files responsibly with Scrapy, validate product identities, store durable historical observations in PostgreSQL, and analyze comparable offers in Tableau.
 
-**Current status (2026-11-18): Phase 0 technical feasibility passed; formal closeout awaits owner approval.** Bounded user-local Scrapy tests retrieved official files for **SPAR Croatia (Zagreb Jankomir, store 8702)** and **Kaufland Croatia (Zagreb Antuna Šoljana, store 5630)** for 16–17 November 2026. The 17 November files had **8,869 common priced GTINs**; a deterministic audit of 160 prefiltered pairs classified **102 description-consistent** and **58 unresolved**. This is not manufacturer verification or a claim about all 8,869 pairs. **No production spider, PostgreSQL pipeline, automation, or Tableau dashboard is implemented. Phase 1 requires separate explicit authorization.**
+**Current status (2026-11-19): Phase 0 formally CLOSED by explicit owner approval after bounded technical feasibility passed.** Bounded user-local Scrapy tests retrieved official files for **SPAR Croatia (Zagreb Jankomir, store 8702)** and **Kaufland Croatia (Zagreb Antuna Šoljana, store 5630)** for 16–17 November 2026. The 17 November files had **8,869 common priced GTINs**; a deterministic audit of 160 prefiltered pairs classified **102 description-consistent** and **58 unresolved**. This is not manufacturer verification or a claim about all 8,869 pairs. **No production spider, PostgreSQL pipeline, automation, or Tableau dashboard is implemented. Phase 1 remains To Do and requires separate explicit authorization.**
 
 ## What PricePulse aims to answer
 
@@ -38,7 +38,7 @@ uv run scrapy version
 
 ## Planned workflow
 
-1. **Phase 0 — Feasibility:** bounded source access, two-date per-store price history, price-field parsing, and at least 100 descriptor-consistent product pairs — **technically evidenced; formal closeout pending**.
+1. **Phase 0 — Feasibility:** bounded source access, two-date per-store price history, price-field parsing, and at least 100 descriptor-consistent product pairs — **formally closed on 2026-11-19**.
 2. **Phase 1 — Scrapy (not started):** build **two source-specific spiders** to discover SPAR's dated JSON manifests and Kaufland's asset index, then fetch permitted store price lists with bounded request rates and explicit parsing/error contracts.
 3. **Phase 2 — Data engineering:** preserve file provenance and hashes; parse **SPAR cp1250/semicolon** and **Kaufland UTF-8 BOM/tab** sources; handle regular/special price origins, GTIN and package checks, and ingest immutable, deduplicated store/date observations into PostgreSQL.
 4. **Phase 3 — Reliability:** add pytest checks, structured logs, bounded retries, scheduled runs, and quality monitoring.
@@ -71,4 +71,4 @@ Scrapy remains the primary acquisition framework. No additional scraping framewo
 - [Validation](VALIDATION.md) — actual evidence and outstanding tests
 - [Repository context](REPO_CONTEXT.md) and [agent instructions](AGENTS.md) — navigation and working conventions
 
-Repository documentation follows [Repository Documentation Readability](https://github.com/angel-wm/repository-documentation-readability). Source feasibility evidence now exists, but **formal Phase 0 closeout, Phase 1 implementation, and any release of genuine retailer data remain separate approval gates.**
+Repository documentation follows [Repository Documentation Readability](https://github.com/angel-wm/repository-documentation-readability). **Phase 0 was formally closed on 2026-11-19.** Phase 1 implementation and any release of genuine retailer data remain separate, unapproved gates.
