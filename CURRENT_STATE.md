@@ -2,12 +2,12 @@
 
 ## Current state
 
-**Project status (2026-11-18): PHASE 0 — BOUNDED TECHNICAL FEASIBILITY VALIDATED; FORMAL CLOSEOUT PENDING.** The two sources can support initial engineering. This does not authorize Phase 1 implementation, real-data republication, or production reliability claims.
+**Project status (2026-11-19): PHASE 0 — FORMALLY CLOSED BY EXPLICIT OWNER APPROVAL.** Bounded technical feasibility supports SPAR and Kaufland Croatia as the initial source pair. This does not authorize Phase 1 implementation, real-data republication, or production reliability claims.
 
 | Item | Recorded state |
 | --- | --- |
-| Active work | Phase 0 — owner review of evidence and closeout gate |
-| Last completed phase | None |
+| Active work | Phase 0 closed; awaiting separate Phase 1 authorization |
+| Last completed phase | **Phase 0 — Project Definition and Source Feasibility**, closed **2026-11-19** |
 | Planned source pair | **SPAR Croatia (store 8702, Jankomir)** and **Kaufland Croatia (store 5630, Antuna Šoljana)** — bounded feasibility qualified, not production onboarded |
 | Initial scope exclusions | Lidl and musical-instrument retailers excluded from the initial source pair |
 | Policy / sharing boundary | Official publication pages and NN 132/2026 reviewed; SPAR website terms restrict reproduction/redistribution. Bounded local tests succeeded; publishing real source files or a real-data Tableau extract remains blocked without separately verified rights. |
@@ -19,11 +19,12 @@
 | Product identity QA | **102/160** descriptor-consistent sampled pairs; **58/160** held as ambiguous. Filtered sample, not GS1/manufacturer certification or full-catalog precision estimate. |
 | Price parsing rule | SPAR regular-only/special-only; Kaufland regular-only or both-equal. No dual-price conflict observed in four files. |
 | Production Scrapy, PostgreSQL, automation and Tableau | **Not implemented**; feasibility scripts were temporary, outside this repository |
-| Phase 1 authorization | **Not granted** |
+| Phase 0 closeout approval | **Granted by the owner on 2026-11-19** after bounded feasibility review |
+| Phase 1 authorization | **Not granted**; no production implementation may begin |
 
 ## Next authorized action
 
-**Next approval gate:** owner reviews Phase 0 evidence and explicitly closes the phase; **Phase 1 must then be explicitly authorized** before coding. The first Phase 1 scope is two Scrapy source adapters, file manifests and SHA-256 provenance, source-specific CSV dialects, price-origin contracts, representative fixtures, GTIN/package exception handling and non-evasive retry/rate policies. No genuine source observations may be distributed publicly without verified rights.
+**Next approval gate:** Phase 0 is closed. **Phase 1 must be explicitly authorized separately** before coding. The first Phase 1 scope is two Scrapy source adapters, file manifests and SHA-256 provenance, source-specific CSV dialects, price-origin contracts, representative fixtures, GTIN/package exception handling and non-evasive retry/rate policies. No genuine source observations may be distributed publicly without verified rights.
 
 ## Evidence and navigation
 
@@ -33,4 +34,4 @@
 - [Validation](VALIDATION.md) — performed checks vs pending tests
 - [Decisions](DECISIONS.md) — recorded scope choices
 
-No **formal Phase 0 closeout** or production benchmark exists; technical feasibility findings are ready for the approval gate.
+**Phase 0 was formally closed on 2026-11-19.** No production reliability or performance benchmark exists; Phase 1 has not started.
