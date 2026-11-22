@@ -1,5 +1,13 @@
 # Validation and evidence
 
+## Phase 1 closeout and Phase 2 authorization — 2026-11-22
+
+The owner explicitly approved formal Phase 1 closeout and authorized continuing with Phase 2 on 2026-11-22. The decision accepts the bounded two-source acquisition and synthetic/hosted CI evidence recorded below; it does not establish continuous production reliability or rights to publish real retailer data.
+
+## Phase 2 initial PostgreSQL validation — 2026-11-22
+
+The initial schema and loader were tested against an isolated local PostgreSQL 18.7 cluster using synthetic rows. The full suite passed **35 tests**, including five PostgreSQL integration tests for replay, changed file versions, relational constraints, exceptions, version-specific comparison and a manually reconciled price change. The temporary server was stopped after the run. The source inputs, expected prices and comparisons were synthetic; no real-data ingestion, independent human identity review, operational load or production reliability was established. GitHub-hosted PostgreSQL CI remains to be verified.
+
 ## Phase 1 PULSE-14 and PULSE-44 — local checks (2026-11-22)
 
 The offline suite passed **29 tests** with `uv run --locked python -m pytest -q`. Synthetic tests cover both source dialects, price origins including absent and conflicting prices, invalid GTINs, duplicate or missing headers, malformed records and CSV syntax, extra columns, date/store provenance, SHA-256 verification, source failures and request policies. A malformed quoted CSV previously raised an unclassified `csv.Error`; the spider now closes with `schema_error` before emitting a manifest.
@@ -45,7 +53,7 @@ Bounded live Scrapy runs on 2026-11-19 (local time) requested the 2026-11-17 fil
 | Current schema and parser accuracy | INITIAL PRICE RULE SUPPORTED | SPAR: cp1250/semicolon, only regular-only or special-only prices; Kaufland: UTF-8 BOM/tab, regular-only or dual-equal. No dual-different prices in four files; future cases must be flagged. |
 | Repeatability and history | INITIAL TWO-DATE PASS | Same SPAR store 8702 and Kaufland store 5630 across 2026-11-16 and 2026-11-17; promotion-aware stable cohorts 31,277 and 15,533 respectively. Only two days observed. |
 | Source reuse and Tableau publication | REAL-DATA PUBLICATION ON HOLD | SPAR website terms restrict reproduction/distribution; NN 132/2026 automated-access text does not imply a general redistribution license. A clearly labeled synthetic Tableau Public demonstration is the default unless legal sharing basis is verified. |
-| PostgreSQL and Tableau | NOT IMPLEMENTED | No database pipeline or dashboards |
+| PostgreSQL and Tableau at the Phase 0 checkpoint | NOT IMPLEMENTED THEN | Phase 2 PostgreSQL work is recorded above; Tableau remains unimplemented. |
 
 ## Initial grocery acquisition probe — user-local evidence (2026-11-18)
 

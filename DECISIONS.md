@@ -6,7 +6,7 @@ A decision records approved direction and trade-offs; it does **not** imply impl
 
 ### D-001 — Scrapy as the initial acquisition framework
 
-- **Status:** accepted direction; no crawler implemented.
+- **Status:** accepted direction; bounded source adapters were subsequently implemented in Phase 1.
 - **Rationale:** Python-native, deterministic request management and structured downloading suit public CSV/XML price lists.
 - **Tradeoff:** site-specific discovery and parsing still need tests; no browser or bot-defense bypass is planned.
 
@@ -79,3 +79,7 @@ Add dated decisions with rationale, trade-offs and any superseded choice. Update
 ### D-011 — Authorize Phase 1 acquisition (2026-11-19)
 
 The owner explicitly authorized Phase 1 and requested PULSE-12 and its subtasks. This supersedes D-010 only for Phase 1 implementation. Production scheduling, database provisioning and redistribution of genuine source data remain outside this authorization.
+
+### D-012 — Close Phase 1 and authorize Phase 2 (2026-11-22)
+
+The owner explicitly approved Phase 1 closeout and authorized Phase 2 implementation. Phase 2 covers PostgreSQL historical engineering and its validation, including a local test database if needed. Production scheduling and publication of genuine retailer data remain outside this authorization; Phase 3 has not been authorized.

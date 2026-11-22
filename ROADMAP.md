@@ -7,7 +7,7 @@ This is the phase-gated **plan and evidence-based status**. Feasibility probes a
 The work unit is a **phase**: **planned → explicitly authorized → in progress → validated → closed**.
 
 - **Phase 0 — formally CLOSED by explicit owner approval on 2026-11-19.** Bounded source access, price-field interpretation, same-store history and 102 description-consistent matches are recorded in [Validation](VALIDATION.md). This does not amount to external GS1 validation or operational reliability proof.
-- **Phase 1 implementation was authorized by the owner on 2026-11-19 and is validated for review.** Formal closeout awaits owner approval. This does not authorize production scheduling, database provisioning or publication of real data.
+- **Phase 1 was formally closed by the owner on 2026-11-22. Phase 2 implementation was authorized on the same date and is in progress.** Production scheduling and publication of real data remain outside that authorization.
 - Close a phase only with the results and evidence recorded in [Validation](VALIDATION.md) and [Current state](CURRENT_STATE.md).
 - An external Jira board may track tasks; do not treat issue statuses as runtime verification.
 
@@ -15,8 +15,8 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 
 | Phase | Planned deliverable | Exit gate |
 | --- | --- | --- |
-| 0 — Grocery source feasibility | Kaufland + SPAR source access, actual price fields, two-day history and descriptor matching | **CLOSED 2026-11-19:** four store/date files; 102 conservative description-consistent cases in a 160-pair sample; publication of genuine retailer data remains restricted. Phase 1 is in progress following separate authorization. |
-| 1 — Scrapy acquisition | Separate SPAR JSON and Kaufland asset-index spiders; bounded CSV downloads; source-specific parsing contracts and fixtures; planned checks-only CI (PULSE-44) | Representative two-source extraction, source hash/date/store traceability and error-path tests |
+| 0 — Grocery source feasibility | Kaufland + SPAR source access, actual price fields, two-day history and descriptor matching | **CLOSED 2026-11-19:** four store/date files; 102 conservative description-consistent cases in a 160-pair sample; publication of genuine retailer data remains restricted. |
+| 1 — Scrapy acquisition | Separate SPAR JSON and Kaufland asset-index spiders; bounded CSV downloads; source-specific parsing contracts and fixtures; checks-only CI (PULSE-44) | **CLOSED 2026-11-22:** representative extraction, traceability, error-path tests and hosted CI evidence. |
 | 2 — Data engineering | File provenance, parsing, validated PostgreSQL schema, daily immutable observations | Checked idempotency, duplicate handling, historical integrity and data-quality tests |
 | 3 — Reliability | Scheduling, logs, monitoring, failure recovery and expanded CI as appropriate (PULSE-19) | Recorded successful and failed runs with measured behavior |
 | 4 — Tableau analytics | Local-source price history and strict matching; **synthetic public demonstration by default** | SQL-reconciled metrics; safe Tableau Public release only if rights are established |
