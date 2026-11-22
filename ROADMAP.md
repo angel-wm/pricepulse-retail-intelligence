@@ -16,9 +16,9 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 | Phase | Planned deliverable | Exit gate |
 | --- | --- | --- |
 | 0 — Grocery source feasibility | Kaufland + SPAR source access, actual price fields, two-day history and descriptor matching | **CLOSED 2026-11-19:** four store/date files; 102 conservative description-consistent cases in a 160-pair sample; publication of genuine retailer data remains restricted. Phase 1 is in progress following separate authorization. |
-| 1 — Scrapy acquisition | Separate SPAR JSON and Kaufland asset-index spiders; bounded CSV downloads; source-specific parsing contracts and fixtures | Representative two-source extraction, source hash/date/store traceability and error-path tests |
+| 1 — Scrapy acquisition | Separate SPAR JSON and Kaufland asset-index spiders; bounded CSV downloads; source-specific parsing contracts and fixtures; planned checks-only CI (PULSE-44) | Representative two-source extraction, source hash/date/store traceability and error-path tests |
 | 2 — Data engineering | File provenance, parsing, validated PostgreSQL schema, daily immutable observations | Checked idempotency, duplicate handling, historical integrity and data-quality tests |
-| 3 — Reliability | Scheduling, logs, monitoring, failure recovery, pytest and CI as appropriate | Recorded successful and failed runs with measured behavior |
+| 3 — Reliability | Scheduling, logs, monitoring, failure recovery and expanded CI as appropriate (PULSE-19) | Recorded successful and failed runs with measured behavior |
 | 4 — Tableau analytics | Local-source price history and strict matching; **synthetic public demonstration by default** | SQL-reconciled metrics; safe Tableau Public release only if rights are established |
 | 5 — Validation and release | README, architecture, test evidence, reproducible local setup and portfolio presentation | End-to-end tests, release documentation and explicit closeout |
 
@@ -34,3 +34,5 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 **Fallback:** if either source fails the gate, assess another Croatian chain with official downloadable price lists before changing the engineering stack or scraping framework. Lidl remains excluded from the first cohort by scope decision.
 
 Related detail: [Source feasibility](SOURCE_FEASIBILITY.md), [Project specification](PROJECT_SPEC.md).
+
+Phase 1 CI is planned for PULSE-44 alongside or after PULSE-14 and before requesting phase closeout. It will run synthetic tests on code changes, without scheduled or live retailer scraping or deployment. PULSE-19 retains the later operational reliability and expanded CI work. This timing does not add a new Phase 1 exit criterion to the table above.

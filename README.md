@@ -34,7 +34,7 @@ uv run scrapy version
 - `uv sync` creates or updates the project's `.venv` using `pyproject.toml` and `uv.lock`. No separate `uv venv` command is required for the usual project setup.
 - `uv run <command>` uses the project environment **without requiring activation**. If you prefer activating it in the current PowerShell session, run `.\.venv\Scripts\Activate.ps1`; use `deactivate` to exit.
 - Git commands (`status`, `pull`, `add`, `commit`, `push`) do **not** require an activated Python virtual environment. Check `git status` before committing or pulling if local changes exist.
-- The repository contains two bounded Scrapy acquisition adapters and synthetic tests. PostgreSQL, scheduling and Tableau are not implemented. See [Acquisition](ACQUISITION.md).
+- The repository contains two bounded Scrapy acquisition adapters and synthetic tests. GitHub CI is planned in Phase 1; PostgreSQL, scheduling and Tableau are not implemented. See [Acquisition](ACQUISITION.md).
 
 ## Planned workflow
 

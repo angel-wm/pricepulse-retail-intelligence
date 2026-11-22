@@ -66,11 +66,11 @@ The independent user-local Phase 0 script downloaded price files for the same SP
 
 Price-field cases in the four downloaded CSVs showed SPAR regular-only or special-only pricing and Kaufland regular-only or both-equal pricing. Future two-different-price cases must be reviewed. The two-day histories are real observations, not evidence of ongoing scheduling reliability. SPAR uses cp1250 with semicolons; Kaufland UTF-8 BOM with tabs. Both will need explicit parsers and schema drift tests.
 
-**Engineering outcome:** the pair is sufficiently grounded for **planned local source-acquisition development**; no additional retailer discovery is indicated. Formal Phase 0 closeout was explicitly approved on **2026-11-19**; this approval does **not** authorize Phase 1 implementation or publication of real source data. See [Validation](VALIDATION.md).
+**Engineering outcome:** the pair is sufficiently grounded for local source-acquisition development; no additional retailer discovery is indicated. Formal Phase 0 closeout was explicitly approved on **2026-11-19**; the owner separately authorized Phase 1 implementation later that day. Publishing real source data remains outside that authorization. See [Validation](VALIDATION.md).
 
 ## Owner closeout decision (2026-11-19)
 
-The project owner explicitly approved **formal Phase 0 closure** and synchronization of GitHub documentation and Jira. This decision accepts bounded source access, the documented 102 descriptor-consistent matches, the unresolved identity exceptions, and the restrictions on real-source public redistribution. **It does not authorize Phase 1 or publishing real retail-source extracts.**
+The project owner explicitly approved **formal Phase 0 closure** and synchronization of GitHub documentation and Jira. This decision accepts bounded source access, the documented 102 descriptor-consistent matches, the unresolved identity exceptions, and the restrictions on real-source public redistribution. The closeout did not itself authorize Phase 1; the owner authorized Phase 1 separately later on 2026-11-19. Publication of real retail-source extracts remains unapproved.
 
 ## Verification checklist and Phase 0 closeout conditions
 
