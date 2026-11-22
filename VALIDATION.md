@@ -1,5 +1,13 @@
 # Validation and evidence
 
+## Phase 1 PULSE-13 — 2026-11-22
+
+The offline suite passed **21 tests**. Request-policy tests exercise robots rules, settings for concurrency, delay and timeout, domain restrictions, retry limits, HTTP 403/404/429 classification, malformed indexes, bounded selection and incomplete file responses. HTTP and transport failures were simulated; the checks do not establish production reliability.
+
+A bounded SPAR 8702 run on 2026-11-22 requested the 2026-11-17 file. Scrapy recorded **3 GET requests and 3 HTTP 200 responses**, including one successful robots.txt request, the dated index and the selected CSV; no retries were recorded. It finished normally, emitted one manifest and 32,347 records, and the file hash matched the index. The final configuration used a fixed one-second delay and the strict robots middleware. This was a bounded run, not a rate or reliability benchmark. Genuine retailer data and logs remain local and ignored by Git.
+
+Synthetic checks verify that the strict robots middleware denies requests when robots.txt retrieval returns HTTP 403 or fails. Scrapy can still exit with code zero after early spider closure, and durable failure manifests remain pending. PULSE-14 and the phase closeout are not complete.
+
 ## Phase 1 PULSE-12 — 2026-11-19
 
 The owner authorized Phase 1 and PULSE-12 on 2026-11-19. Synthetic pytest checks passed: **4 tests**, covering both encodings and delimiters, regular/special/equal/conflicting and invalid prices, GTIN validation, unknown headers, store/date selection and URL restriction. Fixtures are synthetic and do not redistribute retailer products.
