@@ -7,7 +7,7 @@ This is the phase-gated **plan and evidence-based status**. Feasibility probes a
 The work unit is a **phase**: **planned → explicitly authorized → in progress → validated → closed**.
 
 - **Phase 0 — formally CLOSED by explicit owner approval on 2026-11-19.** Bounded source access, price-field interpretation, same-store history and 102 description-consistent matches are recorded in [Validation](VALIDATION.md). This does not amount to external GS1 validation or operational reliability proof.
-- **Phase 1 implementation was authorized by the owner on 2026-11-19 and is in progress.** This does not authorize production scheduling, database provisioning or publication of real data.
+- **Phase 1 implementation was authorized by the owner on 2026-11-19 and is validated for review.** Formal closeout awaits owner approval. This does not authorize production scheduling, database provisioning or publication of real data.
 - Close a phase only with the results and evidence recorded in [Validation](VALIDATION.md) and [Current state](CURRENT_STATE.md).
 - An external Jira board may track tasks; do not treat issue statuses as runtime verification.
 
@@ -35,4 +35,4 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 
 Related detail: [Source feasibility](SOURCE_FEASIBILITY.md), [Project specification](PROJECT_SPEC.md).
 
-Phase 1 CI is planned for PULSE-44 alongside or after PULSE-14 and before requesting phase closeout. It will run synthetic tests on code changes, without scheduled or live retailer scraping or deployment. PULSE-19 retains the later operational reliability and expanded CI work. This timing does not add a new Phase 1 exit criterion to the table above.
+Phase 1 checks-only CI was implemented for PULSE-44 and passed a hosted run recorded in [Validation](VALIDATION.md). It runs synthetic tests on code changes, without scheduled or live retailer scraping or deployment. PULSE-19 retains the later operational reliability and expanded CI work. This timing does not add a new Phase 1 exit criterion to the table above.

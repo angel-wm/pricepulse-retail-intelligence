@@ -4,7 +4,7 @@
 
 The offline suite passed **29 tests** with `uv run --locked python -m pytest -q`. Synthetic tests cover both source dialects, price origins including absent and conflicting prices, invalid GTINs, duplicate or missing headers, malformed records and CSV syntax, extra columns, date/store provenance, SHA-256 verification, source failures and request policies. A malformed quoted CSV previously raised an unclassified `csv.Error`; the spider now closes with `schema_error` before emitting a manifest.
 
-PULSE-44 adds a GitHub Actions workflow for push and pull requests using locked dependencies and offline synthetic tests. **GitHub-hosted execution has not yet been verified.** The workflow does not access retailer sites, schedule acquisition, deploy, or publish source data. Local success is not hosted CI evidence or a production reliability claim.
+PULSE-44 adds a GitHub Actions workflow for push and pull requests using locked dependencies and offline synthetic tests. The [GitHub-hosted run](https://github.com/angel-wm/pricepulse-retail-intelligence/actions/runs/45083828028) for commit `a7831bae119096518555e8b15b5f4d6fa3ae61d4` succeeded on 2026-11-22: **29 tests passed** on Ubuntu. The workflow does not access retailer sites, schedule acquisition, deploy, or publish source data. This result does not establish live access or production reliability.
 
 ## Phase 1 PULSE-13 — 2026-11-22
 
