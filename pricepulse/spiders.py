@@ -1,3 +1,4 @@
+import csv
 import hashlib
 import json
 import re
@@ -62,7 +63,7 @@ class BaseSpider(scrapy.Spider):
             self.stop("source_hash_mismatch", "Downloaded file does not match source SHA-256")
         try:
             rows = list(parse_csv(response.body, self.name, self.store, self.selected, response.url, digest))
-        except (ValueError, UnicodeError) as exc:
+        except (csv.Error, ValueError, UnicodeError) as exc:
             self.stop("schema_error", str(exc))
         yield {"type": "manifest", "source": self.name, "store_id": self.store, "publication_date": self.selected, "source_url": response.url, "retrieved_at_utc": datetime.now(timezone.utc).isoformat(), "http_status": response.status, "sha256": digest, "source_sha256": expected_sha, "encoding": self.encoding, "delimiter": self.delimiter, "row_count": len(rows)}
         for row in rows:

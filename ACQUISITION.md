@@ -7,8 +7,10 @@ Install with `uv sync --locked`, create the `data` directory, then run from the 
 ```powershell
 uv run scrapy crawl spar -a date=2026-11-17 -O data/spar.jl
 uv run scrapy crawl kaufland -a date=2026-11-17 -O data/kaufland.jl
-uv run pytest -q
+uv run python -m pytest -q
 ```
+
+The checks-only GitHub Actions workflow runs the synthetic tests on pushes and pull requests using locked dependencies. It does not download live retailer data. Check [Validation](VALIDATION.md) for actual hosted-run evidence; the presence of a workflow alone does not prove it has passed on GitHub.
 
 The spiders obey robots.txt, use at most one concurrent request per domain, a one-second delay, a 30-second timeout and at most two retries for transient errors (HTTP 408, 500, 502, 503 or 504 and Scrapy's retryable transport exceptions). They do not retry HTTP 403, 404 or 429; access restrictions and rate limits stop the run. Redirects, refresh redirects, non-HTTPS and cross-domain source links are rejected. Incomplete responses are rejected. SPAR uses store 8702 and Kaufland 5630. A missing, duplicated or changed index entry stops acquisition. Dates and store IDs are selected from source filenames; retrieval time is separate and no publication timestamp is invented. Historical files may expire.
 

@@ -4,9 +4,9 @@
 
 PULSE-12 implements bounded SPAR 8702 and Kaufland 5630 Scrapy acquisition, source-specific parsing and synthetic tests. One file per retailer for 2026-11-17 was retrieved and parsed in bounded local smoke tests. See [Validation](VALIDATION.md) and [Acquisition](ACQUISITION.md). These checks do not establish production reliability.
 
-PULSE-13 adds bounded retry and timeout policies, classified failure logging, incomplete-response rejection and request-policy tests. A bounded SPAR smoke test recorded request counts and statuses; see [Validation](VALIDATION.md). PULSE-14 contract and schema validation remains open.
+PULSE-13 adds bounded retry and timeout policies, classified failure logging, incomplete-response rejection and request-policy tests. A bounded SPAR smoke test recorded request counts and statuses; see [Validation](VALIDATION.md). PULSE-14 contract and schema cases have passed local synthetic tests.
 
-PULSE-44 plans a checks-only GitHub Actions workflow during Phase 1, preferably alongside or after PULSE-14 and before requesting closeout. No CI workflow or GitHub-hosted CI result is recorded yet. PULSE-19 remains the Phase 3 task for expanded CI and operational recovery.
+PULSE-44 has a checks-only GitHub Actions workflow and locally passing tests; a GitHub-hosted run remains to be verified. PULSE-19 remains the Phase 3 task for expanded CI and operational recovery.
 
 PostgreSQL, scheduling, Tableau, long-term reliability and Phase 1 closeout remain pending. Publication of genuine retailer data is not cleared; use synthetic public examples. Missing products do not imply stock status.
 
