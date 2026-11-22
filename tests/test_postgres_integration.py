@@ -73,6 +73,31 @@ def test_duplicate_and_bad_price_are_preserved_for_review(db):
     assert db.execute("SELECT count(*) FROM source_file").fetchone()[0] == before
 
 
+def test_duplicate_gtin_is_retained_and_flagged(db):
+    f = FIELDS["spar"]
+    load(db, synthetic_csv(extra={f["code"]: "sku-2", f["regular"]: "1,25", f["gtin"]: "4006381333931"}))
+    assert db.execute("SELECT count(*) FROM source_row").fetchone()[0] == 2
+    assert db.execute("SELECT count(*) FROM review_exception WHERE reason='duplicate_gtin'").fetchone()[0] == 2
+    assert db.execute("SELECT count(*) FROM price_observation").fetchone()[0] == 2
+
+
+def test_special_and_conflicting_prices_remain_auditable(db):
+    f = FIELDS["spar"]
+    extra = {f["code"]: "sku-2", f["regular"]: "2,00", f["special"]: "1,00"}
+    body = synthetic_csv(price="", extra=extra)
+    text = body.decode("cp1250")
+    rows = list(csv.DictReader(io.StringIO(text), delimiter=";"))
+    rows[0][f["special"]] = "0,75"
+    stream = io.StringIO(newline="")
+    writer = csv.DictWriter(stream, fieldnames=list(f.values()), delimiter=";", lineterminator="\n")
+    writer.writeheader()
+    writer.writerows(rows)
+    load(db, stream.getvalue().encode("cp1250"))
+    assert db.execute("SELECT effective_price,price_origin FROM price_observation").fetchall() == [(Decimal("0.75"), "special")]
+    assert db.execute("SELECT count(*) FROM review_exception WHERE reason='price_conflicting_prices'").fetchone()[0] == 1
+    assert db.execute("SELECT regular_raw,special_raw FROM source_row WHERE sku='sku-2'").fetchone() == ("2,00", "1,00")
+
+
 def test_comparison_requires_version_specific_review_and_reconciles(db):
     first = load(db, synthetic_csv("1,00"))
     f = FIELDS["kaufland"]
@@ -80,6 +105,7 @@ def test_comparison_requires_version_specific_review_and_reconciles(db):
     writer = csv.DictWriter(stream, fieldnames=list(f.values()), delimiter="\t", lineterminator="\n")
     writer.writeheader()
     writer.writerow({f["code"]: "k-1", f["title"]: "Example", f["brand"]: "Example", f["quantity"]: "1", f["unit"]: "KOM", f["regular"]: "1,20", f["gtin"]: "4006381333931"})
+    writer.writerow({f["code"]: "k-2", f["title"]: "Other", f["brand"]: "Example", f["quantity"]: "1", f["unit"]: "KOM", f["regular"]: "1,50"})
     second = ingest_file(db, source="kaufland", store="5630", day="2026-11-17", url="https://www.kaufland.hr/file.csv", collected_at="2026-11-22T23:00:00+00:00", status=200, body=stream.getvalue().encode("utf-8-sig"))
     left, right = (first["file_id"], 2), (second["file_id"], 2)
     assert db.execute("SELECT count(*) FROM verified_price_comparison").fetchone()[0] == 0
@@ -87,7 +113,9 @@ def test_comparison_requires_version_specific_review_and_reconciles(db):
     assert db.execute("SELECT count(*) FROM verified_price_comparison").fetchone()[0] == 0
     record_review(db, left, right, "verified", "Synthetic descriptors and pack reviewed")
     assert db.execute("SELECT left_price,right_price,price_difference FROM verified_price_comparison").fetchall() == [(Decimal("1.00"), Decimal("1.20"), Decimal("-0.20"))]
-    assert db.execute("SELECT count(*) FROM price_history").fetchone()[0] == 2
+    assert db.execute("SELECT count(*) FROM price_history").fetchone()[0] == 3
+    with pytest.raises(psycopg.errors.UniqueViolation), db.transaction():
+        db.execute("INSERT INTO comparison_review(left_file,left_row,right_file,right_row,decision,explanation) VALUES (%s,2,%s,3,'verified','duplicate')", (left[0], right[0]))
     record_review(db, right, left, "rejected", "Synthetic review reversed")
     assert db.execute("SELECT count(*) FROM verified_price_comparison").fetchone()[0] == 0
     assert db.execute("SELECT decision FROM comparison_review_event ORDER BY id").fetchall() == [("review",), ("verified",), ("rejected",)]

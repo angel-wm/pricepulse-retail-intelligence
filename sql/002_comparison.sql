@@ -11,10 +11,10 @@ CREATE TABLE IF NOT EXISTS comparison_review (
     FOREIGN KEY (left_file, left_row) REFERENCES source_row(file_id, row_number),
     FOREIGN KEY (right_file, right_row) REFERENCES source_row(file_id, row_number),
     UNIQUE (left_file, left_row, right_file, right_row),
-    UNIQUE (left_file, left_row, right_file),
-    UNIQUE (right_file, right_row, left_file),
     CHECK (left_file <> right_file)
 );
+CREATE UNIQUE INDEX IF NOT EXISTS comparison_one_left_per_file ON comparison_review(left_file,left_row,right_file) WHERE decision='verified';
+CREATE UNIQUE INDEX IF NOT EXISTS comparison_one_right_per_file ON comparison_review(right_file,right_row,left_file) WHERE decision='verified';
 
 CREATE TABLE IF NOT EXISTS comparison_review_event (
     id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,

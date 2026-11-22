@@ -8,6 +8,6 @@ PULSE-13 adds bounded retry and timeout policies, classified failure logging, in
 
 PULSE-44 has a checks-only GitHub Actions workflow with a successful GitHub-hosted run of 29 synthetic tests. PULSE-19 remains the Phase 3 task for expanded CI and operational recovery.
 
-Phase 2 now has an initial PostgreSQL schema, local-file ingestion, explicit review and comparison queries. Synthetic PostgreSQL integration tests have been run locally; see [PostgreSQL](POSTGRESQL.md) and [Validation](VALIDATION.md). Phase 2 remains in progress while the implementation and hosted checks are reviewed. Scheduling, Tableau and long-term reliability remain pending. Publication of genuine retailer data is not cleared; use synthetic public examples. Missing products do not imply stock status.
+Phase 2 now has an initial PostgreSQL schema, local-file ingestion, explicit review and comparison queries. Synthetic PostgreSQL integration tests have passed locally and in GitHub-hosted CI; see [PostgreSQL](POSTGRESQL.md) and [Validation](VALIDATION.md) for exact baselines. Phase 2 remains in progress while the implementation is reviewed. Scheduling, Tableau and long-term reliability remain pending. Publication of genuine retailer data is not cleared; use synthetic public examples. Missing products do not imply stock status.
 
 **Next gate:** implement and validate the Phase 2 historical-data work before owner review and phase closeout. Phase 3 remains a separate phase gate.

@@ -6,7 +6,7 @@ The owner explicitly approved formal Phase 1 closeout and authorized continuing 
 
 ## Phase 2 initial PostgreSQL validation — 2026-11-22
 
-The initial schema and loader were tested against an isolated local PostgreSQL 18.7 cluster using synthetic rows. The full suite passed **35 tests**, including five PostgreSQL integration tests for replay, changed file versions, relational constraints, exceptions, version-specific comparison and a manually reconciled price change. The temporary server was stopped after the run. The source inputs, expected prices and comparisons were synthetic; no real-data ingestion, independent human identity review, operational load or production reliability was established. GitHub-hosted PostgreSQL CI remains to be verified.
+The initial schema and loader were tested against an isolated local PostgreSQL 18.7 cluster using synthetic rows. The full suite passed **37 tests**, including seven PostgreSQL integration tests for replay, changed file versions, relational constraints, duplicate GTINs, source-price exceptions, version-specific comparison and a manually reconciled price change. The temporary server was stopped after the run. The [GitHub-hosted run](https://github.com/angel-wm/pricepulse-retail-intelligence/actions/runs/45085593219) for `a8c0a202c0d19fc1b0ae45ae661e15ec9fb5dff7` passed **35 tests** with a temporary PostgreSQL service; subsequent changes have only been validated locally so far. The source inputs, expected prices and comparisons were synthetic; no real-data ingestion, independent human identity review, operational load or production reliability was established.
 
 ## Phase 1 PULSE-14 and PULSE-44 — local checks (2026-11-22)
 
