@@ -186,6 +186,12 @@ In the tested files, **every** row rejected by the initial `MPC (EUR)` parser ha
 
 **Status:** Technical source feasibility supported; **Phase 0 formally closed by owner approval on 2026-11-19. Phase 1 was separately authorized later on 2026-11-19.**
 
+## Phase 3 accelerated recurring check — 2026-11-23
+
+A temporary Windows Scheduled Task was configured to run two bounded collection-only batches at one-minute intervals against the 2026-11-17 historical files. Both batches reported success, the task returned zero and the temporary task was removed. Together with three earlier manual successful batches, this is a limited five-batch baseline using one historical date; it is not a daily uptime or missed-run measurement. Raw outputs remain private.
+
+The permanent collection-only daily task was separately checked before its due time and did not capture. Its first actual due daily run and behavior over multiple dates were not observed during this check. The scheduler's warning rules are provisional and documented in [Reliability](RELIABILITY.md); local synthetic tests cover warning and recovery behavior. The complete local suite passed 61 tests with a temporary PostgreSQL instance, which was stopped afterward.
+
 ## Earlier source exploration — user-reported local logs, 2026-11-18
 
 These tests concerned an **abandoned musical-instruments source category** and do not validate the new pair.
