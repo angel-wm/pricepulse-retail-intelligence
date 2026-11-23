@@ -178,9 +178,10 @@ fields. Lidl had 1,934 special-only rows on 17 November and 1,706 on 23 November
 These changes require explicit format detection and duplicate handling in any
 future Lidl adapter.
 
-**Recommendation.** The owner authorized Konzum as the third retailer on 2026-11-23.
-Integration is tracked in [PULSE-46](https://angel231995.atlassian.net/browse/PULSE-46). Defer Lidl as a general source. Consider Lidl later for
-a defined basket if audited variants and promotion eligibility confirm that its
-incremental cheapest offers justify maintaining the additional adapter. Before
-operational use, verify regular scheduled capture and matching on the selected
-stores. Keep real retailer artifacts local pending a verified basis for reuse.
+The owner authorized Konzum as the third local retailer on 2026-11-23.
+Integration is tracked in [PULSE-46](https://angel231995.atlassian.net/browse/PULSE-46).
+Defer Lidl as a general source. Consider Lidl later for a defined basket if
+audited variants and promotion eligibility confirm that its incremental cheapest
+offers justify maintaining the additional adapter. Verify regular scheduled
+capture and matching on the selected stores. Keep real retailer artifacts local
+pending a verified basis for reuse.

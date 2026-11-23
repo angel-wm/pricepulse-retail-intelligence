@@ -397,9 +397,19 @@ robots.txt. Its dated index presented 50 distinct CSV links and one matched the
 store and date. The feed contained 26,581 usable listed prices, split into
 23,366 regular and 3,215 special, and 24,158 rows with valid GTINs.
 The local suite passed all 67 tests with disposable Docker PostgreSQL.
+The [GitHub Actions run](https://github.com/angel-wm/pricepulse-retail-intelligence/actions/runs/45288124548)
+passed for the integration commit `69106d8`.
 
 A separate bounded crawl for 17 November captured 26,571 Konzum rows, including
 3,480 special-price rows. Its raw SHA-256 matched the earlier feasibility download.
+The collection quality checks processed all three reports without alerts.
+
+In a disposable PostgreSQL schema, the original schema loaded the SPAR and
+Kaufland baseline. Applying the schema update preserved both files and allowed
+Konzum ingestion. All 26,581 Konzum rows produced price observations, including
+3,215 special prices. Replaying the Konzum bytes kept one file version and
+recorded a second acquisition run. The real-file validation used PostgreSQL
+client pipelining to shorten the load.
 
 Regular Windows execution of the expanded cohort remains to be observed.
 The private Tableau workbook still reflects its original two-store snapshot.
