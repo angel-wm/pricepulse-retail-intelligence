@@ -1,6 +1,20 @@
 """Conservative comparison review: equality of identifiers is not proof of identity."""
+import re
+from decimal import Decimal
 
-def comparison_flags(left, right, brand_aliases=None):
+
+def _declared_mass_kg(row, chain):
+    """Interpret the source quantity field independently of the sale unit."""
+    # Kaufland labels the quantity column in kg, regardless of its separate unit field.
+    unit = "kg" if chain == "kaufland" else row["unit"].strip().casefold()
+    value = row["quantity"].strip()
+    if unit not in {"kg", "g"} or not re.fullmatch(r"[0-9]+(?:[.,][0-9]+)?", value):
+        return None
+    mass = Decimal(value.replace(",", ".") + ("e-3" if unit == "g" else ""))
+    return mass if mass > 0 else None
+
+
+def comparison_flags(left, right, brand_aliases=None, *, cross_retailer_chains=None):
     aliases = brand_aliases or {}
     def brand(value):
         value = " ".join(value.casefold().split())
@@ -10,7 +24,15 @@ def comparison_flags(left, right, brand_aliases=None):
         flags.append("gtin_mismatch_or_invalid")
     if not left["brand"].strip() or not right["brand"].strip() or brand(left["brand"]) != brand(right["brand"]):
         flags.append("brand_review")
-    if not left["quantity"].strip() or not right["quantity"].strip() or not left["unit"].strip() or not right["unit"].strip() or (left["quantity"].strip(), left["unit"].strip().casefold()) != (right["quantity"].strip(), right["unit"].strip().casefold()):
+    if cross_retailer_chains is not None:
+        left_chain, right_chain = cross_retailer_chains
+        left_mass = _declared_mass_kg(left, left_chain)
+        right_mass = _declared_mass_kg(right, right_chain)
+        if left_mass is None or right_mass is None:
+            flags.append("declared_mass_not_comparable")
+        elif left_mass != right_mass:
+            flags.append("declared_mass_difference_review")
+    elif not left["quantity"].strip() or not right["quantity"].strip() or not left["unit"].strip() or not right["unit"].strip() or (left["quantity"].strip(), left["unit"].strip().casefold()) != (right["quantity"].strip(), right["unit"].strip().casefold()):
         flags.append("quantity_or_unit_review")
     if not left["title"].strip() or not right["title"].strip() or " ".join(left["title"].casefold().split()) != " ".join(right["title"].casefold().split()):
         flags.append("description_variant_or_pack_review")
@@ -27,6 +49,7 @@ def queue_candidates(conn, file_a, file_b, brand_aliases=None):
         files = cur.fetchall()
         if len(files) != 2 or files[0][1] == files[1][1] or files[0][2] != files[1][2]:
             raise ValueError("select two files from different chains for the same date")
+        chains = (files[0][1], files[1][1])
         cur.execute("""SELECT l.row_number, r.row_number, l.gtin_normalized,
                               l.title,l.brand,l.quantity,l.unit,r.title,r.brand,r.quantity,r.unit
                        FROM source_row l JOIN source_row r ON l.gtin_normalized=r.gtin_normalized
@@ -40,7 +63,7 @@ def queue_candidates(conn, file_a, file_b, brand_aliases=None):
         for lrow, rrow, code, lt, lb, lq, lu, rt, rb, rq, ru in pairs:
             left = dict(gtin_normalized=code, title=lt, brand=lb, quantity=lq, unit=lu)
             right = dict(gtin_normalized=code, title=rt, brand=rb, quantity=rq, unit=ru)
-            flags = comparison_flags(left, right, brand_aliases)
+            flags = comparison_flags(left, right, brand_aliases, cross_retailer_chains=chains)
             explanation = "Candidate requires human review" + (": " + ", ".join(flags) if flags else "; descriptors consistent")
             cur.execute("""INSERT INTO comparison_review(left_file,left_row,right_file,right_row,decision,explanation)
                            VALUES (%s,%s,%s,%s,'review',%s)

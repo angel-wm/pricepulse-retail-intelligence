@@ -46,3 +46,15 @@ def test_selection_and_url_safety():
     assert request.cb_kwargs["discovery"]["index_item_count"] == 1
     with pytest.raises(ValueError):
         safe_url(response.url, "https://evil.test/file.csv", spider.host)
+
+
+def test_kaufland_selects_new_filename_for_exact_store_and_date():
+    spider = KauflandSpider(date="2026-11-23")
+    entries = [
+        {"label": "123_Example_5630_cjenik robe_1_20261122_0730.csv", "path": "/prior-day.csv"},
+        {"label": "123_Example_5631_cjenik robe_1_20261123_0730.csv", "path": "/other-store.csv"},
+        {"label": "123_Example_5630_cjenik robe_1_20261123_0730.csv", "path": "/correct.csv"},
+    ]
+    response = TextResponse("https://www.kaufland.hr/index", body=json.dumps(entries).encode(), encoding="utf-8")
+    (request,) = spider.parse_index(response)
+    assert request.url == "https://www.kaufland.hr/correct.csv"

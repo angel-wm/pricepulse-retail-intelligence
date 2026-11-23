@@ -121,7 +121,14 @@ class KauflandSpider(BaseSpider):
             entries = response.json()
             if not isinstance(entries, list) or any(not isinstance(x, dict) or not isinstance(x.get("label"), str) for x in entries):
                 raise ValueError("invalid Kaufland asset list")
-            matches = [x for x in entries if re.search(rf"_{self.store}_{self.day:%d%m%Y}_.*\.csv$", x["label"], re.I)]
+            filename_patterns = (
+                rf"_{self.store}_{self.day:%d%m%Y}_.*\.csv$",
+                rf"_{self.store}_cjenik robe_\d+_{self.day:%Y%m%d}_\d{{4}}\.csv$",
+            )
+            matches = [
+                entry for entry in entries
+                if any(re.search(pattern, entry["label"], re.I) for pattern in filename_patterns)
+            ]
         except (ValueError, TypeError) as exc:
             self.stop("index_schema_error", str(exc))
         if len(matches) != 1:

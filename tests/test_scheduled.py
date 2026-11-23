@@ -17,6 +17,27 @@ def test_due_tick_runs_once_per_zagreb_date(tmp_path):
     assert json.loads((tmp_path / 'daily-2026-11-23.json').read_text())['status'] == 'success'
 
 
+def test_missed_ticks_recover_same_day_without_backfilling_previous_day(tmp_path):
+    calls = []
+
+    def fake_batch(day, directory):
+        calls.append(day)
+        return directory / "batch-example.json", {"status": "success"}
+
+    # No tick occurred at 12:20. The next tick still attempts today's capture.
+    late = datetime.fromisoformat("2026-11-23T18:20:00+01:00")
+    assert tick(tmp_path, late, batch=fake_batch)["status"] == "success"
+    assert tick(tmp_path, late, batch=fake_batch)["status"] == "already_attempted"
+
+    # The computer then misses every tick on November 24.
+    next_morning = datetime.fromisoformat("2026-11-25T09:20:00+01:00")
+    assert tick(tmp_path, next_morning, batch=fake_batch)["status"] == "not_due"
+    next_due = datetime.fromisoformat("2026-11-25T12:20:00+01:00")
+    assert tick(tmp_path, next_due, batch=fake_batch)["status"] == "success"
+    assert calls == ["2026-11-23", "2026-11-25"]
+    assert not (tmp_path / "daily-2026-11-24.json").exists()
+
+
 def test_storage_limit_and_failed_attempt_do_not_retry_automatically(tmp_path):
     called = []
     result = tick(tmp_path, datetime.fromisoformat('2026-11-23T12:20:00+01:00'), batch=lambda *args: called.append(True), soft_limit_bytes=1)
