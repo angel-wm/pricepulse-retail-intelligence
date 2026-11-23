@@ -95,3 +95,7 @@ The owner selected local collection only for the daily task. The installed task 
 ### D-015 — Close Phase 2 with bounded validation (2026-11-23)
 
 The owner formally closed Phase 2 after reviewing the private PostgreSQL validation in [Validation](VALIDATION.md). The accepted scope covers one historical file per retailer, idempotent replay and four owner-approved comparisons with prices reconciled against the source files. Additional candidate pairs can be reviewed later in private batches. Phase 3 still awaits owner review.
+
+### D-016 — Close Phase 4 for private Tableau analytics (2026-11-23)
+
+At the owner's direction, Phase 4 is closed for the English Tableau workbook with real historical data. [Validation](VALIDATION.md) records SQL reconciliation, packaging checks and the verified Desktop filter action. Additional cross-store reviews and automated refresh remain follow-up work. Public portfolio delivery remains open under PULSE-23 and requires a shareable data basis. Phase 3 remains open and Phase 5 awaits authorization.

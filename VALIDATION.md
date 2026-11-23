@@ -27,6 +27,10 @@ The remaining candidates have additional flags or unavailable comparable mass. C
 
 The private portfolio workbook uses English for dashboard copy, sheet names, field captions and presentation labels. Source product titles are preserved in the catalog. Tableau Desktop readback returned the expected eight price marks, four gap marks, four catalog coverage marks and six same-store change summary marks. Selecting a product showed one gap and clearing the selection restored all four. All 65 local repository tests passed with PostgreSQL.
 
+### Private workbook closeout
+
+The packaged workbook passed ZIP integrity checks. Its workbook definition contains one English comparison dashboard, 14 worksheets and one filter action. The 12 packaged CSV sources include 112,170 catalog observations, 17,803 same-store SKU comparisons, eight price marks and four cross-store gaps. The private screenshot measures 1240 × 790 pixels. Phase 4 closed for the private snapshot on 2026-11-23 at the owner's direction. Candidate review, automatic refresh and public delivery remain open. See [Tableau analytics](TABLEAU.md).
+
 ## Phase 3 owner review evidence — 2026-11-23
 
 The local collection-only daily marker records a real attempt for 2026-11-23 at 11:35 Bogotá time. The batch took about 21 seconds and was marked incomplete. SPAR 8702 captured 32,410 rows with zero reported price exceptions and 97.68% checksum-valid GTINs. There was no prior successful SPAR file in the scheduled directory for the row-count comparison.

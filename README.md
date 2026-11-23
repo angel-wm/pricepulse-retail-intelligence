@@ -2,7 +2,7 @@
 
 PricePulse is a **documentation-first Data Engineering portfolio project** to acquire official Croatian grocery price-list files responsibly with Scrapy, validate product identities, store durable historical observations in PostgreSQL, and analyze comparable offers in Tableau.
 
-**Current status (2026-11-23): Phase 1 is formally closed; Phases 2 and 3 await owner review; Phase 4 is in progress.** Bounded user-local Scrapy tests retrieved official files for **SPAR Croatia (Zagreb Jankomir, store 8702)** and **Kaufland Croatia (Zagreb Antuna Šoljana, store 5630)** for 16–17 November 2026. The 17 November files had **8,869 common priced GTINs**; a deterministic audit of 160 prefiltered pairs classified **102 description-consistent** and **58 unresolved**. This is not manufacturer verification or a claim about all 8,869 pairs. Phase 1 adapters have been implemented and smoke-tested; PostgreSQL has synthetic validation. A local collection-only task is registered; accelerated scheduled historical captures succeeded, while normal daily operation remains unobserved. Tableau is not implemented.
+**Current status (2026-11-23): Phases 0–2 and private Phase 4 are closed.** The English Tableau snapshot covers two Zagreb stores across 17 and 23 November 2026, with 112,170 real price observations, 17,803 same-store comparisons and four approved cross-store pairs. Phase 3 remains open for review of normal operation. The public portfolio edition is pending. See [Current state](CURRENT_STATE.md).
 
 ## What PricePulse aims to answer
 
@@ -34,7 +34,7 @@ uv run scrapy version
 - `uv sync` creates or updates the project's `.venv` using `pyproject.toml` and `uv.lock`. No separate `uv venv` command is required for the usual project setup.
 - `uv run <command>` uses the project environment **without requiring activation**. If you prefer activating it in the current PowerShell session, run `.\.venv\Scripts\Activate.ps1`; use `deactivate` to exit.
 - Git commands (`status`, `pull`, `add`, `commit`, `push`) do **not** require an activated Python virtual environment. Check `git status` before committing or pulling if local changes exist.
-- The repository contains two bounded Scrapy adapters and an initial PostgreSQL ingestion and review implementation. Synthetic PostgreSQL tests have passed locally and in GitHub-hosted CI. A local collection-only schedule is registered and a separate accelerated recurring task succeeded twice; normal daily operation remains unobserved; Tableau is not implemented. See [Acquisition](ACQUISITION.md), [PostgreSQL](POSTGRESQL.md) and [Reliability](RELIABILITY.md).
+- The repository includes two bounded Scrapy adapters, PostgreSQL ingestion and review, and private Tableau analytical exports. A temporary Windows task collected both real files at its scheduled trigger. Normal operation through the permanent collection-only task remains unverified. See [Acquisition](ACQUISITION.md), [PostgreSQL](POSTGRESQL.md) and [Reliability](RELIABILITY.md).
 
 ## Planned workflow
 
@@ -42,7 +42,7 @@ uv run scrapy version
 2. **Phase 1 — Scrapy (closed 2026-11-22):** two source-specific spiders discover SPAR's dated JSON manifests and Kaufland's asset index, then fetch permitted store price lists with bounded request rates and explicit parsing/error contracts.
 3. **Phase 2 — Data engineering (closed 2026-11-23):** preserve file provenance and hashes; parse **SPAR cp1250/semicolon** and **Kaufland UTF-8 BOM/tab** sources; handle regular/special price origins, GTIN and package checks, and ingest versioned, deduplicated store/date observations into PostgreSQL.
 4. **Phase 3 — Reliability (awaiting owner review):** run evidence, recovery, local scheduling and provisional quality monitoring are implemented; see [Reliability](RELIABILITY.md).
-5. **Phase 4 — Tableau (in progress):** analyze same-store price history and verified cross-retailer comparisons. The public portfolio data approach remains undecided; synthetic data is an option, and real-source publication requires separately verified redistribution rights. An initial private analytical export is documented in [Tableau analytics](TABLEAU.md); the workbook is not yet complete.
+5. **Phase 4 — Tableau (closed for private use):** compare approved cross-store offers and explore catalog coverage and same-store price history. The real workbook and screenshot remain private. See [Tableau analytics](TABLEAU.md).
 6. **Phase 5 — Release:** provide tested reproduction steps, measured results, documentation, and a portfolio-ready repository.
 
 These phases mix completed work and planned deliverables; [Current state](CURRENT_STATE.md) and [Validation](VALIDATION.md) describe the implemented scope and its evidence.

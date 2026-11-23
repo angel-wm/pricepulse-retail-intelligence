@@ -9,7 +9,7 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 - **Phase 0 — formally CLOSED by explicit owner approval on 2026-11-19.** Bounded source access, price-field interpretation, same-store history and 102 description-consistent matches are recorded in [Validation](VALIDATION.md). This does not amount to external GS1 validation or operational reliability proof.
 - **Phase 1 was formally closed by the owner on 2026-11-22. Phase 2 was authorized on the same date and formally closed on 2026-11-23 after synthetic integration checks and a bounded private real-file review.** Publication of real data remained outside that authorization.
 - **Phase 3 was subsequently authorized by the owner before Phase 2 review and closeout.** Phase 3 awaits owner review, and real-source publication remains restricted. Phase 3 includes an owner-selected local collection-only schedule.
-- **Phase 4 was authorized by the owner before Phase 2 and Phase 3 reviews.** Phase 3 remains open. Publication of genuine retailer data requires a verified rights basis.
+- **Phase 4 was authorized before the Phase 2 and Phase 3 reviews and closed on 2026-11-23 for private Tableau analytics.** Phase 3 remains open. Public delivery remains under PULSE-23.
 - Close a phase only with the results and evidence recorded in [Validation](VALIDATION.md) and [Current state](CURRENT_STATE.md).
 - An external Jira board may track tasks; do not treat issue statuses as runtime verification.
 
@@ -21,7 +21,7 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 | 1 — Scrapy acquisition | Separate SPAR JSON and Kaufland asset-index spiders; bounded CSV downloads; source-specific parsing contracts and fixtures; checks-only CI (PULSE-44) | **CLOSED 2026-11-22:** representative extraction, traceability, error-path tests and hosted CI evidence. |
 | 2 — Data engineering | File provenance, parsing, validated PostgreSQL schema, daily immutable observations | **CLOSED 2026-11-23:** private load and replay of one historical file per retailer and four owner-approved price comparisons. See [Validation](VALIDATION.md). |
 | 3 — Reliability | Scheduling, logs, monitoring, failure recovery and expanded CI as appropriate (PULSE-19) | Recorded successful and failed runs with measured behavior |
-| 4 — Tableau analytics | Local-source price history and strict matching; public demonstration data approach undecided | SQL-reconciled metrics; genuine retailer data may be published only if rights are established |
+| 4 — Tableau analytics | Private Tableau workbook with real price history, catalog coverage and strict matching | **CLOSED 2026-11-23:** SQL-reconciled metrics and verified Desktop interaction. See [Validation](VALIDATION.md). |
 | 5 — Validation and release | README, architecture, test evidence, reproducible local setup and portfolio presentation | End-to-end tests, release documentation and explicit closeout |
 
 ## Phase 0 evidence checklist (completed; owner approved closeout 2026-11-19)

@@ -1,6 +1,6 @@
-# Tableau analytics: work in progress
+# Tableau analytics
 
-Phase 4 is authorized. Its target is a private Tableau dashboard using real retailer data. Phase 2 is closed. Phase 3 still awaits owner review.
+Phase 4 closed on 2026-11-23 with a private English Tableau workbook built from real retailer data. The workbook is an interactive snapshot of two stores and two dates.
 
 ## Private real-data workbook
 
@@ -45,6 +45,10 @@ The CSV files in `examples/tableau_synthetic` are generated from invented produc
 
 Tableau Desktop Free Edition opened the fictional observations and displayed a preliminary price-history worksheet by date, chain and product and a second worksheet of same-day differences. Both were assembled into a preliminary dashboard. The 12 displayed fictional differences of -0.10 EUR agree with the exported synthetic comparison rows; filters and other measures have not been reconciled. A private draft was saved under `data/pricepulse-phase4-draft.twb`; it is an incomplete dashboard and is not fully validated. The installed edition explicitly says it cannot share or publish assets. [Tableau's edition comparison](https://help.tableau.com/current/pro/desktop/en-us/desktop_comparison.htm) and [Tableau Public FAQ](https://help.tableau.com/current/pro/desktop/en-us/public_faq.htm) distinguish this edition from the free Public authoring option. Do not share the Desktop Free draft; use an appropriate separately selected public authoring route for any synthetic demonstration.
 
-## Outstanding work
+## Refresh and expansion
 
-Review the real workbook with the owner, confirm any remaining interactive filter scenarios and agree on the final presentation. Additional real pairs can be added after their exact file versions are reviewed. The Phase 4 closeout remains a separate owner decision.
+The Windows task collects source files. To update Tableau, load the selected captures into PostgreSQL, verify cross-store pairs for those exact file versions, and rerun the private analytical export. Refresh the workbook's packaged sources and the derived chart inputs, update the summary callouts, reconcile counts and gaps in Desktop, and save a new package and screenshot. The current workbook uses curated presentation inputs, so replacing the four core exports alone does not update every view. An automated collection-to-dashboard refresh remains follow-up work.
+
+The catalog already includes all priced observations from the four selected files. Expand cross-store coverage in private review batches, starting with the prioritized candidates above. A candidate becomes a confirmed comparison after an explicit review decision for the selected files.
+
+Public portfolio delivery remains open under PULSE-23. See [Source feasibility](SOURCE_FEASIBILITY.md) for the sharing constraint and [Validation](VALIDATION.md) for the private closeout evidence.
