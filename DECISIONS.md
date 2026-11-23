@@ -87,3 +87,7 @@ The owner explicitly approved Phase 1 closeout and authorized Phase 2 implementa
 ### D-013 — Start Phase 3 before Phase 2 closeout (2026-11-22)
 
 The owner authorized continuing with Phase 3 and reviewing Phases 2 and 3 later. This explicitly permits parallel work before Phase 2 closeout; it does not constitute approval to close either phase or permission to publish genuine retailer data. A configured recurring job and production reliability require their own actual evidence; do not represent an unconfigured schedule as running.
+
+### D-014 — Use local collection-only scheduling for now (2026-11-23)
+
+The owner selected local collection only for the daily task. The installed task does not automatically ingest into PostgreSQL or publish source files. A real recurring capture and operational reliability remain to be observed; the owner will review Phases 2 and 3 later.
