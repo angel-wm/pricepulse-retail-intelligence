@@ -28,3 +28,12 @@ def test_incomplete_batch_is_recorded_and_not_retried(tmp_path):
     result = tick(tmp_path, datetime.fromisoformat('2026-06-23T12:20:00+02:00'), batch=lambda day, directory: (Path(directory) / 'batch-example.json', {'status': 'incomplete'}))
     assert result['status'] == 'incomplete'
     assert tick(tmp_path, datetime.fromisoformat('2026-06-23T13:20:00+02:00'))['status'] == 'already_attempted'
+
+
+def test_exception_marks_failed_and_keeps_daily_marker(tmp_path):
+    def broken(day, directory):
+        raise OSError("synthetic failure")
+    result = tick(tmp_path, datetime.fromisoformat('2026-11-23T12:20:00+01:00'), batch=broken)
+    assert result['status'] == 'failed' and result['reason'] == 'OSError'
+    assert json.loads((tmp_path / 'daily-2026-11-23.json').read_text())['status'] == 'failed'
+    assert tick(tmp_path, datetime.fromisoformat('2026-11-23T13:20:00+01:00'))['status'] == 'already_attempted'

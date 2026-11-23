@@ -2,7 +2,7 @@
 
 PricePulse is a **documentation-first Data Engineering portfolio project** to acquire official Croatian grocery price-list files responsibly with Scrapy, validate product identities, store durable historical observations in PostgreSQL, and analyze comparable offers in Tableau.
 
-**Current status (2026-11-22): Phase 1 is formally closed; Phase 2 awaits owner review and Phase 3 has been authorized to start in parallel.** Bounded user-local Scrapy tests retrieved official files for **SPAR Croatia (Zagreb Jankomir, store 8702)** and **Kaufland Croatia (Zagreb Antuna Šoljana, store 5630)** for 16–17 November 2026. The 17 November files had **8,869 common priced GTINs**; a deterministic audit of 160 prefiltered pairs classified **102 description-consistent** and **58 unresolved**. This is not manufacturer verification or a claim about all 8,869 pairs. Phase 1 adapters have been implemented and smoke-tested; the initial PostgreSQL implementation has synthetic validation. Scheduling and Tableau are not implemented.
+**Current status (2026-11-23): Phase 1 is formally closed; Phase 2 awaits owner review and Phase 3 is in progress.** Bounded user-local Scrapy tests retrieved official files for **SPAR Croatia (Zagreb Jankomir, store 8702)** and **Kaufland Croatia (Zagreb Antuna Šoljana, store 5630)** for 16–17 November 2026. The 17 November files had **8,869 common priced GTINs**; a deterministic audit of 160 prefiltered pairs classified **102 description-consistent** and **58 unresolved**. This is not manufacturer verification or a claim about all 8,869 pairs. Phase 1 adapters have been implemented and smoke-tested; PostgreSQL has synthetic validation. A local collection-only task was registered, but recurring live capture is not yet verified. Tableau is not implemented.
 
 ## What PricePulse aims to answer
 
@@ -34,7 +34,7 @@ uv run scrapy version
 - `uv sync` creates or updates the project's `.venv` using `pyproject.toml` and `uv.lock`. No separate `uv venv` command is required for the usual project setup.
 - `uv run <command>` uses the project environment **without requiring activation**. If you prefer activating it in the current PowerShell session, run `.\.venv\Scripts\Activate.ps1`; use `deactivate` to exit.
 - Git commands (`status`, `pull`, `add`, `commit`, `push`) do **not** require an activated Python virtual environment. Check `git status` before committing or pulling if local changes exist.
-- The repository contains two bounded Scrapy adapters and an initial PostgreSQL ingestion and review implementation. Synthetic PostgreSQL tests have passed locally and in GitHub-hosted CI. Scheduling and Tableau are not implemented. See [Acquisition](ACQUISITION.md) and [PostgreSQL](POSTGRESQL.md).
+- The repository contains two bounded Scrapy adapters and an initial PostgreSQL ingestion and review implementation. Synthetic PostgreSQL tests have passed locally and in GitHub-hosted CI. A local collection-only schedule has been registered but not verified across recurring runs; Tableau is not implemented. See [Acquisition](ACQUISITION.md), [PostgreSQL](POSTGRESQL.md) and [Reliability](RELIABILITY.md).
 
 ## Planned workflow
 
