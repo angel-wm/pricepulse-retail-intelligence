@@ -81,6 +81,14 @@ At 13:25 Bogotá time on 2026-11-23, a temporary Windows scheduled task started 
 
 Using a controlled clock and a synthetic batch, the scheduler logic collected once when the first eligible tick was missed and a later tick occurred on the same Zagreb date. When every tick for the following date was missed, the next eligible tick collected only the new date and created no backfill marker. The nine focused scheduling tests passed. This check exercises application behavior when ticks are absent. It does not measure Windows resume or logon behavior after a real interruption.
 
+### Permanent Windows task recovery and timed capture
+
+On 2026-11-23, later hourly ticks continued returning code 1 for the existing incomplete daily marker. The original marker was archived byte-for-byte with its SHA-256 and the task configuration. A one-time trigger on the installed `PricePulse-Local-Collect` task allowed a controlled same-day retry after the Kaufland filename fix.
+
+Windows started the permanent task at the configured 17:37:12 Bogotá trigger. The fresh daily marker reported `success` without alerts after about 34 seconds, and Windows recorded exit code 0. SPAR 8702 captured 32,410 rows and Kaufland 5630 captured 23,830 rows. The raw SHA-256 values agreed with both source reports and feed manifests. The supplemental trigger was removed and the original hourly trigger, action, principal and settings were compared with the saved task configuration. The regular next tick was 18:20 Bogotá time. The first eligible regular collection for the next Zagreb date is 06:20 Bogotá time on 24 November if the user is logged on.
+
+The focused acquisition, reliability and scheduling suite passed **42 tests**. The capture verifies the permanent task's real collection path under a timed, controlled retry. A first eligible tick on a subsequent date and Windows behavior after a real interruption remain unobserved. Private evidence is under `data/scheduled/recovery-2026-11-23/`.
+
 ## Phase 2 private real-file review — 2026-11-23
 
 An isolated local PostgreSQL instance loaded previously collected private SPAR 8702 and Kaufland 5630 files dated 2026-11-17. The successful crawl report, feed summary and raw SHA-256 agreed for each file. An independent CSV reader counted raw rows; these counts matched loaded source rows. Replaying each file retained the same file version and observation counts while recording another acquisition run. The server was stopped after the review; its private database and a 20-pair sample remain under ignored `data/`.
