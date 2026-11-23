@@ -1,8 +1,10 @@
 # Intended architecture
 
-**Status: Phase 1 acquisition adapters implemented and bounded smoke-tested.** See [Acquisition](ACQUISITION.md) and [Validation](VALIDATION.md). PostgreSQL, scheduling and Tableau remain proposed.
+**Status: Phase 1 is closed; Phase 2 is in owner review.** The source adapters were bounded smoke-tested. An initial PostgreSQL schema, loader and comparison review are implemented and validated with synthetic data; real-source ingestion and operational reliability remain unverified. Scheduling and Tableau remain proposed. See [Acquisition](ACQUISITION.md), [PostgreSQL](POSTGRESQL.md) and [Validation](VALIDATION.md).
 
 ## Proposed data flow
+
+The diagram shows the intended end-to-end architecture. The current loader accepts locally held CSV files; automatic raw-file handoff, XML/compressed formats, scheduling and Tableau are not implemented.
 
 ```text
 Kaufland Croatia price-list index     SPAR Croatia price-list index

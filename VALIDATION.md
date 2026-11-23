@@ -20,7 +20,7 @@ The offline suite passed **21 tests**. Request-policy tests exercise robots rule
 
 A bounded SPAR 8702 run on 2026-11-22 requested the 2026-11-17 file. Scrapy recorded **3 GET requests and 3 HTTP 200 responses**, including one successful robots.txt request, the dated index and the selected CSV; no retries were recorded. It finished normally, emitted one manifest and 32,347 records, and the file hash matched the index. The final configuration used a fixed one-second delay and the strict robots middleware. This was a bounded run, not a rate or reliability benchmark. Genuine retailer data and logs remain local and ignored by Git.
 
-Synthetic checks verify that the strict robots middleware denies requests when robots.txt retrieval returns HTTP 403 or fails. Scrapy can still exit with code zero after early spider closure, and durable failure manifests remain pending. PULSE-14 and the phase closeout are not complete.
+Synthetic checks verify that the strict robots middleware denies requests when robots.txt retrieval returns HTTP 403 or fails. Scrapy can still exit with code zero after early spider closure, and durable failure manifests remain pending. At this PULSE-13 checkpoint, PULSE-14 and phase closeout were still pending; Phase 1 was subsequently closed.
 
 ## Phase 1 PULSE-12 — 2026-11-19
 
@@ -28,7 +28,7 @@ The owner authorized Phase 1 and PULSE-12 on 2026-11-19. Synthetic pytest checks
 
 Bounded live Scrapy runs on 2026-11-19 (local time) requested the 2026-11-17 file for each selected store. Both returned HTTP 200 and emitted manifests: SPAR 8702 **32,347** rows and Kaufland 5630 **23,593** rows. SPAR's downloaded SHA-256 matched its index. An initial SPAR run identified 286 prices written with a leading comma; after supporting that form and repeating the run, all rows in both samples had usable prices under the current rules. This is a parser observation, not independent verification of all prices or product identities.
 
-**Pending:** broader dates and schema drift, durable failure manifests and exit signaling, operational retry and scheduling reliability, independent data quality review, PostgreSQL and Tableau. No phase closeout or publication rights are implied. Real output remains local and ignored by Git.
+**Pending at this PULSE-12 checkpoint:** broader dates and schema drift, durable failure manifests and exit signaling, operational retry and scheduling reliability, independent data quality review, PostgreSQL and Tableau. Phase 1 was subsequently closed and initial PostgreSQL work is recorded above; publication rights remain unresolved. Real output remains local and ignored by Git.
 
 ## Status
 
@@ -38,7 +38,7 @@ Bounded live Scrapy runs on 2026-11-19 (local time) requested the 2026-11-17 fil
 
 **Approved:** formal closure of **Phase 0 — Project Definition and Source Feasibility** for SPAR Croatia (Zagreb Jankomir, store 8702) and Kaufland Croatia (Zagreb Antuna Šoljana, store 5630). The approved evidence scope is bounded Scrapy access, four fixed-store/date CSV snapshots, observed price-field behavior, and **102 description-consistent pairs among 160 prefiltered pairs reviewed**. The owner authorized updating GitHub documentation and Jira.
 
-**Limitations retained:** 58 unresolved product-identity pairs; no external manufacturer/GS1 validation or production reliability proof; no PostgreSQL ingest or Tableau workbook; no inferred stock availability or rights to publicly redistribute source observations. Phase 1 was separately authorized later on 2026-11-19.
+**Limitations retained at Phase 0 closeout:** 58 unresolved product-identity pairs; no external manufacturer/GS1 validation or production reliability proof; no PostgreSQL ingest or Tableau workbook at that checkpoint; no inferred stock availability or rights to publicly redistribute source observations. Phase 1 was separately authorized later on 2026-11-19.
 
 ## Evidence ledger
 
@@ -178,7 +178,7 @@ These results were supplied in the conversation by the user, not independently r
 
 **Pass, within tested scope:** (1) official index and store file retrieval under Scrapy with robots obedience; (2) actual per-chain file parsing and prices; (3) two-day same-store history; (4) more than 100 conservative descriptor-consistent cross-retailer pairs from a reproducibly sampled, prefiltered cohort; (5) documented source terms and constrained public release policy.
 
-**Not tested or authorized:** continuous scheduling/retry reliability; end-to-end PostgreSQL idempotency; external manufacturer/GS1 resolution for the 58 unresolved pairs; full-catalog matching precision; ambiguous dual-different source prices; data publication rights; Tableau workbook. **Phase 0 formally closed on 2026-11-19; Phase 1 was subsequently authorized and is in progress.**
+**Not tested or authorized at the Phase 0 checkpoint:** continuous scheduling/retry reliability; end-to-end PostgreSQL idempotency; external manufacturer/GS1 resolution for the 58 unresolved pairs; full-catalog matching precision; ambiguous dual-different source prices; data publication rights; Tableau workbook. Phase 0 closed on 2026-11-19; subsequent Phase 1 and synthetic Phase 2 evidence appears above.
 
 **Evidence provenance:** the original CSV data were downloaded and processed during user-executed temporary Scrapy feasibility scripts. Audit logs were supplied in conversation; source-row detail and private 160-item review notes are **not committed to this repository**, avoiding unnecessary public exposure or redistribution.
 

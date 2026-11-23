@@ -12,7 +12,7 @@ A decision records approved direction and trade-offs; it does **not** imply impl
 
 ### D-002 — PostgreSQL for historical storage
 
-- **Status:** accepted direction; not implemented.
+- **Status:** accepted direction; an initial Phase 2 implementation has synthetic local and hosted validation, with owner review pending.
 - **Rationale:** relational product/store identity, idempotent ingestion, file provenance and dated price observations.
 
 ### D-003 — Tableau as primary BI

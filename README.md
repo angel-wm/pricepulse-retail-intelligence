@@ -40,12 +40,12 @@ uv run scrapy version
 
 1. **Phase 0 — Feasibility:** bounded source access, two-date per-store price history, price-field parsing, and at least 100 descriptor-consistent product pairs — **formally closed on 2026-11-19**.
 2. **Phase 1 — Scrapy (closed 2026-11-22):** two source-specific spiders discover SPAR's dated JSON manifests and Kaufland's asset index, then fetch permitted store price lists with bounded request rates and explicit parsing/error contracts.
-3. **Phase 2 — Data engineering:** preserve file provenance and hashes; parse **SPAR cp1250/semicolon** and **Kaufland UTF-8 BOM/tab** sources; handle regular/special price origins, GTIN and package checks, and ingest immutable, deduplicated store/date observations into PostgreSQL.
+3. **Phase 2 — Data engineering (in review):** preserve file provenance and hashes; parse **SPAR cp1250/semicolon** and **Kaufland UTF-8 BOM/tab** sources; handle regular/special price origins, GTIN and package checks, and ingest versioned, deduplicated store/date observations into PostgreSQL.
 4. **Phase 3 — Reliability:** add pytest checks, structured logs, bounded retries, scheduled runs, and quality monitoring.
 5. **Phase 4 — Tableau:** analyze same-store price history and verified cross-retailer comparisons. Use **synthetic data** for a public portfolio demonstration unless source-data redistribution rights are separately verified.
 6. **Phase 5 — Release:** provide tested reproduction steps, measured results, documentation, and a portfolio-ready repository.
 
-These are intended deliverables, **not claims of implementation**.
+These phases mix completed work and planned deliverables; [Current state](CURRENT_STATE.md) and [Validation](VALIDATION.md) describe the implemented scope and its evidence.
 
 ## Technology
 
@@ -67,6 +67,7 @@ Scrapy remains the primary acquisition framework. No additional scraping framewo
 - [Project specification](PROJECT_SPEC.md) — analytical scope and data contract
 - [Roadmap](ROADMAP.md) — phase gates
 - [Architecture](ARCHITECTURE.md) — proposed design
+- [PostgreSQL](POSTGRESQL.md) — local ingestion, review and validation
 - [Decisions](DECISIONS.md) — recorded decisions
 - [Validation](VALIDATION.md) — actual evidence and outstanding tests
 - [Repository context](REPO_CONTEXT.md) and [agent instructions](AGENTS.md) — navigation and working conventions

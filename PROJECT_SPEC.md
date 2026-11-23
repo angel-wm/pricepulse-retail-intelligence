@@ -1,6 +1,6 @@
 # PricePulse project specification
 
-**Status (2026-11-19):** **Phase 0 formally CLOSED by owner approval.** Kaufland + SPAR Croatia passed bounded source feasibility, including a 102-pair descriptor-consistency gate. **Phase 1 implementation was authorized on 2026-11-19 and is in progress.**
+**Status (2026-11-22):** Phase 0 and Phase 1 are formally closed. Phase 2 is in owner review after synthetic PostgreSQL validation. Kaufland + SPAR Croatia passed bounded source feasibility, including a 102-pair descriptor-consistency gate; this is not manufacturer certification.
 
 ## Problem and value
 
@@ -41,7 +41,7 @@ PricePulse focuses on grocery and household goods sold in **Croatia**, using off
 | sale_indicator, baseline_price_eur | Context | Keep source-specific sale meaning; baseline/anchor price is not a time-stamped historical observation |
 | raw_row, ingestion_status | Audit and quality | Preserve evidence of invalid rows without silently converting them |
 
-Fields remain a **planned PostgreSQL contract**, not an implemented schema. Measured CSV dialects differ: **SPAR cp1250 + semicolon**, **Kaufland UTF-8 BOM + tab**. Version header mappings, unit semantics and price selection; quarantine unexpected dual-different price observations rather than guessing precedence.
+This table remains the intended contract, not a claim that every attribute is modeled or validated. An initial PostgreSQL schema and loader have been tested with synthetic inputs; see [PostgreSQL](POSTGRESQL.md). Measured CSV dialects differ: **SPAR cp1250 + semicolon**, **Kaufland UTF-8 BOM + tab**. Version header mappings, unit semantics and price selection; quarantine unexpected dual-different price observations rather than guessing precedence.
 
 ## Phase 0 evidence and implementation quality gates
 
