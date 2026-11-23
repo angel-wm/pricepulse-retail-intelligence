@@ -1,0 +1,38 @@
+name: pricepulse
+
+services:
+  db:
+    image: postgres:18.7-bookworm
+    environment:
+      POSTGRES_DB: pricepulse
+      POSTGRES_USER: pricepulse
+      POSTGRES_PASSWORD: ${PRICEPULSE_DB_PASSWORD:-}
+    ports:
+      - "127.0.0.1:${PRICEPULSE_DB_PORT:-55432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+  db-test:
+    image: postgres:18.7-bookworm
+    profiles: ["test"]
+    environment:
+      POSTGRES_DB: pricepulse_test
+      POSTGRES_USER: pricepulse_test
+      POSTGRES_PASSWORD: ${PRICEPULSE_TEST_DB_PASSWORD:-}
+    ports:
+      - "127.0.0.1:${PRICEPULSE_TEST_DB_PORT:-55433}:5432"
+    tmpfs:
+      - /var/lib/postgresql
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -h 127.0.0.1 -U \"$$POSTGRES_USER\" -d \"$$POSTGRES_DB\""]
+      interval: 2s
+      timeout: 3s
+      retries: 15
+
+volumes:
+  postgres-data:

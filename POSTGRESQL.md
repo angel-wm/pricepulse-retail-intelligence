@@ -2,14 +2,47 @@
 
 Phase 2 code loads a locally held source CSV into a private, dedicated PostgreSQL database. Do not put genuine retailer files, row-level output, database dumps or credentials in public assets. The prototype does not schedule collection or automatically retain the raw downloaded file.
 
+## Local PostgreSQL with Docker Compose
+
+Use Docker Desktop in Linux container mode, or Docker Engine with the Compose plugin. Run these commands in PowerShell 7 from the repository root after the [Python setup](README.md#local-quick-start-windows-powershell). Compose runs PostgreSQL 18.7. Python, Scrapy and Tableau run on the host.
+
+### Development database
+
+```powershell
+$env:PRICEPULSE_DB_PASSWORD = Read-Host 'Local PostgreSQL password' -MaskInput
+docker compose up --wait db
+$encodedPassword = [uri]::EscapeDataString($env:PRICEPULSE_DB_PASSWORD)
+$env:PRICEPULSE_DSN = "postgresql://pricepulse:$encodedPassword@127.0.0.1:55432/pricepulse"
+uv run --locked python -m pricepulse.ingest init
+```
+
+Set a private, nonempty password before the first start. PostgreSQL initializes the database and login once in the `postgres-data` volume. On subsequent starts, use the original password. Changing the environment variable alone leaves the stored password in place. The `init` command is for initial schema setup.
+
+The host port defaults to `55432`. If it is in use, set `PRICEPULSE_DB_PORT` before starting and use the same port in the DSN. The port binds to IPv4 loopback. The [official PostgreSQL 18 image](https://hub.docker.com/_/postgres) stores the cluster below `/var/lib/postgresql`.
+
+Run `docker compose down` to stop the development service and retain its volume. Starting it again with the same Compose project reuses the data. **Adding `--volumes` permanently removes the project's development database.** Back up anything you need before resetting it. Run `docker compose ps` or `docker compose logs db` to diagnose startup problems.
+
+### Disposable integration database
+
+```powershell
+$env:PRICEPULSE_TEST_DB_PASSWORD = [guid]::NewGuid().ToString('N')
+docker compose up --wait db-test
+$env:PRICEPULSE_TEST_DSN = "postgresql://pricepulse_test:$env:PRICEPULSE_TEST_DB_PASSWORD@127.0.0.1:55433/pricepulse_test"
+uv run --locked python -m pytest -q
+docker compose rm --stop --force db-test
+Remove-Item Env:PRICEPULSE_TEST_DSN, Env:PRICEPULSE_TEST_DB_PASSWORD
+```
+
+The named test service starts its profile automatically and can run alongside development. It has a separate login and loopback port, and PostgreSQL writes to temporary memory-backed storage. Stopping it discards test data. The cleanup command only targets `db-test`. If you set `PRICEPULSE_TEST_DB_PORT`, use that port in the test DSN. Keep genuine data in your dedicated private development database.
+
 ## Initial setup and ingestion
 
 Use a dedicated, empty database or schema. `init` applies the current initial SQL files to the connection's `search_path`; it is not a migration system for an existing deployment. Set `PRICEPULSE_DSN` privately using PostgreSQL connection parameters, then:
 
 ```powershell
 uv sync --locked
-uv run python -m pricepulse.ingest init
-uv run python -m pricepulse.ingest load --source spar --store 8702 --date 2026-11-17 --url https://www.spar.hr/example.csv --collected-at 2026-11-22T23:00:00+00:00 --http-status 200 --csv data/private-source.csv
+uv run --locked python -m pricepulse.ingest init
+uv run --locked python -m pricepulse.ingest load --source spar --store 8702 --date 2026-11-17 --url https://www.spar.hr/example.csv --collected-at 2026-11-22T23:00:00+00:00 --http-status 200 --csv data/private-source.csv
 ```
 
 The path, URL, date and time above are illustrative placeholders, not a real acquisition record. Supply the actual file and metadata from a permitted retrieval. The loader computes SHA-256 from the bytes supplied but cannot independently verify the caller-provided URL, date, retrieval time or HTTP status. It rejects non-HTTPS or unapproved source hosts and currently supports only SPAR 8702 and Kaufland 5630. Collection is separate from ingestion; preserve the raw file privately if later verification is required.

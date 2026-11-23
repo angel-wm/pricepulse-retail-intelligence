@@ -54,6 +54,6 @@ Review remaining candidates in private batches as needed for analytics. Use the 
 
 ## Planned local reproducibility improvement
 
-In Phase 5, after owner review of Phase 3 and authorization of Phase 5 work, add a Docker Compose PostgreSQL setup for local development and synthetic integration tests ([PULSE-45](https://angel231995.atlassian.net/browse/PULSE-45)). Document persistence, safe volume removal, private credentials and a disposable test database. Keep genuine retailer data and credentials out of public artifacts. This is planned work, not a Phase 2 or 3 closure criterion or evidence of operational reliability.
+The owner requested the Docker Compose PostgreSQL setup during Phase 5 while Phase 3 review remains open. [PULSE-45](https://angel231995.atlassian.net/browse/PULSE-45) covers a persistent development database, an isolated disposable test database and the [local setup guide](POSTGRESQL.md#local-postgresql-with-docker-compose). Phase 3 retains its own scheduled-run evidence requirement.
 
 Keep the existing local collection-only scheduler and Scrapy execution unchanged for this improvement. Consider an application image separately if a concrete portability need arises.

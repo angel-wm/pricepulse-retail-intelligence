@@ -14,6 +14,6 @@ Phase 3 has a local run journal, two-store batch, feed completeness and index di
 
 Phase 4 delivered an interactive English Tableau snapshot built from real data for two stores and two dates. It covers 112,170 listed-price observations, 17,803 same-store comparisons, four approved cross-store gaps and source-file quality. The private workbook and screenshot are ready for local use. Additional pair review, automatic refresh and public delivery remain open. See [Tableau analytics](TABLEAU.md) and [Validation](VALIDATION.md).
 
-Phase 5 has a verified clean Windows setup, 65 passing PostgreSQL-backed tests, a successful manual capture of both 23 November files, and a four-file replay reconciled with the private Tableau workbook. See [Validation](VALIDATION.md) for the evidence.
+Phase 5 has a verified clean Windows setup, a successful manual capture of both 23 November files, and a four-file replay reconciled with the private Tableau workbook. Docker Compose now provides a persistent development database and a disposable test service that passed all 65 PostgreSQL-backed tests. See [Validation](VALIDATION.md) for the evidence.
 
 **Next gate:** observe a normal run of the permanent collection task and complete Phase 3 review. Public delivery remains tracked under PULSE-23 and PULSE-26.

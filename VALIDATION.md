@@ -1,5 +1,11 @@
 # Validation and evidence
 
+## Phase 5 Docker Compose validation — 2026-11-23
+
+Docker Compose v5.7.1 with Docker Engine 29.9.3 started the PostgreSQL 18.7 development and test services. Both passed their readiness checks and accepted connections on their separate loopback ports. The application initialized its development schema and the schema was absent from the test database. All **65 tests passed**, including PostgreSQL integration tests, with `PRICEPULSE_TEST_DSN` pointed at the Compose test service.
+
+After `docker compose down` and recreation, the development schema persisted in its named volume and a test-only probe table disappeared. Removing just `db-test` left the development database reachable. A separate Compose project started only `db-test` without development credentials. Both validation projects were removed with their test resources. See the [Docker Compose setup](POSTGRESQL.md#local-postgresql-with-docker-compose).
+
 ## Phase 5 reproducible setup — 2026-11-23
 
 A fresh Windows virtual environment created with `uv sync --locked --python 3.12` loaded Python 3.12.16 and Scrapy 2.20.0. The full suite passed **65 tests**, including the PostgreSQL integration tests, against a disposable PostgreSQL 18.7 cluster. The suite covers malformed inputs, immutable file replay, explicit matching and export version selection.
