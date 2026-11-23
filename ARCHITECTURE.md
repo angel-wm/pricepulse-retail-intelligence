@@ -1,10 +1,10 @@
 # Intended architecture
 
-**Status: Phase 1 is closed; Phase 2 awaits owner review and Phase 3 is in progress.** The source adapters were bounded smoke-tested. An initial PostgreSQL schema, loader and comparison review are implemented and validated with synthetic data; real-source ingestion and operational reliability remain unverified. A local collection-only task is registered but recurring live capture has not been observed. Tableau remains proposed. See [Acquisition](ACQUISITION.md), [PostgreSQL](POSTGRESQL.md), [Reliability](RELIABILITY.md) and [Validation](VALIDATION.md).
+**Status: Phase 1 is closed; Phases 2 and 3 await owner review; Phase 4 is in progress.** The source adapters were bounded smoke-tested. An initial PostgreSQL schema, loader and comparison review are implemented and validated with synthetic data; real-source ingestion and operational reliability remain unverified. A local collection-only task is registered but recurring live capture has not been observed. An initial synthetic Tableau worksheet and local analytical exports exist; the dashboard is incomplete. See [Acquisition](ACQUISITION.md), [PostgreSQL](POSTGRESQL.md), [Reliability](RELIABILITY.md) and [Validation](VALIDATION.md).
 
 ## Proposed data flow
 
-The diagram shows the intended end-to-end architecture. The current loader accepts locally held CSV files; the local task performs collection only. XML/compressed formats and Tableau are not implemented, and recurring scheduling remains unverified.
+The diagram shows the intended end-to-end architecture. The current loader accepts locally held CSV files; the local task performs collection only. XML/compressed formats and the Tableau dashboard are not implemented, and normal daily scheduling remains unverified.
 
 ```text
 Kaufland Croatia price-list index     SPAR Croatia price-list index

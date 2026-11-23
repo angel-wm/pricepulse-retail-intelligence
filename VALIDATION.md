@@ -1,5 +1,9 @@
 # Validation and evidence
 
+## Phase 4 initial analytical export — 2026-11-23
+
+The owner authorized Phase 4 before reviewing Phases 2 and 3. A private CSV export for explicitly selected PostgreSQL file versions was tested with synthetic observations: a verified comparison reconciled to -0.20 EUR, file age to one day, and conflicting versions were rejected before CSV output. The full local suite passed 62 tests using a temporary PostgreSQL instance, which was stopped afterward. Fictional CSV exports contained 24 observations, 16 changes, 12 comparisons and six quality records; the synthetic comparison spread was -0.10 EUR. Tableau Desktop Free loaded 24 rows and a preliminary local worksheet was saved; Tableau filter and measure reconciliation and a shareable demo remain incomplete. See [Tableau analytics](TABLEAU.md).
+
 ## Phase 3 authorization — 2026-11-22
 
 The owner authorized starting Phase 3 before reviewing Phases 2 and 3. Neither phase was formally closed by that instruction.

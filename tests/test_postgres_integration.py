@@ -106,7 +106,7 @@ def test_special_and_conflicting_prices_remain_auditable(db):
     assert db.execute("SELECT regular_raw,special_raw FROM source_row WHERE sku='sku-2'").fetchone() == ("2,00", "1,00")
 
 
-def test_comparison_requires_version_specific_review_and_reconciles(db):
+def test_comparison_requires_version_specific_review_and_reconciles(db, tmp_path):
     sf = FIELDS["spar"]
     first = load(db, synthetic_csv("1,00", extra={sf["code"]: "s-2", sf["title"]: "Other", sf["brand"]: "Example", sf["quantity"]: "1", sf["unit"]: "KOM", sf["regular"]: "2,00", sf["gtin"]: "96385074"}))
     f = FIELDS["kaufland"]
@@ -124,6 +124,15 @@ def test_comparison_requires_version_specific_review_and_reconciles(db):
     assert queue_candidates(db, second["file_id"], first["file_id"]) == {"candidates": 2, "queued": 0}
     assert db.execute("SELECT count(*) FROM verified_price_comparison").fetchone()[0] == 0
     record_review(db, left, right, "verified", "Synthetic descriptors and pack reviewed")
+    from datetime import date
+    from pricepulse.analytics import export_analytics
+    export_analytics(db, [first['file_id'], second['file_id']], tmp_path, as_of=date(2026, 11, 18))
+    with (tmp_path / 'comparisons.csv').open(newline='', encoding='utf-8') as stream:
+        comparisons = list(csv.DictReader(stream))
+    assert len(comparisons) == 1 and comparisons[0]['price_difference'] == '-0.20'
+    with (tmp_path / 'quality.csv').open(newline='', encoding='utf-8') as stream:
+        quality = list(csv.DictReader(stream))
+    assert len(quality) == 2 and all(row['file_age_days'] == '1' for row in quality)
     assert queue_candidates(db, first["file_id"], second["file_id"])["queued"] == 0
     assert db.execute("SELECT left_price,right_price,price_difference FROM verified_price_comparison").fetchall() == [(Decimal("1.00"), Decimal("1.20"), Decimal("-0.20"))]
     assert db.execute("SELECT count(*) FROM price_history").fetchone()[0] == 4
@@ -137,7 +146,7 @@ def test_comparison_requires_version_specific_review_and_reconciles(db):
     assert db.execute("SELECT decision FROM comparison_review_event ORDER BY id").fetchall() == [("review",), ("review",), ("verified",), ("verified",), ("rejected",)]
 
 
-def test_price_changes_require_explicit_unambiguous_versions(db):
+def test_price_changes_require_explicit_unambiguous_versions(db, tmp_path):
     first = load(db, synthetic_csv("1,00"), day="2026-11-16")
     second = load(db, synthetic_csv("1,20"))
     changed_version = load(db, synthetic_csv("1,30"))
@@ -145,6 +154,11 @@ def test_price_changes_require_explicit_unambiguous_versions(db):
     assert rows == [(Decimal("1.00"), Decimal("1.20"), Decimal("0.20"))]
     with pytest.raises(psycopg.errors.RaiseException), db.transaction():
         db.execute("SELECT * FROM price_changes(%s)", ([first["file_id"], second["file_id"], changed_version["file_id"]],)).fetchall()
+    from datetime import date
+    from pricepulse.analytics import export_analytics
+    with pytest.raises(psycopg.errors.RaiseException):
+        export_analytics(db, [first['file_id'], second['file_id'], changed_version['file_id']], tmp_path, as_of=date(2026, 11, 18))
+    assert not list(tmp_path.glob('*.csv'))
     changed_product = load(db, synthetic_csv("1,40", title="Example altered pack"), day="2026-11-18")
     assert db.execute("SELECT * FROM price_changes(%s)", ([second["file_id"], changed_product["file_id"]],)).fetchall() == []
     assert queue_history_changes(db, second["file_id"], changed_product["file_id"]) == 1
@@ -173,6 +187,18 @@ def test_price_change_counts_reconcile_with_fixture(db):
     result = db.execute("""SELECT count(*) FILTER (WHERE difference>0), count(*) FILTER (WHERE difference<0), count(*) FILTER (WHERE difference=0)
                            FROM price_changes(%s)""", ([first["file_id"], second_day["file_id"]],)).fetchone()
     assert result == (1, 1, 0)  # Independently calculated from the two synthetic input rows.
+
+
+def test_fictional_demo_exports_reconcile_with_expected_values(tmp_path):
+    from pricepulse.synthetic_demo import build
+    build(DSN, tmp_path)
+    def rows(name):
+        with (tmp_path / f'{name}.csv').open(encoding='utf-8', newline='') as stream:
+            return list(csv.DictReader(stream))
+    observations, changes, comparisons, quality = (rows(n) for n in ('observations', 'changes', 'comparisons', 'quality'))
+    assert (len(observations), len(changes), len(comparisons), len(quality)) == (24, 16, 12, 6)
+    assert all(Decimal(row['price_difference']) == Decimal('-0.10') for row in comparisons)
+    assert all(row['priced_fraction'] == '1.00000000000000000000' for row in quality)
 
 
 def test_resume_after_commit_interruption_is_idempotent(db, tmp_path, monkeypatch):
