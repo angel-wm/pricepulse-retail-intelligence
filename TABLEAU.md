@@ -10,7 +10,7 @@ With a private database initialized and populated as described in [PostgreSQL](P
 uv run --locked python -m pricepulse.analytics --file-id 1 --file-id 2 --directory data/tableau-private --as-of 2026-11-23
 ```
 
-The IDs and reference date are examples, not verified source records. An invalid, duplicate or conflicting file selection fails before writing CSVs. The output may contain genuine retailer names, codes and prices: keep it private and do not commit, upload or publish it. Use a separate, clearly labelled synthetic dataset for any public demonstration.
+The IDs and reference date are examples, not verified source records. An invalid, duplicate or conflicting file selection fails before writing CSVs. The output may contain genuine retailer names, codes and prices: keep it private and do not commit, upload or publish it. The public portfolio data approach remains undecided; a separate, clearly labelled synthetic dataset is one option.
 
 | Export | Grain and meaning |
 | --- | --- |

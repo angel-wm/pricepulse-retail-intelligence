@@ -60,7 +60,7 @@ A decision records approved direction and trade-offs; it does **not** imply impl
 - **Decision:** retain **PricePulse**, qualify SPAR Zagreb Jankomir (store 8702) and Kaufland Zagreb Antuna Šoljana (store 5630) for initial local-source engineering, and keep Lidl out of the first release.
 - **Evidence:** Scrapy downloaded price-list CSVs from both stores for 2026-11-16/17. Promotion-aware parsing yielded 8,869 same-date priced code matches, 7,772 four-file-stable codes and 4,155 strict automatic candidates. A private manual review of 160 selected descriptions classified **102 consistent** and **58 unresolved**; this is not independent physical-manufacturer verification. See [Validation](VALIDATION.md).
 - **Contract:** preserve regular and special price columns, origin and source store/date. Unknown conflicting dual-populated prices must fail closed until their semantics are confirmed. Monitor source-specific encoding/delimiters and store-level row-count changes.
-- **Public use:** genuine SPAR-source lists or real-data extracts are not approved for publication under currently reviewed terms. A clearly synthetic Tableau Public portfolio demo is the default unless sharing rights are verified.
+- **Public use:** genuine SPAR-source lists or real-data extracts are not approved for publication under currently reviewed terms. The owner has not decided the public portfolio data approach; a clearly synthetic demonstration remains an option.
 - **Tradeoff:** source-specific ingestion and match exceptions require quality monitoring but no additional scraping framework.
 
 ### D-010 — Formally close Phase 0; retain the Phase 1 authorization gate (2026-11-19)

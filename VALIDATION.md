@@ -89,7 +89,7 @@ Bounded live Scrapy runs on 2026-11-19 (local time) requested the 2026-11-17 fil
 | Current Kaufland–SPAR GTIN intersection | **8,869** priced shared codes (2026-11-17) | **7,772** present in both stores across two days; **4,155** strict candidates; **102/160** review-consistent on available descriptions; not an independent manufacturer/GTIN product registry check. |
 | Current schema and parser accuracy | INITIAL PRICE RULE SUPPORTED | SPAR: cp1250/semicolon, only regular-only or special-only prices; Kaufland: UTF-8 BOM/tab, regular-only or dual-equal. No dual-different prices in four files; future cases must be flagged. |
 | Repeatability and history | INITIAL TWO-DATE PASS | Same SPAR store 8702 and Kaufland store 5630 across 2026-11-16 and 2026-11-17; promotion-aware stable cohorts 31,277 and 15,533 respectively. Only two days observed. |
-| Source reuse and Tableau publication | REAL-DATA PUBLICATION ON HOLD | SPAR website terms restrict reproduction/distribution; NN 132/2026 automated-access text does not imply a general redistribution license. A clearly labeled synthetic Tableau Public demonstration is the default unless legal sharing basis is verified. |
+| Source reuse and Tableau publication | REAL-DATA PUBLICATION ON HOLD | SPAR website terms restrict reproduction/distribution; NN 132/2026 automated-access text does not imply a general redistribution license. The public portfolio data approach is undecided; synthetic data is an option. |
 | PostgreSQL and Tableau at the Phase 0 checkpoint | NOT IMPLEMENTED THEN | Phase 2 PostgreSQL work is recorded above; Tableau remains unimplemented. |
 
 ## Initial grocery acquisition probe — user-local evidence (2026-11-18)

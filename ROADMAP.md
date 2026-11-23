@@ -21,7 +21,7 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 | 1 — Scrapy acquisition | Separate SPAR JSON and Kaufland asset-index spiders; bounded CSV downloads; source-specific parsing contracts and fixtures; checks-only CI (PULSE-44) | **CLOSED 2026-11-22:** representative extraction, traceability, error-path tests and hosted CI evidence. |
 | 2 — Data engineering | File provenance, parsing, validated PostgreSQL schema, daily immutable observations | Checked idempotency, duplicate handling, historical integrity and data-quality tests |
 | 3 — Reliability | Scheduling, logs, monitoring, failure recovery and expanded CI as appropriate (PULSE-19) | Recorded successful and failed runs with measured behavior |
-| 4 — Tableau analytics | Local-source price history and strict matching; **synthetic public demonstration by default** | SQL-reconciled metrics; safe Tableau Public release only if rights are established |
+| 4 — Tableau analytics | Local-source price history and strict matching; public demonstration data approach undecided | SQL-reconciled metrics; genuine retailer data may be published only if rights are established |
 | 5 — Validation and release | README, architecture, test evidence, reproducible local setup and portfolio presentation | End-to-end tests, release documentation and explicit closeout |
 
 ## Phase 0 evidence checklist (completed; owner approved closeout 2026-11-19)

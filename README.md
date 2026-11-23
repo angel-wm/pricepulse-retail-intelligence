@@ -17,7 +17,7 @@ PricePulse is a **documentation-first Data Engineering portfolio project** to ac
 
 Croatian retailers publish official machine-readable price lists. The regulation effective **17 November 2026** expressly provides for automated collection and CSV/XML price lists. This is stronger evidence for the acquisition use case than attempting to crawl individual product pages protected by anti-bot systems.
 
-Actual local source-access, two-date history, and price/identity evidence is in [Validation](VALIDATION.md) and [Source feasibility](SOURCE_FEASIBILITY.md). Initial same-date codes with price totaled 8,869 after promotional-price handling, but these are **not all verified product matches**. Previous music-retailer candidates were dropped after access blocks or restrictions. Public real-data redistribution remains on hold; a synthetic Tableau Public demo is the default.
+Actual local source-access, two-date history, and price/identity evidence is in [Validation](VALIDATION.md) and [Source feasibility](SOURCE_FEASIBILITY.md). Initial same-date codes with price totaled 8,869 after promotional-price handling, but these are **not all verified product matches**. Previous music-retailer candidates were dropped after access blocks or restrictions. Public real-data redistribution remains on hold; the portfolio data approach has not been decided.
 
 ## Local quick start (Windows PowerShell)
 
@@ -42,7 +42,7 @@ uv run scrapy version
 2. **Phase 1 — Scrapy (closed 2026-11-22):** two source-specific spiders discover SPAR's dated JSON manifests and Kaufland's asset index, then fetch permitted store price lists with bounded request rates and explicit parsing/error contracts.
 3. **Phase 2 — Data engineering (in review):** preserve file provenance and hashes; parse **SPAR cp1250/semicolon** and **Kaufland UTF-8 BOM/tab** sources; handle regular/special price origins, GTIN and package checks, and ingest versioned, deduplicated store/date observations into PostgreSQL.
 4. **Phase 3 — Reliability (awaiting owner review):** run evidence, recovery, local scheduling and provisional quality monitoring are implemented; see [Reliability](RELIABILITY.md).
-5. **Phase 4 — Tableau (in progress):** analyze same-store price history and verified cross-retailer comparisons. Use **synthetic data** for a public portfolio demonstration unless source-data redistribution rights are separately verified. An initial private analytical export is documented in [Tableau analytics](TABLEAU.md); the workbook is not yet complete.
+5. **Phase 4 — Tableau (in progress):** analyze same-store price history and verified cross-retailer comparisons. The public portfolio data approach remains undecided; synthetic data is an option, and real-source publication requires separately verified redistribution rights. An initial private analytical export is documented in [Tableau analytics](TABLEAU.md); the workbook is not yet complete.
 6. **Phase 5 — Release:** provide tested reproduction steps, measured results, documentation, and a portfolio-ready repository.
 
 These phases mix completed work and planned deliverables; [Current state](CURRENT_STATE.md) and [Validation](VALIDATION.md) describe the implemented scope and its evidence.
@@ -74,3 +74,7 @@ Scrapy remains the primary acquisition framework. No additional scraping framewo
 - [Repository context](REPO_CONTEXT.md) and [agent instructions](AGENTS.md) — navigation and working conventions
 
 Repository documentation follows [Repository Documentation Readability](https://github.com/angel-wm/repository-documentation-readability). **Phase 0 was formally closed on 2026-11-19.** Phase 1 implementation was authorized on 2026-11-19; public release of genuine retailer data remains unapproved.
+
+## License
+
+Project-authored code and documentation are available under the [MIT License](LICENSE). Third-party data, trademarks, and other materials remain subject to their respective owners' rights and terms; this license does not grant permission to publish retailer data.

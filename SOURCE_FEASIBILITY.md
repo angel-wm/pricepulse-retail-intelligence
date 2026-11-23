@@ -82,7 +82,7 @@ The project owner explicitly approved **formal Phase 0 closure** and synchroniza
 | Cross-date continuity | **Passed as a two-date feasibility test**: the same store IDs were used on 2026-11-16 and 2026-11-17; not proof of long-term availability. |
 | Matching quality gate | **102** description-consistent items in a deterministic 160-pair sample selected from 4,155 strict candidates; **58** held for review. Independent manufacturer/GS1 verification remains beyond the bounded gate. |
 | Formatting and drift | **Source-specific**: SPAR cp1250/semicolon; Kaufland UTF-8 BOM/tab. Store-size shifts and optional fields require monitoring. |
-| Source rights and public Tableau release | **Restricted**: no public redistribution of source files or derived real-source extracts is approved. A synthetic public dashboard is the safe default. |
+| Source rights and public Tableau release | **Restricted**: no public redistribution of source files or derived real-source extracts is approved. The public portfolio data approach is undecided; synthetic data is an option. |
 | Formal closeout and Phase 1 implementation | **Phase 0 formally CLOSED by owner approval on 2026-11-19.** Phase 1 implementation was authorized on 2026-11-19; bounded adapters are implemented and smoke-tested. |
 
 The checks are traceable in [Validation](VALIDATION.md), which distinguishes user-local test logs, inferred matching and independently unverified product properties. If access/terms change, source qualification must be revisited rather than circumventing restrictions.
