@@ -11,7 +11,7 @@ from psycopg import sql
 
 from pricepulse.contracts import FIELDS
 from pricepulse.ingest import apply_schema, ingest_file
-from pricepulse.matching import record_review
+from pricepulse.matching import queue_candidates, record_review
 
 DSN = os.environ.get("PRICEPULSE_TEST_DSN")
 pytestmark = pytest.mark.skipif(not DSN, reason="disposable PostgreSQL DSN not configured")
@@ -106,22 +106,25 @@ def test_comparison_requires_version_specific_review_and_reconciles(db):
     writer = csv.DictWriter(stream, fieldnames=list(f.values()), delimiter="\t", lineterminator="\n")
     writer.writeheader()
     writer.writerow({f["code"]: "k-1", f["title"]: "Example", f["brand"]: "Example", f["quantity"]: "1", f["unit"]: "KOM", f["regular"]: "1,20", f["gtin"]: "4006381333931"})
-    writer.writerow({f["code"]: "k-2", f["title"]: "Other", f["brand"]: "Example", f["quantity"]: "1", f["unit"]: "KOM", f["regular"]: "1,50", f["gtin"]: "96385074"})
+    writer.writerow({f["code"]: "k-2", f["title"]: "Other variant", f["brand"]: "Example", f["quantity"]: "1", f["unit"]: "KOM", f["regular"]: "1,50", f["gtin"]: "96385074"})
     second = ingest_file(db, source="kaufland", store="5630", day="2026-11-17", url="https://www.kaufland.hr/file.csv", collected_at="2026-11-22T23:00:00+00:00", status=200, body=stream.getvalue().encode("utf-8-sig"))
     left, right = (first["file_id"], 2), (second["file_id"], 2)
     assert db.execute("SELECT count(*) FROM verified_price_comparison").fetchone()[0] == 0
-    record_review(db, left, right, "review", "Awaiting product and pack review")
+    assert queue_candidates(db, first["file_id"], second["file_id"]) == {"candidates": 2, "queued": 2}
+    assert "description_variant_or_pack_review" in db.execute("SELECT explanation FROM comparison_review WHERE left_row=3").fetchone()[0]
+    assert queue_candidates(db, second["file_id"], first["file_id"]) == {"candidates": 2, "queued": 0}
     assert db.execute("SELECT count(*) FROM verified_price_comparison").fetchone()[0] == 0
     record_review(db, left, right, "verified", "Synthetic descriptors and pack reviewed")
+    assert queue_candidates(db, first["file_id"], second["file_id"])["queued"] == 0
     assert db.execute("SELECT left_price,right_price,price_difference FROM verified_price_comparison").fetchall() == [(Decimal("1.00"), Decimal("1.20"), Decimal("-0.20"))]
     assert db.execute("SELECT count(*) FROM price_history").fetchone()[0] == 4
     with pytest.raises(psycopg.errors.UniqueViolation), db.transaction():
         db.execute("INSERT INTO comparison_review(left_file,left_row,right_file,right_row,decision,explanation) VALUES (%s,2,%s,3,'verified','duplicate')", (left[0], right[0]))
-    record_review(db, (first["file_id"], 3), (second["file_id"], 3), "verified", "Second synthetic pair reviewed")
+    record_review(db, (first["file_id"], 3), (second["file_id"], 3), "verified", "Synthetic variant wording manually reconciled")
     assert db.execute("SELECT price_difference FROM verified_price_comparison ORDER BY price_difference").fetchall() == [(Decimal("-0.20"),), (Decimal("0.50"),)]
     record_review(db, right, left, "rejected", "Synthetic review reversed")
     assert db.execute("SELECT count(*) FROM verified_price_comparison").fetchone()[0] == 1
-    assert db.execute("SELECT decision FROM comparison_review_event ORDER BY id").fetchall() == [("review",), ("verified",), ("verified",), ("rejected",)]
+    assert db.execute("SELECT decision FROM comparison_review_event ORDER BY id").fetchall() == [("review",), ("review",), ("verified",), ("verified",), ("rejected",)]
 
 
 def test_price_changes_require_explicit_unambiguous_versions(db):

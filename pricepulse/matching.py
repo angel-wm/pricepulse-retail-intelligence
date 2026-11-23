@@ -17,6 +17,41 @@ def comparison_flags(left, right, brand_aliases=None):
     return flags
 
 
+def queue_candidates(conn, file_a, file_b, brand_aliases=None):
+    """Queue exact-GTIN candidates for two explicitly selected files; never approve them."""
+    if file_a == file_b:
+        raise ValueError("two distinct source files are required")
+    first, second = sorted((file_a, file_b))
+    with conn.transaction(), conn.cursor() as cur:
+        cur.execute("SELECT id,chain,price_list_date FROM source_file WHERE id IN (%s,%s) ORDER BY id", (first, second))
+        files = cur.fetchall()
+        if len(files) != 2 or files[0][1] == files[1][1] or files[0][2] != files[1][2]:
+            raise ValueError("select two files from different chains for the same date")
+        cur.execute("""SELECT l.row_number, r.row_number, l.gtin_normalized,
+                              l.title,l.brand,l.quantity,l.unit,r.title,r.brand,r.quantity,r.unit
+                       FROM source_row l JOIN source_row r ON l.gtin_normalized=r.gtin_normalized
+                       JOIN price_observation lp ON (lp.file_id,lp.row_number)=(l.file_id,l.row_number)
+                       JOIN price_observation rp ON (rp.file_id,rp.row_number)=(r.file_id,r.row_number)
+                       WHERE l.file_id=%s AND r.file_id=%s AND l.gtin_normalized IS NOT NULL
+                         AND NOT EXISTS (SELECT 1 FROM review_exception e WHERE (e.file_id,e.row_number)=(l.file_id,l.row_number))
+                         AND NOT EXISTS (SELECT 1 FROM review_exception e WHERE (e.file_id,e.row_number)=(r.file_id,r.row_number))""", (first, second))
+        pairs = cur.fetchall()
+        added = 0
+        for lrow, rrow, code, lt, lb, lq, lu, rt, rb, rq, ru in pairs:
+            left = dict(gtin_normalized=code, title=lt, brand=lb, quantity=lq, unit=lu)
+            right = dict(gtin_normalized=code, title=rt, brand=rb, quantity=rq, unit=ru)
+            flags = comparison_flags(left, right, brand_aliases)
+            explanation = "Candidate requires human review" + (": " + ", ".join(flags) if flags else "; descriptors consistent")
+            cur.execute("""INSERT INTO comparison_review(left_file,left_row,right_file,right_row,decision,explanation)
+                           VALUES (%s,%s,%s,%s,'review',%s)
+                           ON CONFLICT (left_file,left_row,right_file,right_row) DO NOTHING RETURNING id""", (first,lrow,second,rrow,explanation))
+            result = cur.fetchone()
+            if result:
+                added += 1
+                cur.execute("INSERT INTO comparison_review_event(review_id,decision,explanation) VALUES (%s,'review',%s)", (result[0], explanation))
+    return {"candidates": len(pairs), "queued": added}
+
+
 def record_review(conn, left, right, decision, explanation):
     """Persist an explicit human decision for two exact file rows, never an automatic match."""
     if decision not in {"verified", "rejected", "review"} or not explanation.strip():
