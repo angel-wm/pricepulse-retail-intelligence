@@ -107,3 +107,80 @@ The checks are traceable in [Validation](VALIDATION.md), which distinguishes use
 - [Independent crawler reference](https://github.com/senko/cijene-api)
 
 Next steps and evidence status: [Roadmap](ROADMAP.md), [Validation](VALIDATION.md), [Current state](CURRENT_STATE.md).
+
+## Expansion feasibility — 2026-11-23
+
+A one-day Zagreb sample supports prioritizing Konzum for a future third-retailer pilot.
+The sample used Konzum Super 1280 and Lidl 158 on Velimira Škorpika, along with the
+existing SPAR 8702 and Kaufland 5630 baseline for the same publication date.
+Both candidate CSVs downloaded from public retailer links and are stored under ignored
+`data/`. See the [Konzum price-list index](https://www.konzum.hr/cjenici) and
+[Lidl price-list index](https://www.lidl.hr/c/cijene/s10073252).
+
+Counts use distinct checksum-valid GTIN-8, GTIN-12, GTIN-13 or GTIN-14 values normalized
+to 14 digits, with a positive listed price. The two Lidl barcode fields were considered
+together and all rows had at most one distinct valid code. SPAR and Kaufland counts
+use the private Tableau observations export for the two fixed stores.
+
+| Candidate | Source rows | Priced GTINs | With SPAR | With Kaufland | With both |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| Konzum 1280 | 26,581 | 24,158 | 9,279 | 7,489 | 5,961 |
+| Lidl 158 | 16,232 | 15,242 | 1,023 | 1,020 | 877 |
+
+SPAR and Kaufland share 8,854 priced GTINs. The candidates share 1,002 with each
+other, and 777 GTINs appear across all four stores. Matching codes identify candidates
+for variant review. Verify brand, size, unit and pack count before comparing prices.
+
+Both sample files decoded as UTF-8. Konzum used commas and all rows had a positive
+retail price. Lidl used semicolons and 1,706 rows had a positive special price
+with no positive regular price. A pilot should verify the promotion fields, code
+duplicates and store/date selection before assigning a price for comparison.
+
+Repeat the comparison for the same four stores on additional dates and review a sample
+across categories. Track how many products gain another price option and whether
+their price or promotion changes the comparison. Lidl can support a smaller matched
+basket or a separate equivalent-products study, where equivalence requires explicit
+rules for quantity and product attributes.
+
+This was a bounded feasibility check. Adding a production source requires a separate
+scope decision. Any public use of retailer data remains subject to verified reuse rights.
+
+### Two-date expansion decision
+
+The follow-up downloaded the same candidate stores for 17 November and compared
+them with the existing SPAR 8702 and Kaufland 5630 export for both dates. The two
+dates are six days apart. Rows with ambiguous prices or conflicting valid codes
+were excluded. Price rankings also excluded a code when any participating store
+had more than one observation for it on that date. Rankings use published
+prices, including special-only prices, before checking promotion eligibility.
+
+| Measure | 17 Nov | 23 Nov |
+| --- | ---: | ---: |
+| SPAR and Kaufland shared priced codes | 8,869 | 8,854 |
+| Also present in Konzum | 5,968 | 5,961 |
+| Also present in Lidl | 870 | 877 |
+| Present in all four stores | 771 | 777 |
+| Konzum below both baseline stores | 818 | 672 |
+| Lidl below both baseline stores | 215 | 218 |
+| Lidl below all three other stores | 168 | 168 |
+| Lidl shares a code with a baseline store that Konzum lacks | 234 | 243 |
+
+The three-store cohort persisted across both dates for 5,900 Konzum codes and
+836 Lidl codes. The price-ranking step excluded 36 and 48 duplicate-code
+candidates for Lidl against both baseline stores. A private spot check of 12
+price-winning candidates per chain on 23 November found missing pack details
+and a possible Lidl variant conflict. The ranking counts are screening results,
+not verified savings or basket rankings.
+
+Konzum used the same comma-delimited headers across both dates. Lidl moved from
+comma-delimited to semicolon-delimited data and changed its headers and barcode
+fields. Lidl had 1,934 special-only rows on 17 November and 1,706 on 23 November.
+These changes require explicit format detection and duplicate handling in any
+future Lidl adapter.
+
+**Recommendation.** The owner authorized Konzum as the third retailer on 2026-11-23.
+Integration is tracked in [PULSE-46](https://angel231995.atlassian.net/browse/PULSE-46). Defer Lidl as a general source. Consider Lidl later for
+a defined basket if audited variants and promotion eligibility confirm that its
+incremental cheapest offers justify maintaining the additional adapter. Before
+operational use, verify regular scheduled capture and matching on the selected
+stores. Keep real retailer artifacts local pending a verified basis for reuse.

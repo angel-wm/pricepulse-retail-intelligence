@@ -92,7 +92,7 @@ def test_batch_metrics_reports_only_explicit_batches():
     incomplete = {**base, "status": "incomplete", "sources": {"spar": {"crawl_status": "success"}, "kaufland": {"crawl_status": "failed"}}}
     result = batch_metrics([completed, incomplete])
     assert (result["batches"], result["completed"], result["incomplete_or_failed"]) == (2, 1, 1)
-    assert result["source_success"] == {"spar": 2, "kaufland": 1}
+    assert result["source_success"] == {"spar": 2, "kaufland": 1, "konzum": 0}
     assert result["durations_seconds"] == [10, 10]
     with pytest.raises(ValueError):
         batch_metrics([{**base, "status": "running"}])

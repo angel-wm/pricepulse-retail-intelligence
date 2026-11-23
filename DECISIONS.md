@@ -103,3 +103,15 @@ At the owner's direction, Phase 4 is closed for the English Tableau workbook wit
 ### D-017 — Begin Phase 5 validation and release preparation (2026-11-23)
 
 The owner authorized Phase 5 work while Phase 3 remains open. The scope covers end-to-end validation, reproducible setup and release preparation. Publishing genuine retailer observations requires a verified sharing basis for the artifacts concerned.
+
+### D-018 — Add Konzum as the third local source (2026-11-23)
+
+The owner authorized Konzum Super 1280 for the local acquisition and PostgreSQL
+cohort. In the two-date Zagreb sample, 5,900 priced codes appeared in Konzum,
+SPAR and Kaufland on both dates. Lidl is deferred because its shared cohort
+was smaller and its CSV layout changed between samples. Keep genuine retailer
+artifacts private and review product variants and promotion eligibility before
+using cross-store price gaps.
+
+See [PULSE-46](https://angel231995.atlassian.net/browse/PULSE-46) and
+[Source feasibility](SOURCE_FEASIBILITY.md#two-date-expansion-decision).

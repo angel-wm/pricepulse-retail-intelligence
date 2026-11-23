@@ -4,9 +4,22 @@ import io
 import re
 from decimal import Decimal, InvalidOperation
 
+STORES = {"spar": "8702", "kaufland": "5630", "konzum": "1280"}
+DIALECTS = {"spar": ("cp1250", ";"), "kaufland": ("utf-8-sig", "\t"), "konzum": ("utf-8-sig", ",")}
+
 FIELDS = {
     "spar": {"title": "naziv", "code": "šifra", "brand": "marka", "quantity": "neto količina", "unit": "jedinica mjere", "regular": "MPC (EUR)", "special": "MPC za vrijeme posebnog oblika prodaje (EUR)", "gtin": "barkod", "category": "kategorija proizvoda"},
     "kaufland": {"title": "naziv proizvoda", "code": "šifra proizvoda", "brand": "marka proizvoda", "quantity": "neto količina(KG)", "unit": "jedinica mjere", "regular": "maloprod.cijena(EUR)", "special": "MPC poseb.oblik prod", "gtin": "barkod", "category": "kategorija proizvoda"},
+    "konzum": {
+        "title": "NAZIV PROIZVODA",
+        "code": "ŠIFRA PROIZVODA",
+        "brand": "MARKA PROIZVODA",
+        "quantity": "NETO KOLIČINA",
+        "unit": "JEDINICA MJERE",
+        "listed": "MALOPRODAJNA CIJENA",
+        "promotion": "POSEBAN OBLIK PRODAJE",
+        "gtin": "BARKOD",
+    },
 }
 
 def gtin(value):
@@ -16,11 +29,12 @@ def gtin(value):
     total = sum(int(n) * (3 if i % 2 == 0 else 1) for i, n in enumerate(reversed(raw[:-1])))
     return raw.zfill(14) if (10 - total % 10) % 10 == int(raw[-1]) else None
 
-def amount(value):
+def amount(value, *, allow_dot=False):
     value = value.strip()
     if not value:
         return None
-    if not re.fullmatch(r"(?:\d+(?:,\d+)?|,\d+)", value):
+    separator = "[.,]" if allow_dot else ","
+    if not re.fullmatch(rf"(?:\d+(?:{separator}\d+)?|{separator}\d+)", value):
         raise ValueError("invalid price")
     try:
         result = Decimal(value.replace(",", "."))
@@ -31,7 +45,7 @@ def amount(value):
     return result
 
 def parse_csv(body, source, store_id, date, url, sha256):
-    encoding, delimiter = ("cp1250", ";") if source == "spar" else ("utf-8-sig", "\t")
+    encoding, delimiter = DIALECTS[source]
     reader = csv.DictReader(io.StringIO(body.decode(encoding), newline=""), delimiter=delimiter, strict=True)
     mapping = FIELDS[source]
     if not reader.fieldnames or len(set(reader.fieldnames)) != len(reader.fieldnames) or not set(mapping.values()).issubset(reader.fieldnames):
@@ -43,8 +57,17 @@ def parse_csv(body, source, store_id, date, url, sha256):
         record.update(source_chain=source, source_store_id=store_id, price_list_date=date, source_url=url, source_file_hash=sha256, raw_row=row, row_number=row_number)
         record["gtin_raw"] = record.pop("gtin")
         record["gtin_normalized"] = gtin(record["gtin_raw"])
+        if source == "konzum":
+            listed = record.pop("listed")
+            promotion = record.pop("promotion").strip().upper()
+            record.update(regular=listed if promotion == "NE" else "", special=listed if promotion == "DA" else "")
+            if record["gtin_normalized"] == "00000000000000":
+                record["gtin_normalized"] = None
         try:
-            regular, special = amount(record["regular"]), amount(record["special"])
+            if source == "konzum" and promotion not in {"DA", "NE"}:
+                raise ValueError("unknown promotion indicator")
+            regular = amount(record["regular"], allow_dot=source == "konzum")
+            special = amount(record["special"], allow_dot=source == "konzum")
             if regular and special and regular != special:
                 raise ValueError("conflicting prices")
             if not regular and not special:

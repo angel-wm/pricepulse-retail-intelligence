@@ -16,7 +16,7 @@ $env:PRICEPULSE_DSN = "postgresql://pricepulse:$encodedPassword@127.0.0.1:55432/
 uv run --locked python -m pricepulse.ingest init
 ```
 
-Set a private, nonempty password before the first start. PostgreSQL initializes the database and login once in the `postgres-data` volume. On subsequent starts, use the original password. Changing the environment variable alone leaves the stored password in place. The `init` command is for initial schema setup.
+Set a private, nonempty password before the first start. PostgreSQL initializes the database and login once in the `postgres-data` volume. On subsequent starts, use the original password. Changing the environment variable alone leaves the stored password in place. The `init` command also applies schema updates. Run it on an existing private database before ingesting Konzum 1280. The update extends the retailer constraint and preserves existing files and observations.
 
 The host port defaults to `55432`. If it is in use, set `PRICEPULSE_DB_PORT` before starting and use the same port in the DSN. The port binds to IPv4 loopback. The [official PostgreSQL 18 image](https://hub.docker.com/_/postgres) stores the cluster below `/var/lib/postgresql`.
 

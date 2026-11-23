@@ -2,8 +2,9 @@ import hashlib
 import json
 import pytest
 from scrapy.http import HtmlResponse, TextResponse
+from scrapy.exceptions import CloseSpider
 from pricepulse.contracts import FIELDS, amount, gtin, parse_csv
-from pricepulse.spiders import KauflandSpider, SparSpider, safe_url
+from pricepulse.spiders import KauflandSpider, KonzumSpider, SparSpider, safe_url
 
 @pytest.mark.parametrize("source,encoding,sep", [("spar", "cp1250", ";"), ("kaufland", "utf-8-sig", "\t")])
 def test_prices_and_dialect(source, encoding, sep):
@@ -58,3 +59,44 @@ def test_kaufland_selects_new_filename_for_exact_store_and_date():
     response = TextResponse("https://www.kaufland.hr/index", body=json.dumps(entries).encode(), encoding="utf-8")
     (request,) = spider.parse_index(response)
     assert request.url == "https://www.kaufland.hr/correct.csv"
+
+
+def test_konzum_preserves_listed_price_origin_and_promotion_metadata():
+    header = ",".join([*FIELDS["konzum"].values(), "NAZIV POSEBNOG OBLIKA PRODAJE", "BAZNA CIJENA"])
+    body = (
+        header + "\n"
+        "Čaj,101,Example,0.1,kg,2.40,NE,4006381333931,,3.10\n"
+        'Čaj,102,Example,0.1,kg,"1,80",DA,0000000000000,Akcijska prodaja,3.10\n'
+        "Čaj,103,Example,0.1,kg,2.40,UNKNOWN,4006381333931,,3.10\n"
+    ).encode("utf-8-sig")
+    regular, special, unknown = parse_csv(body, "konzum", "1280", "2026-11-23", "x", "x")
+    assert (regular["price_origin"], regular["effective_price_eur"]) == ("regular", "2.40")
+    assert (special["price_origin"], special["effective_price_eur"]) == ("special", "1.80")
+    assert special["regular_price_eur"] is None and special["gtin_normalized"] is None
+    assert special["raw_row"]["BAZNA CIJENA"] == "3.10"
+    assert unknown["ingestion_status"] == "unknown promotion indicator"
+    assert unknown["effective_price_eur"] is None
+
+
+def test_konzum_selects_unique_store_and_date_from_download_links():
+    spider = KonzumSpider(date="2026-11-23")
+    link = "/cjenici/download?title=SUPER%2CEXAMPLE%2C1280%2C1000%2C23.11.2026%2C+10-45.CSV"
+    other_store = link.replace("1280", "1281")
+    prior_day = link.replace("23.11.2026", "22.11.2026")
+
+    def response(*links):
+        body = "".join(f'<a href="{href}">Download</a>' for href in links).encode()
+        return HtmlResponse("https://www.konzum.hr/cjenici?date=2026-11-23", body=body)
+
+    (request,) = spider.parse_index(response(other_store, prior_day, link, link))
+    assert request.url == "https://www.konzum.hr" + link
+    assert request.cb_kwargs["discovery"]["index_item_count"] == 3
+    with pytest.raises(CloseSpider) as missing:
+        list(spider.parse_index(response(other_store, prior_day)))
+    assert missing.value.reason == "expected_one_konzum_file"
+    with pytest.raises(CloseSpider) as ambiguous:
+        list(spider.parse_index(response(link, link.replace("1000", "1001"))))
+    assert ambiguous.value.reason == "expected_one_konzum_file"
+    with pytest.raises(CloseSpider) as unsafe:
+        list(spider.parse_index(response("https://example.test" + link)))
+    assert unsafe.value.reason == "unsafe_url"

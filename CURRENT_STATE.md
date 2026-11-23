@@ -16,4 +16,6 @@ Phase 4 delivered an interactive English Tableau snapshot built from real data f
 
 The Phase 5 technical review is complete for the current repository and private Tableau snapshot. It covers the fixed real-data baseline, SQL and live Tableau reconciliation, filter scenarios, the Docker-backed 65-test suite, and the documentation and synthetic fixture audit. See [Validation](VALIDATION.md#phase-5-technical-review--2026-11-23). Public portfolio delivery remains open.
 
+[PULSE-46](https://angel231995.atlassian.net/browse/PULSE-46) adds Konzum 1280 as the third local source. The manual and scheduled collectors use the three-store cohort. Apply the schema update before loading into an existing database. The Phase 4 private workbook is a historical two-store snapshot. See [Acquisition](ACQUISITION.md) and [Validation](VALIDATION.md).
+
 **Next gate:** review Phase 3 with the permanent-task capture evidence and observe the regular cadence on another date. Public delivery remains tracked under PULSE-23 and PULSE-26.

@@ -4,11 +4,11 @@ import json
 import re
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import urljoin, urlsplit
+from urllib.parse import parse_qs, urljoin, urlsplit
 
 import scrapy
 from scrapy.exceptions import CloseSpider
-from pricepulse.contracts import parse_csv
+from pricepulse.contracts import STORES, parse_csv
 
 def safe_url(base, url, host):
     result = urljoin(base, url)
@@ -136,3 +136,35 @@ class KauflandSpider(BaseSpider):
         if not isinstance(matches[0].get("path"), str):
             self.stop("index_schema_error", "Missing Kaufland file path")
         yield from self.file_request(response.url, matches[0]["path"], discovery={"index_url": response.url, "index_item_count": len(entries), "selected_file_count": len(matches), "fetched_file_count": 1})
+
+
+class KonzumSpider(BaseSpider):
+    name, host, encoding, delimiter = "konzum", "www.konzum.hr", "utf-8-sig", ","
+    store = STORES[name]
+
+    async def start(self):
+        url = f"https://{self.host}/cjenici?date={self.selected}"
+        yield scrapy.Request(url, callback=self.parse_index, errback=self.failed)
+
+    def parse_index(self, response):
+        self.require_complete(response)
+        entries = set()
+        matches = set()
+        filename = re.compile(rf",{self.store},\d+,{self.day:%d.%m.%Y},\s*\d{{1,2}}-\d{{2}}\.csv$", re.I)
+        for href in response.css("a::attr(href)").getall():
+            parts = urlsplit(href)
+            if parts.path != "/cjenici/download":
+                continue
+            names = parse_qs(parts.query).get("title", [])
+            if len(names) != 1 or not names[0].lower().endswith(".csv"):
+                continue
+            url = urljoin(response.url, href)
+            entries.add(url)
+            if filename.search(names[0]):
+                matches.add(url)
+        if len(matches) != 1:
+            self.stop("expected_one_konzum_file", f"Found {len(matches)} files for selected store and date")
+        yield from self.file_request(response.url, matches.pop(), discovery={
+            "index_url": response.url, "index_item_count": len(entries),
+            "selected_file_count": 1, "fetched_file_count": 1,
+        })

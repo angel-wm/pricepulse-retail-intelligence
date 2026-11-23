@@ -1,9 +1,10 @@
-"""Run the fixed two-store cohort sequentially with a private batch journal."""
+"""Run the fixed retailer cohort sequentially with a private batch journal."""
 import json
 from datetime import date, datetime, timezone
 from pathlib import Path
 from uuid import uuid4
 
+from pricepulse.contracts import STORES
 from pricepulse.reliability import run_crawl, write_report
 
 
@@ -21,7 +22,7 @@ def run_batch(day, directory, *, ingest=None, crawl=run_crawl):
               "started_at_utc": datetime.now(timezone.utc).isoformat()}
     try:
         write_report(path, report)
-        for source in ("spar", "kaufland"):
+        for source in STORES:
             report_path, result = crawl(source, day, directory)
             state = {"report": Path(report_path).name, "crawl_status": result["status"]}
             report["sources"][source] = state
@@ -31,7 +32,7 @@ def run_batch(day, directory, *, ingest=None, crawl=run_crawl):
         report["status"] = "success" if all(
             item["crawl_status"] == "success" and (ingest is None or item.get("ingestion_status") == "success")
             for item in report["sources"].values()
-        ) and len(report["sources"]) == 2 else "incomplete"
+        ) and report["sources"].keys() == STORES.keys() else "incomplete"
     except Exception as exc:
         report.update(status="failed", reason=type(exc).__name__)
     except BaseException:
@@ -51,7 +52,7 @@ def main():
     import os
     import psycopg
     from pricepulse.recovery import resume_ingestion
-    parser = argparse.ArgumentParser(description="Run one two-store batch; no scheduling is created")
+    parser = argparse.ArgumentParser(description="Run one fixed-cohort batch; no scheduling is created")
     from pricepulse.scheduling import ZAGREB
     parser.add_argument("--date", default=None, help="price-list date (defaults to the current Zagreb date)")
     parser.add_argument("--directory", type=Path, required=True)

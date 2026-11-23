@@ -21,6 +21,7 @@ PricePulse focuses on grocery and household goods sold in **Croatia**, using off
 ## Source and cohort scope
 
 - Country: Croatia; currency: EUR.
+- Authorized third source: **Konzum Croatia (Velimira Škorpika 1280)** for local acquisition and historical analytics. Review product variants and promotion eligibility before using cross-store price gaps.
 - Qualified first pair: **SPAR Croatia (Jankomir 8702)** and **Kaufland Croatia (Antuna Šoljana 5630)**; bounded local tests passed, continuous operational access is not proven.
 - Initial cohort: one physical Zagreb store per retailer, matching *publication date* for cross-store comparisons and *store ID* across dates for time-series checks.
 - Matching: validate GTIN-8/12/13/14 checksums; preserve raw identifiers and documented 14-digit normalized keys; require brand/package/variant consistency. Review conflicting quantities, multipacks and gross vs drained weights. Keep ambiguous matches separate.

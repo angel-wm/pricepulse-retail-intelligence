@@ -7,9 +7,7 @@ from urllib.parse import urlsplit
 
 from psycopg.types.json import Jsonb
 
-from pricepulse.contracts import parse_csv
-
-STORES = {"spar": "8702", "kaufland": "5630"}
+from pricepulse.contracts import STORES, parse_csv
 
 
 def ingest_file(conn, *, source, store, day, url, collected_at, status, body):

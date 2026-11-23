@@ -13,7 +13,7 @@ import psycopg
 import pytest
 from psycopg import sql
 
-from pricepulse.contracts import FIELDS, parse_csv
+from pricepulse.contracts import DIALECTS, FIELDS, STORES, parse_csv
 from pricepulse.ingest import apply_schema, ingest_file
 from pricepulse.matching import queue_candidates, queue_history_changes, record_review
 from pricepulse.metrics import reviewed_pair_coverage
@@ -238,15 +238,20 @@ def test_resume_after_commit_interruption_is_idempotent(db, tmp_path, monkeypatc
     assert db.execute("SELECT count(*) FROM price_observation").fetchone()[0] == 1
 
 
-def test_two_store_batch_and_replay(db, tmp_path):
+def test_three_store_batch_and_replay(db, tmp_path):
     def crawl(source, day, directory):
         mapping = FIELDS[source]
-        store = "8702" if source == "spar" else "5630"
-        encoding, delimiter = ("cp1250", ";") if source == "spar" else ("utf-8-sig", "\t")
+        store = STORES[source]
+        encoding, delimiter = DIALECTS[source]
         stream = io.StringIO(newline="")
         writer = csv.DictWriter(stream, fieldnames=list(mapping.values()), delimiter=delimiter, lineterminator="\n")
         writer.writeheader()
-        writer.writerow({mapping["code"]: "synthetic", mapping["title"]: "Example", mapping["brand"]: "Example", mapping["quantity"]: "1", mapping["unit"]: "KOM", mapping["regular"]: "1,00", mapping["gtin"]: "4006381333931"})
+        values = dict(code="synthetic", title="Example", brand="Example", quantity="1", unit="KOM", gtin="4006381333931")
+        if source == "konzum":
+            values.update(listed="1.00", promotion="DA")
+        else:
+            values.update(regular="1,00")
+        writer.writerow({mapping[key]: value for key, value in values.items()})
         body = stream.getvalue().encode(encoding)
         digest = sha256(body).hexdigest()
         url = f"https://www.{source}.hr/file.csv"
@@ -264,6 +269,8 @@ def test_two_store_batch_and_replay(db, tmp_path):
     for _ in range(2):
         _, result = run_batch("2026-11-17", tmp_path, crawl=crawl, ingest=lambda p: resume_ingestion(p, db))
         assert result["status"] == "success" and result["mode"] == "ingest"
-    assert db.execute("SELECT count(*) FROM source_file").fetchone()[0] == 2
-    assert db.execute("SELECT count(*) FROM price_observation").fetchone()[0] == 2
-    assert db.execute("SELECT count(*) FROM acquisition_run").fetchone()[0] == 4
+    assert db.execute("SELECT count(*) FROM source_file").fetchone()[0] == 3
+    assert db.execute("SELECT count(*) FROM price_observation").fetchone()[0] == 3
+    assert db.execute("SELECT count(*) FROM acquisition_run").fetchone()[0] == 6
+    apply_schema(db)
+    assert db.execute("SELECT chain FROM retailer ORDER BY chain").fetchall() == [("kaufland",), ("konzum",), ("spar",)]

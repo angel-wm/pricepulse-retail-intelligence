@@ -10,7 +10,8 @@ from hashlib import sha256
 from pathlib import Path
 from uuid import uuid4
 
-STORES = {"spar": "8702", "kaufland": "5630"}
+from pricepulse.contracts import STORES
+
 SHA256 = re.compile(r"[0-9a-f]{64}\Z")
 
 
@@ -101,7 +102,7 @@ def quality_summary(report, as_of, *, previous=None, max_age_days=None, max_row_
 def batch_metrics(reports):
     """Summarize the explicit supplied set of batch reports, not a global reliability claim."""
     result = {"batches": 0, "completed": 0, "incomplete_or_failed": 0,
-              "source_success": {"spar": 0, "kaufland": 0}, "durations_seconds": []}
+              "source_success": dict.fromkeys(STORES, 0), "durations_seconds": []}
     for report in reports:
         if report.get("status") not in ("success", "incomplete", "failed", "interrupted"):
             raise ValueError("batch report must be finished")

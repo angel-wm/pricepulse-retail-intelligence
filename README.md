@@ -7,7 +7,7 @@ PricePulse is a **documentation-first Data Engineering portfolio project** to ac
 ## What PricePulse aims to answer
 
 - How do published prices for the same grocery product change over time?
-- What is the price difference for the same verified GTIN/EAN between Kaufland and SPAR at comparable stores and dates?
+- What is the price difference for the same verified GTIN/EAN across comparable stores and dates?
 - Which product categories show the largest price changes or cross-retailer spreads?
 - How complete and reliable are daily retailer price-list publications?
 
@@ -22,6 +22,8 @@ Actual local source-access, two-date history, and price/identity evidence is in 
 ### Data sources
 
 The real-data analysis uses official retail price lists published by SPAR Croatia and Kaufland Croatia. The validated Tableau snapshot covers SPAR Zagreb Jankomir (8702) and Kaufland Zagreb Antuna Šoljana (5630) for 17 and 23 November 2026. [SPAR price lists](https://www.spar.hr/usluge/cjenici) · [Kaufland price lists](https://www.kaufland.hr/akcije-novosti/popis-mpc.html) · [Tableau data attribution](TABLEAU.md#data-attribution)
+
+Local collection and PostgreSQL also support Konzum Zagreb Super 1280. See [Konzum price lists](https://www.konzum.hr/cjenici) and [bounded acquisition](ACQUISITION.md).
 
 ## Local quick start (Windows PowerShell)
 

@@ -384,3 +384,22 @@ Earlier GitHub documentation review (baseline `861062303de56dfa39199e07f50dc287b
 - SPAR: https://www.spar.hr/usluge/cjenici
 - Historical third-party cross-chain study: https://analiza.usporedicijene.info/
 - Independent project reference (not our implementation): https://github.com/senko/cijene-api
+
+## Konzum expansion validation — 2026-11-23
+
+[PULSE-46](https://angel231995.atlassian.net/browse/PULSE-46) expands the fixed local
+cohort to SPAR 8702, Kaufland 5630 and Konzum 1280. The manual collection batch for
+23 November finished successfully. It captured 32,410 SPAR rows, 23,830 Kaufland
+rows and 26,581 Konzum rows, with manifest and raw-file hash checks for all three.
+
+Konzum made three requests and received three HTTP 200 responses, including
+robots.txt. Its dated index presented 50 distinct CSV links and one matched the
+store and date. The feed contained 26,581 usable listed prices, split into
+23,366 regular and 3,215 special, and 24,158 rows with valid GTINs.
+The local suite passed all 67 tests with disposable Docker PostgreSQL.
+
+A separate bounded crawl for 17 November captured 26,571 Konzum rows, including
+3,480 special-price rows. Its raw SHA-256 matched the earlier feasibility download.
+
+Regular Windows execution of the expanded cohort remains to be observed.
+The private Tableau workbook still reflects its original two-store snapshot.

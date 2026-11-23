@@ -7,9 +7,9 @@
 The diagram shows the intended end-to-end architecture. The loader accepts local CSVs. The Windows task collects source files, and the downstream ingest, export and Tableau refresh are manual. XML and compressed source formats remain outside the current implementation.
 
 ```text
-Kaufland Croatia price-list index     SPAR Croatia price-list index
-                 |                                 |
-                 +------- Scrapy source adapters --+
+              SPAR, Kaufland and Konzum price-list indexes
+                                   |
+                          Scrapy source adapters
                                    |
                       Official CSV/XML files
                      (optional ZIP/GZ wrapper)
@@ -20,6 +20,7 @@ Kaufland Croatia price-list index     SPAR Croatia price-list index
                       Python validation and parsing
                     (SPAR: cp1250, semicolon)
                     (Kaufland: UTF-8 BOM, tab)
+                    (Konzum: UTF-8, comma)
                  (locale decimals, fields, GTIN checks)
                                    |
                           PostgreSQL staging
@@ -39,9 +40,9 @@ Kaufland Croatia price-list index     SPAR Croatia price-list index
 
 | Component | Responsibility | Exclusion |
 | --- | --- | --- |
-| Scrapy | Implement two source adapters: SPAR dated JSON manifest and Kaufland asset list; obey robots, fetch bounded store/date batches, log HTTP/provenance | No CAPTCHA bypass, identity matching, or uncontrolled retries |
+| Scrapy | Read SPAR dated JSON, Kaufland asset lists and Konzum dated HTML; obey robots, fetch bounded store/date batches, log HTTP/provenance | No CAPTCHA bypass, identity matching, or uncontrolled retries |
 | Raw manifest | Track original URL, publication date, store, fetch time, checksum, source response | Does not imply that publication timestamp equals fetch timestamp |
-| Parser/validator | Handle actual SPAR cp1250/semicolon and Kaufland UTF-8 BOM/tab; preserve raw regular/special price columns, locale decimals, GTINs and package exceptions | No invented missing fields, stock, or guessed dual-price precedence |
+| Parser/validator | Use each source's CSV dialect and preserve price origin, locale decimals, GTINs and package exceptions | No invented missing fields, stock, or guessed dual-price precedence |
 | PostgreSQL | Preserve immutable price observations at **retailer × store × product × publication date/version** grain; deduplicate exact re-ingestions | Does not collapse distinct stores, dates or promotions into one price |
 | Matching | Verified GTIN/EAN plus quantity/variant checks, exception reports for ambiguous IDs | Does not join product titles indiscriminately |
 | SQL analytics / Tableau | Same-date, same-product, comparable-store price spreads; true longitudinal trends | Does not assume one price represents an entire retailer or a baseline price equals historical data |
