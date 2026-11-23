@@ -2,7 +2,7 @@
 
 PricePulse is a **documentation-first Data Engineering portfolio project** to acquire official Croatian grocery price-list files responsibly with Scrapy, validate product identities, store durable historical observations in PostgreSQL, and analyze comparable offers in Tableau.
 
-**Current status (2026-11-22): Phase 1 is formally closed; Phase 2 is in progress.** Bounded user-local Scrapy tests retrieved official files for **SPAR Croatia (Zagreb Jankomir, store 8702)** and **Kaufland Croatia (Zagreb Antuna Šoljana, store 5630)** for 16–17 November 2026. The 17 November files had **8,869 common priced GTINs**; a deterministic audit of 160 prefiltered pairs classified **102 description-consistent** and **58 unresolved**. This is not manufacturer verification or a claim about all 8,869 pairs. Phase 1 adapters have been implemented and smoke-tested; the initial PostgreSQL implementation has synthetic local validation. Scheduling and Tableau are not implemented.
+**Current status (2026-11-22): Phase 1 is formally closed; Phase 2 is validated with synthetic data and awaits owner review.** Bounded user-local Scrapy tests retrieved official files for **SPAR Croatia (Zagreb Jankomir, store 8702)** and **Kaufland Croatia (Zagreb Antuna Šoljana, store 5630)** for 16–17 November 2026. The 17 November files had **8,869 common priced GTINs**; a deterministic audit of 160 prefiltered pairs classified **102 description-consistent** and **58 unresolved**. This is not manufacturer verification or a claim about all 8,869 pairs. Phase 1 adapters have been implemented and smoke-tested; the initial PostgreSQL implementation has synthetic validation. Scheduling and Tableau are not implemented.
 
 ## What PricePulse aims to answer
 
