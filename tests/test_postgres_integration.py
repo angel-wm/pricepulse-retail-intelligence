@@ -2,16 +2,23 @@
 import csv
 import io
 import os
+import json
 from decimal import Decimal
+from hashlib import sha256
+from pathlib import Path
+from types import SimpleNamespace
 from uuid import uuid4
 
 import psycopg
 import pytest
 from psycopg import sql
 
-from pricepulse.contracts import FIELDS
+from pricepulse.contracts import FIELDS, parse_csv
 from pricepulse.ingest import apply_schema, ingest_file
 from pricepulse.matching import queue_candidates, queue_history_changes, record_review
+from pricepulse.reliability import run_crawl
+from pricepulse.recovery import resume_ingestion
+from pricepulse.batch import run_batch
 
 DSN = os.environ.get("PRICEPULSE_TEST_DSN")
 pytestmark = pytest.mark.skipif(not DSN, reason="disposable PostgreSQL DSN not configured")
@@ -163,3 +170,68 @@ def test_price_change_counts_reconcile_with_fixture(db):
     result = db.execute("""SELECT count(*) FILTER (WHERE difference>0), count(*) FILTER (WHERE difference<0), count(*) FILTER (WHERE difference=0)
                            FROM price_changes(%s)""", ([first["file_id"], second_day["file_id"]],)).fetchone()
     assert result == (1, 1, 0)  # Independently calculated from the two synthetic input rows.
+
+
+def test_resume_after_commit_interruption_is_idempotent(db, tmp_path, monkeypatch):
+    import pricepulse.recovery as recovery
+    body = synthetic_csv()
+    digest = sha256(body).hexdigest()
+    url = "https://www.spar.hr/example.csv"
+    timestamp = "2026-11-22T23:00:00+00:00"
+    rows = list(parse_csv(body, "spar", "8702", "2026-11-17", url, digest))
+    def synthetic_runner(command, **kwargs):
+        feed = Path(command[command.index("-O") + 1])
+        raw = Path(next(x.split("=", 1)[1] for x in command if x.startswith("raw_path=")))
+        log = Path(next(x.split("=", 1)[1] for x in command if x.startswith("LOG_FILE=")))
+        manifest = {"type": "manifest", "source": "spar", "store_id": "8702", "publication_date": "2026-11-17", "http_status": 200, "source_url": url, "retrieved_at_utc": timestamp, "sha256": digest, "row_count": len(rows)}
+        feed.write_text("".join(json.dumps(item) + "\n" for item in [manifest, *({"type": "record", **r} for r in rows)]), encoding="utf-8")
+        raw.write_bytes(body)
+        log.write_text("Spider closed (finished)\n", encoding="utf-8")
+        return SimpleNamespace(returncode=0)
+    path, result = run_crawl("spar", "2026-11-17", tmp_path, runner=synthetic_runner)
+    assert result["status"] == "success"
+    original = recovery.ingest_file
+    def committed_then_interrupted(*args, **kwargs):
+        original(*args, **kwargs)
+        raise RuntimeError("simulated interruption after commit")
+    monkeypatch.setattr(recovery, "ingest_file", committed_then_interrupted)
+    assert resume_ingestion(path, db)["ingestion"]["status"] == "failed"
+    monkeypatch.setattr(recovery, "ingest_file", original)
+    resumed = resume_ingestion(path, db)
+    assert resumed["ingestion"]["status"] == "success" and not resumed["ingestion"]["new_version"]
+    assert db.execute("SELECT count(*) FROM price_observation").fetchone()[0] == 1
+    raw = path.with_suffix(".csv")
+    raw.write_bytes(b"tampered")
+    assert resume_ingestion(path, db)["ingestion"]["status"] == "failed"
+    assert db.execute("SELECT count(*) FROM price_observation").fetchone()[0] == 1
+
+
+def test_two_store_batch_and_replay(db, tmp_path):
+    def crawl(source, day, directory):
+        mapping = FIELDS[source]
+        store = "8702" if source == "spar" else "5630"
+        encoding, delimiter = ("cp1250", ";") if source == "spar" else ("utf-8-sig", "\t")
+        stream = io.StringIO(newline="")
+        writer = csv.DictWriter(stream, fieldnames=list(mapping.values()), delimiter=delimiter, lineterminator="\n")
+        writer.writeheader()
+        writer.writerow({mapping["code"]: "synthetic", mapping["title"]: "Example", mapping["brand"]: "Example", mapping["quantity"]: "1", mapping["unit"]: "KOM", mapping["regular"]: "1,00", mapping["gtin"]: "4006381333931"})
+        body = stream.getvalue().encode(encoding)
+        digest = sha256(body).hexdigest()
+        url = f"https://www.{source}.hr/file.csv"
+        rows = list(parse_csv(body, source, store, day, url, digest))
+        def runner(command, **kwargs):
+            feed = Path(command[command.index("-O") + 1])
+            raw = Path(next(x.split("=", 1)[1] for x in command if x.startswith("raw_path=")))
+            log = Path(next(x.split("=", 1)[1] for x in command if x.startswith("LOG_FILE=")))
+            manifest = {"type": "manifest", "source": source, "store_id": store, "publication_date": day, "http_status": 200, "source_url": url, "retrieved_at_utc": "2026-11-22T23:00:00+00:00", "sha256": digest, "row_count": len(rows)}
+            feed.write_text("".join(json.dumps(x) + "\n" for x in [manifest, *({"type": "record", **r} for r in rows)]), encoding="utf-8")
+            raw.write_bytes(body)
+            log.write_text("Spider closed (finished)\n", encoding="utf-8")
+            return SimpleNamespace(returncode=0)
+        return run_crawl(source, day, directory, runner=runner)
+    for _ in range(2):
+        _, result = run_batch("2026-11-17", tmp_path, crawl=crawl, ingest=lambda p: resume_ingestion(p, db))
+        assert result["status"] == "success" and result["mode"] == "ingest"
+    assert db.execute("SELECT count(*) FROM source_file").fetchone()[0] == 2
+    assert db.execute("SELECT count(*) FROM price_observation").fetchone()[0] == 2
+    assert db.execute("SELECT count(*) FROM acquisition_run").fetchone()[0] == 4

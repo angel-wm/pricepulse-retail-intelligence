@@ -1,5 +1,6 @@
 import json
 import subprocess
+from hashlib import sha256
 from types import SimpleNamespace
 
 import pytest
@@ -7,7 +8,8 @@ import pytest
 from pricepulse.reliability import quality_summary, run_crawl
 
 DAY = "2026-11-17"
-DIGEST = "a" * 64
+RAW = b"synthetic fixture"
+DIGEST = sha256(RAW).hexdigest()
 
 
 def items():
@@ -21,9 +23,11 @@ def runner_for(reason="finished", records=None, returncode=0):
     def runner(command, **kwargs):
         feed = command[command.index("-O") + 1]
         log = next(x.split("=", 1)[1] for x in command if x.startswith("LOG_FILE="))
+        raw = next(x.split("=", 1)[1] for x in command if x.startswith("raw_path="))
         from pathlib import Path
         Path(feed).write_text("".join(json.dumps(x) + "\n" for x in (items() if records is None else records)), encoding="utf-8")
         Path(log).write_text("Spider closed (" + reason + ")\n", encoding="utf-8")
+        Path(raw).write_bytes(RAW)
         return SimpleNamespace(returncode=returncode)
     return runner
 
@@ -47,6 +51,14 @@ def test_incomplete_or_mismatched_feed_fails(tmp_path):
     for records in (items()[:1], [items()[0], {**items()[1], "source_file_hash": "b" * 64}]):
         _, report = run_crawl("spar", DAY, tmp_path, runner=runner_for(records=records))
         assert report["status"] == "failed"
+
+
+def test_missing_output_fails_without_a_success_marker(tmp_path):
+    def missing_files(command, **kwargs):
+        return SimpleNamespace(returncode=0)
+    path, report = run_crawl("spar", DAY, tmp_path, runner=missing_files)
+    assert report["status"] == "failed"
+    assert json.loads(path.read_text())["status"] == "failed"
 
 
 def test_timeout_and_interruption_are_not_success(tmp_path):

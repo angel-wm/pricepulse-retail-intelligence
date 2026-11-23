@@ -6,6 +6,7 @@ import subprocess
 import sys
 from collections import Counter
 from datetime import date, datetime, timezone
+from hashlib import sha256
 from pathlib import Path
 from uuid import uuid4
 
@@ -106,10 +107,11 @@ def run_crawl(source, day, directory, timeout=600, runner=subprocess.run):
     report_path = directory / (run_id + ".json")
     feed_path = directory / (run_id + ".jl")
     log_path = directory / (run_id + ".log")
+    raw_path = directory / (run_id + ".csv")
     report = {"run_id": run_id, "source": source, "store_id": STORES[source], "publication_date": day,
               "started_at_utc": datetime.now(timezone.utc).isoformat(), "status": "running"}
     write_report(report_path, report)
-    command = [sys.executable, "-m", "scrapy", "crawl", source, "-a", "date=" + day, "-O", str(feed_path),
+    command = [sys.executable, "-m", "scrapy", "crawl", source, "-a", "date=" + day, "-a", "raw_path=" + str(raw_path), "-O", str(feed_path),
                "-s", "LOG_FILE=" + str(log_path), "-s", "LOG_LEVEL=INFO"]
     try:
         result = runner(command, timeout=timeout, check=False, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
@@ -120,6 +122,8 @@ def run_crawl(source, day, directory, timeout=600, runner=subprocess.run):
             reason = re.findall(r"Spider closed \(([^)]+)\)", log)
             raise ValueError("crawler_closed_" + (reason[-1] if reason else "without_finish"))
         report["summary"] = inspect_feed(feed_path, source, day)
+        if sha256(raw_path.read_bytes()).hexdigest() != report["summary"]["sha256"]:
+            raise ValueError("raw_file_hash_mismatch")
         report["status"] = "success"
     except subprocess.TimeoutExpired:
         report.update(status="failed", reason="timeout")

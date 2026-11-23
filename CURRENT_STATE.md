@@ -10,6 +10,6 @@ PULSE-44 has a checks-only GitHub Actions workflow with a successful GitHub-host
 
 Phase 2 has an initial PostgreSQL schema, local-file ingestion, explicit review and comparison queries. Synthetic PostgreSQL integration tests have passed locally and in GitHub-hosted CI; see [PostgreSQL](POSTGRESQL.md) and [Validation](VALIDATION.md) for exact baselines. No real-source ingestion or independent human identity review was performed. Scheduling, Tableau and long-term reliability remain pending. Publication of genuine retailer data is not cleared; use synthetic public examples. Missing products do not imply stock status.
 
-Phase 3 has an initial local run journal, feed completeness checks, configurable quality signals and a scheduling dry run; see [Reliability](RELIABILITY.md). A bounded SPAR run succeeded. No recurring job has been configured or verified, and recovery of PostgreSQL ingestion remains pending.
+Phase 3 has an initial local run journal, two-store batch, feed completeness checks, configurable quality signals, explicit PostgreSQL ingestion recovery and a scheduling dry run; see [Reliability](RELIABILITY.md). Two bounded collection-only batches succeeded for both stores on the same historical date. No recurring job has been configured or verified; ingestion recovery was exercised only with synthetic data.
 
 **Next gate:** validate Phase 3 work and present the evidence for owner review of both Phases 2 and 3. Starting Phase 3 does not close Phase 2.

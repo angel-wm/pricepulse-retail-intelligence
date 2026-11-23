@@ -3,6 +3,7 @@ import hashlib
 import json
 import re
 from datetime import datetime, timezone
+from pathlib import Path
 from urllib.parse import urljoin, urlsplit
 
 import scrapy
@@ -30,10 +31,11 @@ class BaseSpider(scrapy.Spider):
             "pricepulse.robots.StrictRobotsMiddleware": 100,
         },
     }
-    def __init__(self, date=None, **kwargs):
+    def __init__(self, date=None, raw_path=None, **kwargs):
         super().__init__(**kwargs)
         self.day = __import__('datetime').date.fromisoformat(date)
         self.selected = self.day.isoformat()
+        self.raw_path = Path(raw_path) if raw_path else None
 
     def file_request(self, base, path, sha=None):
         try:
@@ -65,6 +67,12 @@ class BaseSpider(scrapy.Spider):
             rows = list(parse_csv(response.body, self.name, self.store, self.selected, response.url, digest))
         except (csv.Error, ValueError, UnicodeError) as exc:
             self.stop("schema_error", str(exc))
+        if self.raw_path is not None:
+            try:
+                with self.raw_path.open("xb") as raw:
+                    raw.write(response.body)
+            except OSError as exc:
+                self.stop("raw_storage_error", str(exc))
         yield {"type": "manifest", "source": self.name, "store_id": self.store, "publication_date": self.selected, "source_url": response.url, "retrieved_at_utc": datetime.now(timezone.utc).isoformat(), "http_status": response.status, "sha256": digest, "source_sha256": expected_sha, "encoding": self.encoding, "delimiter": self.delimiter, "row_count": len(rows)}
         for row in rows:
             yield {"type": "record", **row}

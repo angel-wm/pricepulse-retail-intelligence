@@ -12,6 +12,10 @@ A bounded live run of the new wrapper on 2026-11-22 retrieved SPAR 8702 for 2026
 
 Schedule planning was dry-run for 12:15 Europe/Zagreb: 2026-11-22 maps to 11:15 UTC, and 2026-06-22 maps to 10:15 UTC. No scheduler was configured. Live-source ingestion recovery, recurring runs, alert thresholds, extended CI evidence and long-term reliability remain pending. Neither Phase 2 nor Phase 3 is closed.
 
+Subsequently, the wrapper was extended to preserve a private raw CSV and verify its SHA-256, and explicit PostgreSQL ingestion recovery was added. A synthetic test simulated interruption immediately after database commit, then replayed without duplicating the price observation and rejected a tampered raw file. The complete local suite passed **48 tests** with the temporary PostgreSQL server stopped afterwards. A separate bounded SPAR 8702 acquisition for 2026-11-17 succeeded with raw-file hash verification; no real source data were ingested into PostgreSQL. Hosted CI for the recovery change remains to be verified.
+
+The initial two-store batch subsequently passed **52 local tests** with the same temporary PostgreSQL setup. Synthetic tests exercised partial-store coverage, missing output, overlap locking, two-store ingestion and replay without duplicated observations. On 2026-11-22, two manually invoked collection-only batches each succeeded for the same historical date, 2026-11-17: SPAR 32,347 rows and Kaufland 23,593 rows in each run; file hashes matched between repetitions. This is a two-run same-date observation, not evidence of recurring daily scheduling or long-term reliability. No real-source PostgreSQL ingestion was performed. GitHub-hosted CI for these later changes remains to be verified.
+
 ## Phase 1 closeout and Phase 2 authorization — 2026-11-22
 
 The owner explicitly approved formal Phase 1 closeout and authorized continuing with Phase 2 on 2026-11-22. The decision accepts the bounded two-source acquisition and synthetic/hosted CI evidence recorded below; it does not establish continuous production reliability or rights to publish real retailer data.
