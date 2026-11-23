@@ -1,5 +1,14 @@
 # Validation and evidence
 
+## Phase 2 and 3 technical review — 2026-11-23
+
+The repository at `1d73f3dfb1c6675af1411c0e666c89054667f357`, Jira acceptance criteria, Phase 2 SQL and ingestion, and Phase 3 scheduling and recovery were reviewed. The full local suite passed **62 tests** with a temporary PostgreSQL instance, stopped after the run. The [hosted CI run](https://github.com/angel-wm/pricepulse-retail-intelligence/actions/runs/45125414064) for that commit succeeded. This is an agent review of work produced in this project, not independent human review.
+
+- **Phase 2:** synthetic integration tests cover idempotent replay, file versions, exceptions, reviewed comparisons and selected-file price changes. Actual retailer CSV ingestion, reconciliation against real source files and independent review of real matching decisions remain untested. Without those checks, the synthetic pass does not establish a real-data dashboard.
+- **Phase 3:** the permanent collection-only Windows task was observed after its 01:20 Bogotá tick with last result zero; it was before the 12:15 Zagreb due time. A separate accelerated recurring task previously produced two successful historical batches. Neither observation demonstrates a normal due-time daily capture, missed-run behavior or multi-day reliability. Synthetic recovery tests and provisional alerts are not live operational evidence.
+
+Both epics remain in Jira **In Review**. The owner has not formally closed either phase. The existing local task does not ingest into PostgreSQL; a persistent private database and explicit real-data ingestion are separate operational choices.
+
 ## Phase 4 initial analytical export — 2026-11-23
 
 The owner authorized Phase 4 before reviewing Phases 2 and 3. A private CSV export for explicitly selected PostgreSQL file versions was tested with synthetic observations: a verified comparison reconciled to -0.20 EUR, file age to one day, and conflicting versions were rejected before CSV output. The full local suite passed 62 tests using a temporary PostgreSQL instance, which was stopped afterward. Fictional CSV exports contained 24 observations, 16 changes, 12 comparisons and six quality records; the synthetic comparison spread was -0.10 EUR. Tableau Desktop Free loaded 24 rows and displayed a preliminary local dashboard with history and 12 differences of -0.10 EUR, consistent with the fictional SQL export. Other measures and filters and a shareable demo remain incomplete. The [hosted CI run](https://github.com/angel-wm/pricepulse-retail-intelligence/actions/runs/45125129520) for commit `83dd010fa0da32579eec0d1db90266d248eaafee` succeeded. See [Tableau analytics](TABLEAU.md).
