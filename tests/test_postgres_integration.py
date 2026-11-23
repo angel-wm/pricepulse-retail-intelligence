@@ -190,6 +190,9 @@ def test_resume_after_commit_interruption_is_idempotent(db, tmp_path, monkeypatc
         return SimpleNamespace(returncode=0)
     path, result = run_crawl("spar", "2026-11-17", tmp_path, runner=synthetic_runner)
     assert result["status"] == "success"
+    older_report = json.loads(path.read_text(encoding="utf-8"))
+    older_report["summary"].pop("price_origin_counts")
+    path.write_text(json.dumps(older_report), encoding="utf-8")
     original = recovery.ingest_file
     def committed_then_interrupted(*args, **kwargs):
         original(*args, **kwargs)

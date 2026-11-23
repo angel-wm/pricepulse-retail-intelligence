@@ -25,7 +25,9 @@ def resume_ingestion(report_path, conn):
         feed = path.parent / (run_id + ".jl")
         raw = (path.parent / (run_id + ".csv")).read_bytes()
         summary = inspect_feed(feed, source, day)
-        if summary != report.get("summary") or sha256(raw).hexdigest() != summary["sha256"]:
+        original = report.get("summary", {})
+        keys = ("source", "store_id", "publication_date", "sha256", "row_count")
+        if any(original.get(key) != summary[key] for key in keys) or sha256(raw).hexdigest() != summary["sha256"]:
             raise ValueError("run evidence or raw hash mismatch")
         with feed.open(encoding="utf-8") as stream:
             manifest = json.loads(next(stream))

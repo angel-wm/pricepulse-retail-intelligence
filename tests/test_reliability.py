@@ -5,7 +5,7 @@ from types import SimpleNamespace
 
 import pytest
 
-from pricepulse.reliability import quality_summary, run_crawl
+from pricepulse.reliability import batch_metrics, quality_summary, run_crawl
 
 DAY = "2026-11-17"
 RAW = b"synthetic fixture"
@@ -16,7 +16,7 @@ def items():
     return [{"type": "manifest", "source": "spar", "store_id": "8702", "publication_date": DAY,
              "http_status": 200, "sha256": DIGEST, "row_count": 1},
             {"type": "record", "source_chain": "spar", "source_store_id": "8702", "price_list_date": DAY,
-             "source_file_hash": DIGEST, "ingestion_status": "ok", "gtin_normalized": "04006381333931"}]
+             "source_file_hash": DIGEST, "ingestion_status": "ok", "price_origin": "special", "gtin_normalized": "04006381333931"}]
 
 
 def runner_for(reason="finished", records=None, returncode=0):
@@ -35,6 +35,7 @@ def runner_for(reason="finished", records=None, returncode=0):
 def test_success_and_retry_leave_distinct_evidence(tmp_path):
     path, report = run_crawl("spar", DAY, tmp_path, runner=runner_for())
     assert report["status"] == "success" and report["summary"]["row_count"] == 1
+    assert report["summary"]["price_origin_counts"]["special"] == 1
     assert json.loads(path.read_text())["status"] == "success"
     next_path, next_report = run_crawl("spar", DAY, tmp_path, runner=runner_for())
     assert next_path != path and next_report["status"] == "success"
@@ -83,3 +84,15 @@ def test_quality_uses_explicit_store_baseline_and_thresholds(tmp_path):
     assert quality_summary(report, "2026-11-17")["row_change_ratio"] is None
     with pytest.raises(ValueError):
         quality_summary(report, "2026-11-20", previous={"status": "success", "summary": {**previous["summary"], "store_id": "other"}})
+
+
+def test_batch_metrics_reports_only_explicit_batches():
+    base = {"started_at_utc": "2026-11-22T23:00:00+00:00", "finished_at_utc": "2026-11-22T23:00:10+00:00"}
+    completed = {**base, "status": "success", "sources": {"spar": {"crawl_status": "success"}, "kaufland": {"crawl_status": "success"}}}
+    incomplete = {**base, "status": "incomplete", "sources": {"spar": {"crawl_status": "success"}, "kaufland": {"crawl_status": "failed"}}}
+    result = batch_metrics([completed, incomplete])
+    assert (result["batches"], result["completed"], result["incomplete_or_failed"]) == (2, 1, 1)
+    assert result["source_success"] == {"spar": 2, "kaufland": 1}
+    assert result["durations_seconds"] == [10, 10]
+    with pytest.raises(ValueError):
+        batch_metrics([{**base, "status": "running"}])

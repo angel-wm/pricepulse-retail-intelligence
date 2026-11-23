@@ -42,12 +42,15 @@ def inspect_feed(path, source, day):
             counts["usable_price"] += item.get("ingestion_status") == "ok"
             counts["checksum_valid_gtin"] += bool(item.get("gtin_normalized"))
             counts["review"] += item.get("ingestion_status") != "ok"
+            if item.get("ingestion_status") == "ok" and item.get("price_origin") in ("regular", "special", "both_equal"):
+                counts["origin_" + item["price_origin"]] += 1
         if manifest is None or counts["rows"] != manifest["row_count"]:
             raise ValueError("incomplete feed or row count mismatch")
     return {"source": source, "store_id": STORES[source], "publication_date": day,
             "sha256": manifest["sha256"], "row_count": counts["rows"],
             "usable_price_count": counts["usable_price"], "checksum_valid_gtin_count": counts["checksum_valid_gtin"],
-            "price_exception_count": counts["review"]}
+            "price_exception_count": counts["review"],
+            "price_origin_counts": {origin: counts["origin_" + origin] for origin in ("regular", "special", "both_equal")}}
 
 
 def write_report(path, report):
@@ -91,6 +94,27 @@ def quality_summary(report, as_of, *, previous=None, max_age_days=None, max_row_
         result["row_change_ratio"] = change
         if max_row_change is not None and abs(change) > max_row_change:
             result["alerts"].append("row_count_change_exceeded")
+    return result
+
+
+def batch_metrics(reports):
+    """Summarize the explicit supplied set of batch reports, not a global reliability claim."""
+    result = {"batches": 0, "completed": 0, "incomplete_or_failed": 0,
+              "source_success": {"spar": 0, "kaufland": 0}, "durations_seconds": []}
+    for report in reports:
+        if report.get("status") not in ("success", "incomplete", "failed", "interrupted"):
+            raise ValueError("batch report must be finished")
+        result["batches"] += 1
+        result["completed"] += report["status"] == "success"
+        result["incomplete_or_failed"] += report["status"] != "success"
+        for source in result["source_success"]:
+            state = report.get("sources", {}).get(source, {})
+            result["source_success"][source] += state.get("crawl_status") == "success"
+        started = datetime.fromisoformat(report["started_at_utc"])
+        finished = datetime.fromisoformat(report["finished_at_utc"])
+        if started.utcoffset() is None or finished.utcoffset() is None or finished < started:
+            raise ValueError("invalid batch timestamps")
+        result["durations_seconds"].append((finished - started).total_seconds())
     return result
 
 
