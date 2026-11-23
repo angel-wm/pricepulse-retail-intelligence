@@ -11,7 +11,7 @@ from psycopg import sql
 
 from pricepulse.contracts import FIELDS
 from pricepulse.ingest import apply_schema, ingest_file
-from pricepulse.matching import queue_candidates, record_review
+from pricepulse.matching import queue_candidates, queue_history_changes, record_review
 
 DSN = os.environ.get("PRICEPULSE_TEST_DSN")
 pytestmark = pytest.mark.skipif(not DSN, reason="disposable PostgreSQL DSN not configured")
@@ -137,6 +137,11 @@ def test_price_changes_require_explicit_unambiguous_versions(db):
         db.execute("SELECT * FROM price_changes(%s)", ([first["file_id"], second["file_id"], changed_version["file_id"]],)).fetchall()
     changed_product = load(db, synthetic_csv("1,40", title="Example altered pack"), day="2026-11-18")
     assert db.execute("SELECT * FROM price_changes(%s)", ([second["file_id"], changed_product["file_id"]],)).fetchall() == []
+    assert queue_history_changes(db, second["file_id"], changed_product["file_id"]) == 1
+    assert queue_history_changes(db, changed_product["file_id"], second["file_id"]) == 0
+    assert "description_variant_or_pack_review" in db.execute("SELECT explanation FROM comparison_review").fetchone()[0]
+    with pytest.raises(ValueError):
+        record_review(db, (second["file_id"], 2), (changed_product["file_id"], 2), "verified", "Cannot verify same-chain comparison")
 
 
 def test_different_store_versions_cannot_overwrite_each_other(db):

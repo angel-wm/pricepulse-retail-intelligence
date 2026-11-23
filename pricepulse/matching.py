@@ -52,6 +52,39 @@ def queue_candidates(conn, file_a, file_b, brand_aliases=None):
     return {"candidates": len(pairs), "queued": added}
 
 
+def queue_history_changes(conn, file_a, file_b):
+    """Queue changed same-store SKU descriptors for two explicitly selected dates."""
+    if file_a == file_b:
+        raise ValueError("two distinct source files are required")
+    first, second = sorted((file_a, file_b))
+    with conn.transaction(), conn.cursor() as cur:
+        cur.execute("SELECT chain,store_id,price_list_date FROM source_file WHERE id IN (%s,%s) ORDER BY id", (first, second))
+        files = cur.fetchall()
+        if len(files) != 2 or files[0][:2] != files[1][:2] or files[0][2] == files[1][2]:
+            raise ValueError("select two dates for the same source and store")
+        cur.execute("""SELECT l.row_number,r.row_number,l.gtin_normalized,r.gtin_normalized,
+                              l.title,l.brand,l.quantity,l.unit,r.title,r.brand,r.quantity,r.unit
+                       FROM source_row l JOIN source_row r ON l.sku=r.sku AND l.chain=r.chain
+                       WHERE l.file_id=%s AND r.file_id=%s AND l.sku IS NOT NULL
+                         AND NOT EXISTS (SELECT 1 FROM review_exception e WHERE (e.file_id,e.row_number)=(l.file_id,l.row_number))
+                         AND NOT EXISTS (SELECT 1 FROM review_exception e WHERE (e.file_id,e.row_number)=(r.file_id,r.row_number))""", (first, second))
+        pairs = cur.fetchall()
+        added = 0
+        for lr, rr, lg, rg, lt, lb, lq, lu, rt, rb, rq, ru in pairs:
+            flags = comparison_flags(dict(gtin_normalized=lg, title=lt, brand=lb, quantity=lq, unit=lu), dict(gtin_normalized=rg, title=rt, brand=rb, quantity=rq, unit=ru))
+            if not flags:
+                continue
+            explanation = "Historical descriptor change requires review: " + ", ".join(flags)
+            cur.execute("""INSERT INTO comparison_review(left_file,left_row,right_file,right_row,decision,explanation)
+                           VALUES (%s,%s,%s,%s,'review',%s)
+                           ON CONFLICT (left_file,left_row,right_file,right_row) DO NOTHING RETURNING id""", (first,lr,second,rr,explanation))
+            result = cur.fetchone()
+            if result:
+                added += 1
+                cur.execute("INSERT INTO comparison_review_event(review_id,decision,explanation) VALUES (%s,'review',%s)", (result[0], explanation))
+    return added
+
+
 def record_review(conn, left, right, decision, explanation):
     """Persist an explicit human decision for two exact file rows, never an automatic match."""
     if decision not in {"verified", "rejected", "review"} or not explanation.strip():
