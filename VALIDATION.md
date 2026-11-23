@@ -1,5 +1,17 @@
 # Validation and evidence
 
+## Phase 3 authorization — 2026-11-22
+
+The owner authorized starting Phase 3 before reviewing Phases 2 and 3. Neither phase was formally closed by that instruction.
+
+## Phase 3 initial reliability validation — 2026-11-22
+
+The full local suite passed **47 tests**, including PostgreSQL integration tests against a temporary PostgreSQL 18.7 server, which was stopped after testing. Synthetic tests covered successful feed inspection, mismatched and incomplete feeds, simulated 403/429/schema failure, process timeout, caught interruption, distinct rerun evidence, explicit quality thresholds and winter/summer Zagreb schedule calculations. Simulated failures are not live retailer responses.
+
+A bounded live run of the new wrapper on 2026-11-22 retrieved SPAR 8702 for 2026-11-17 and reported success with **32,347 rows**, **32,347 usable price rows**, **31,597 checksum-valid GTIN rows**, zero price exceptions and a SHA-256 matching the Phase 1 observed value. This is one manual run; it is not a recurring-run or reliability baseline. The report, log and source records remain private under ignored `data/`.
+
+Schedule planning was dry-run for 12:15 Europe/Zagreb: 2026-11-22 maps to 11:15 UTC, and 2026-06-22 maps to 10:15 UTC. No scheduler was configured. Live-source ingestion recovery, recurring runs, alert thresholds, extended CI evidence and long-term reliability remain pending. Neither Phase 2 nor Phase 3 is closed.
+
 ## Phase 1 closeout and Phase 2 authorization — 2026-11-22
 
 The owner explicitly approved formal Phase 1 closeout and authorized continuing with Phase 2 on 2026-11-22. The decision accepts the bounded two-source acquisition and synthetic/hosted CI evidence recorded below; it does not establish continuous production reliability or rights to publish real retailer data.

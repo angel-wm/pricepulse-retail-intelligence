@@ -8,6 +8,7 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 
 - **Phase 0 — formally CLOSED by explicit owner approval on 2026-11-19.** Bounded source access, price-field interpretation, same-store history and 102 description-consistent matches are recorded in [Validation](VALIDATION.md). This does not amount to external GS1 validation or operational reliability proof.
 - **Phase 1 was formally closed by the owner on 2026-11-22. Phase 2 was authorized on the same date and is validated with synthetic data for owner review.** Production scheduling and publication of real data remain outside that authorization.
+- **Phase 3 was subsequently authorized by the owner before Phase 2 review and closeout.** This is an explicit sequencing exception: both phases remain open for later owner review, and real-source publication remains restricted.
 - Close a phase only with the results and evidence recorded in [Validation](VALIDATION.md) and [Current state](CURRENT_STATE.md).
 - An external Jira board may track tasks; do not treat issue statuses as runtime verification.
 

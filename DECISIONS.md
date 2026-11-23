@@ -82,4 +82,8 @@ The owner explicitly authorized Phase 1 and requested PULSE-12 and its subtasks.
 
 ### D-012 — Close Phase 1 and authorize Phase 2 (2026-11-22)
 
-The owner explicitly approved Phase 1 closeout and authorized Phase 2 implementation. Phase 2 covers PostgreSQL historical engineering and its validation, including a local test database if needed. Production scheduling and publication of genuine retailer data remain outside this authorization; Phase 3 has not been authorized.
+The owner explicitly approved Phase 1 closeout and authorized Phase 2 implementation. Phase 2 covers PostgreSQL historical engineering and its validation, including a local test database if needed. Production scheduling and publication of genuine retailer data remained outside that authorization; Phase 3 was subsequently authorized in D-013.
+
+### D-013 — Start Phase 3 before Phase 2 closeout (2026-11-22)
+
+The owner authorized continuing with Phase 3 and reviewing Phases 2 and 3 later. This explicitly permits parallel work before Phase 2 closeout; it does not constitute approval to close either phase or permission to publish genuine retailer data. A configured recurring job and production reliability require their own actual evidence; do not represent an unconfigured schedule as running.
