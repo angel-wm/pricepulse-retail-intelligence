@@ -12,11 +12,17 @@ The private review lists in `data/tableau-real-private/expanded/` rank additiona
 
 The portfolio screenshot is stored locally at `data/phase4-check/pricepulse-portfolio-private-en.png`.
 
-The workbook uses captures from SPAR 8702 and Kaufland 5630 for 17 and 23 November 2026. The full PostgreSQL export stays in ignored `data/tableau-real-private/`. Review decisions apply to exact file versions, so the 23 November observations do not carry forward the earlier approvals.
+The full PostgreSQL export stays in ignored `data/tableau-real-private/`. Review decisions apply to exact file versions, so the 23 November observations do not carry forward the earlier approvals.
 
 The supporting worksheets display same-store price changes and one record per store and date for coverage and freshness. The focused history has 16 priced rows for two dates. Four same-store changes satisfy the SQL identity and exception rules in that cohort. The quality worksheets describe all four source files. The 6-day gap is an interval between selected file dates. It does not describe a daily series or guarantee publication at a particular time.
 
 The real workbook and screenshot are private. A future GitHub release needs a verified rights basis for retailer information shown in the image and embedded in the packaged workbook.
+
+## Data attribution
+
+> PricePulse analyzes official retail price lists published by SPAR Croatia (Zagreb Jankomir, store 8702) and Kaufland Croatia (Zagreb Antuna Šoljana, store 5630), dated 17 and 23 November 2026. Verified cross-store comparisons use the 17 November lists.
+
+The official pages are the source links for a portfolio description or screenshot caption. [SPAR price lists](https://www.spar.hr/usluge/cjenici) · [Kaufland price lists](https://www.kaufland.hr/akcije-novosti/popis-mpc.html)
 
 ## Metric definitions and filter scope
 

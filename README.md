@@ -19,6 +19,10 @@ Croatian retailers publish official machine-readable price lists. The regulation
 
 Actual local source-access, two-date history, and price/identity evidence is in [Validation](VALIDATION.md) and [Source feasibility](SOURCE_FEASIBILITY.md). Initial same-date codes with price totaled 8,869 after promotional-price handling, but these are **not all verified product matches**. Previous music-retailer candidates were dropped after access blocks or restrictions. Public real-data redistribution remains on hold; the portfolio data approach has not been decided.
 
+### Data sources
+
+The real-data analysis uses official retail price lists published by SPAR Croatia and Kaufland Croatia. The validated Tableau snapshot covers SPAR Zagreb Jankomir (8702) and Kaufland Zagreb Antuna Šoljana (5630) for 17 and 23 November 2026. [SPAR price lists](https://www.spar.hr/usluge/cjenici) · [Kaufland price lists](https://www.kaufland.hr/akcije-novosti/popis-mpc.html) · [Tableau data attribution](TABLEAU.md#data-attribution)
+
 ## Local quick start (Windows PowerShell)
 
 Install Git and [uv](https://docs.astral.sh/uv/), then run these commands in PowerShell. The locked setup targets Python 3.12.
