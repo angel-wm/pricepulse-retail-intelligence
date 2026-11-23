@@ -190,7 +190,7 @@ In the tested files, **every** row rejected by the initial `MPC (EUR)` parser ha
 
 A temporary Windows Scheduled Task was configured to run two bounded collection-only batches at one-minute intervals against the 2026-11-17 historical files. Both batches reported success, the task returned zero and the temporary task was removed. Together with three earlier manual successful batches, this is a limited five-batch baseline using one historical date; it is not a daily uptime or missed-run measurement. Raw outputs remain private.
 
-The permanent collection-only daily task was separately checked before its due time and did not capture. Its first actual due daily run and behavior over multiple dates were not observed during this check. The scheduler's warning rules are provisional and documented in [Reliability](RELIABILITY.md); local synthetic tests cover warning and recovery behavior. The complete local suite passed 61 tests with a temporary PostgreSQL instance, which was stopped afterward.
+The permanent collection-only daily task was separately checked before its due time and did not capture. Its first actual due daily run and behavior over multiple dates were not observed during this check. The scheduler's warning rules are provisional and documented in [Reliability](RELIABILITY.md); local synthetic tests cover warning and recovery behavior. The complete local suite passed 61 tests with a temporary PostgreSQL instance, which was stopped afterward. The [GitHub-hosted CI run](https://github.com/angel-wm/pricepulse-retail-intelligence/actions/runs/45122553854) for commit `ba7b8c4faecc207603ff96261419c7d207132d7e` succeeded.
 
 ## Earlier source exploration — user-reported local logs, 2026-11-18
 

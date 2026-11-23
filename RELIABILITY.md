@@ -1,6 +1,6 @@
 # Local reliability work
 
-Phase 3 is in progress while Phase 2 remains open for the owner's later review. The current tools record individual bounded crawls, support explicit ingestion recovery and calculate basic file-quality signals. A local collection-only recurring job is configured for the interactive user.
+Phase 3 is implemented and awaits owner review, as does Phase 2. The current tools record individual bounded crawls, support explicit ingestion recovery and calculate basic file-quality signals. A local collection-only recurring job is configured for the interactive user.
 
 ## Run evidence
 

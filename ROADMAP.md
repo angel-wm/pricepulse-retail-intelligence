@@ -7,8 +7,8 @@ This is the phase-gated **plan and evidence-based status**. Feasibility probes a
 The work unit is a **phase**: **planned → explicitly authorized → in progress → validated → closed**.
 
 - **Phase 0 — formally CLOSED by explicit owner approval on 2026-11-19.** Bounded source access, price-field interpretation, same-store history and 102 description-consistent matches are recorded in [Validation](VALIDATION.md). This does not amount to external GS1 validation or operational reliability proof.
-- **Phase 1 was formally closed by the owner on 2026-11-22. Phase 2 was authorized on the same date and is validated with synthetic data for owner review.** Production scheduling and publication of real data remain outside that authorization.
-- **Phase 3 was subsequently authorized by the owner before Phase 2 review and closeout.** This is an explicit sequencing exception: both phases remain open for later owner review, and real-source publication remains restricted.
+- **Phase 1 was formally closed by the owner on 2026-11-22. Phase 2 was authorized on the same date and is validated with synthetic data for owner review.** Publication of real data remained outside that authorization.
+- **Phase 3 was subsequently authorized by the owner before Phase 2 review and closeout.** This is an explicit sequencing exception: both phases await owner review, and real-source publication remains restricted. Phase 3 includes an owner-selected local collection-only schedule.
 - Close a phase only with the results and evidence recorded in [Validation](VALIDATION.md) and [Current state](CURRENT_STATE.md).
 - An external Jira board may track tasks; do not treat issue statuses as runtime verification.
 
@@ -37,3 +37,9 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 Related detail: [Source feasibility](SOURCE_FEASIBILITY.md), [Project specification](PROJECT_SPEC.md).
 
 Phase 1 checks-only CI was implemented for PULSE-44 and passed a hosted run recorded in [Validation](VALIDATION.md). It runs synthetic tests on code changes, without scheduled or live retailer scraping or deployment. PULSE-19 retains the later operational reliability and expanded CI work. This timing does not add a new Phase 1 exit criterion to the table above.
+
+## Planned local reproducibility improvement
+
+In Phase 5, after owner review of Phases 2 and 3 and authorization of Phase 5 work, add a Docker Compose PostgreSQL setup for local development and synthetic integration tests ([PULSE-45](https://angel231995.atlassian.net/browse/PULSE-45)). Document persistence, safe volume removal, private credentials and a disposable test database. Keep genuine retailer data and credentials out of public artifacts. This is planned work, not a Phase 2 or 3 closure criterion or evidence of operational reliability.
+
+Keep the existing local collection-only scheduler and Scrapy execution unchanged for this improvement. Consider an application image separately if a concrete portability need arises.
