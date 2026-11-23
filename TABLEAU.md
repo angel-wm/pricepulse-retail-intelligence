@@ -1,8 +1,16 @@
 # Tableau analytics
 
-Phase 4 closed on 2026-11-23 with a private English Tableau workbook built from real retailer data. The workbook is an interactive snapshot of two stores and two dates.
+The private English dashboard covers three Zagreb stores on 17 and 23 November 2026. It uses exact file versions exported from local PostgreSQL.
 
-## Private real-data workbook
+## Three-source workbook
+
+Open `data/pricepulse-three-sources-private-en.twbx` in Tableau Desktop. Use **Price catalog** for the 165,322 listed prices, **Catalog coverage** for the six store-date counts, and **Product price history** for the 41,363 same-store comparisons, including unchanged prices.
+
+The opening dashboard shows four products reviewed across all three stores on 23 November. It shows each listed price and the spread between the highest and lowest prices. The database holds 12 pair decisions for these four three-store products plus four earlier SPAR–Kaufland decisions. These are documentary checks of the published GTIN, brand, variant, package and price context for the selected rows.
+
+The screenshot, SQL exports and private review inputs are under `data/three-source-private/`. Keep the packaged workbook, screenshot and exports local.
+
+## Original Phase 4 snapshot
 
 Open `data/pricepulse-coverage-private-en.twbx` in Tableau Desktop. The English portfolio dashboard shows the four approved cross-store comparisons. Selecting a product in the price chart filters the gap chart to that product. Clearing the selection restores the four comparisons.
 
@@ -20,9 +28,9 @@ The real workbook and screenshot are private. A future GitHub release needs a ve
 
 ## Data attribution
 
-> PricePulse analyzes official retail price lists published by SPAR Croatia (Zagreb Jankomir, store 8702) and Kaufland Croatia (Zagreb Antuna Šoljana, store 5630), dated 17 and 23 November 2026. Verified cross-store comparisons use the 17 November lists.
+> PricePulse analyzes official retail price lists published by SPAR Croatia (Zagreb Jankomir, store 8702) Kaufland Croatia (Zagreb Antuna Šoljana, store 5630), and Konzum Croatia (Zagreb Velimira Škorpika, store 1280), dated 17 and 23 November 2026. The three-store reviewed set uses the 23 November lists.
 
-The official pages are the source links for a portfolio description or screenshot caption. [SPAR price lists](https://www.spar.hr/usluge/cjenici) · [Kaufland price lists](https://www.kaufland.hr/akcije-novosti/popis-mpc.html)
+The official pages are the source links for a portfolio description or screenshot caption. [SPAR price lists](https://www.spar.hr/usluge/cjenici) · [Kaufland price lists](https://www.kaufland.hr/akcije-novosti/popis-mpc.html) · [Konzum price lists](https://www.konzum.hr/cjenici)
 
 ## Metric definitions and filter scope
 
@@ -30,7 +38,8 @@ The official pages are the source links for a portfolio description or screensho
 | --- | --- |
 | Listed price | Resolved price in EUR for one store, selected file date and source SKU. Use a valid regular or special amount when the other field is blank, or the common amount when both valid values agree. Invalid, missing or conflicting prices do not enter the priced catalog. |
 | Same-store price change | Current price minus previous price for the preceding selected observation of the same store/SKU, with matching valid GTIN and unchanged descriptors. Positive means an increase. Zero counts as unchanged. |
-| Cross-store gap | SPAR price minus Kaufland price in the current snapshot, for the same date and explicitly reviewed pack/variant on the exact source file versions. A positive value means Kaufland costs less. A zero value is a tie. |
+| Three-store price spread | Highest listed price minus lowest listed price for a product reviewed at all three selected stores on the same date. |
+| Pair price difference | Left price minus right price in the recorded review orientation for the exact, same-date source rows. A positive value means the right-hand store costs less. |
 | Relative change and gap | If calculated for analysis, divide same-store change by the previous price and cross-store gap by the right-hand comparison price. Multiply by 100 and omit a percentage if the denominator is missing or zero. The private workbook displays the absolute EUR values. |
 | File quality | Priced and valid-GTIN row counts divided by the source row count. File age is the reference date minus the price-list date. Quality counts describe the file. |
 
@@ -59,9 +68,9 @@ Tableau inferred normalized GTIN as a number when the CSV was opened. Change ide
 
 ## Fictional demo and local draft
 
-The CSV files in `examples/tableau_synthetic` are generated from invented products and prices by `python -m pricepulse.synthetic_demo`, using `PRICEPULSE_TEST_DSN` for a disposable PostgreSQL database and a temporary schema. The named chains and store IDs define the demonstration context; values are not retailer observations. Synthetic match decisions are simulated, not a real review. The fixture comprises 24 observations, 16 changes, 12 matched pairs and six file-quality records; automated PostgreSQL tests check those counts and the fictional EUR -0.10 spreads.
+The CSV files in `examples/tableau_synthetic` are generated from invented products and prices by `python -m pricepulse.synthetic_demo`, using `PRICEPULSE_TEST_DSN` for a disposable PostgreSQL database and a temporary schema. The named chains and store IDs define the demonstration context; values are not retailer observations. Synthetic match decisions are simulated, not a real review. The fixture comprises 36 observations, 24 changes, 36 reviewed pairs and nine file-quality records. PostgreSQL tests check the counts and the three retailer-pair differences.
 
-Tableau Desktop Free Edition opened the fictional observations and displayed a preliminary price-history worksheet by date, chain and product and a second worksheet of same-day differences. Both were assembled into a preliminary dashboard. The 12 displayed fictional differences of -0.10 EUR agree with the exported synthetic comparison rows; filters and other measures have not been reconciled. A private draft was saved under `data/pricepulse-phase4-draft.twb`; it is an incomplete dashboard and is not fully validated. The installed edition explicitly says it cannot share or publish assets. [Tableau's edition comparison](https://help.tableau.com/current/pro/desktop/en-us/desktop_comparison.htm) and [Tableau Public FAQ](https://help.tableau.com/current/pro/desktop/en-us/public_faq.htm) distinguish this edition from the free Public authoring option. Do not share the Desktop Free draft; use an appropriate separately selected public authoring route for any synthetic demonstration.
+An earlier two-store draft in Tableau Desktop Free Edition opened the fictional observations and displayed a preliminary price-history worksheet by date, chain and product and a second worksheet of same-day differences. Both were assembled into a preliminary dashboard. The 12 displayed fictional differences of -0.10 EUR agree with the exported synthetic comparison rows; filters and other measures have not been reconciled. A private draft was saved under `data/pricepulse-phase4-draft.twb`; it is an incomplete dashboard and is not fully validated. The installed edition explicitly says it cannot share or publish assets. [Tableau's edition comparison](https://help.tableau.com/current/pro/desktop/en-us/desktop_comparison.htm) and [Tableau Public FAQ](https://help.tableau.com/current/pro/desktop/en-us/public_faq.htm) distinguish this edition from the free Public authoring option. Do not share the Desktop Free draft; use an appropriate separately selected public authoring route for any synthetic demonstration.
 
 ## Refresh and expansion
 

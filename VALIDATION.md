@@ -413,3 +413,35 @@ client pipelining to shorten the load.
 
 Regular Windows execution of the expanded cohort remains to be observed.
 The private Tableau workbook still reflects its original two-store snapshot.
+
+## Three-source Tableau validation — 2026-11-23
+
+The private three-source workbook uses six exact PostgreSQL file versions for
+SPAR 8702, Kaufland 5630 and Konzum 1280 on 17 and 23 November. The four earlier
+file hashes and approved decisions were retained in a private copy of the
+database. The two Konzum files passed feed and raw-file hash checks before
+ingestion.
+
+The analytical export contains 165,322 listed-price observations, 41,363
+same-store comparisons and six file-quality records. Konzum contributes 53,152
+observations and 23,560 same-store comparisons. The packaged catalog reconciled
+row for row with SQL using chain, date, SKU, title, price and price origin.
+The six Tableau coverage values and nine change summary values matched the
+export.
+
+Four products were reviewed for the 23 November three-store comparison. For
+each, the published GTIN, brand, variant and stated pack agreed, and each
+observation had a comparable listed price and no ingestion exceptions.
+Twelve pair decisions were recorded against exact file rows. The four prior
+reviewed pairs were retained, for 16 SQL and Tableau pair differences.
+Tableau rendered all 12 price marks and four product spreads on the opening
+dashboard. Selecting a Konzum mark isolated its product spread. Clearing
+the selection restored all four products.
+
+The synthetic example now covers all three retailers. It contains 36 prices,
+24 same-store changes, 36 reviewed pairs and nine quality records, all built
+from fictional product observations. The full local PostgreSQL suite passed
+67 tests.
+
+The private workbook and screenshot remain under ignored `data/`. Regular
+scheduled collection with three sources remains an operational checkpoint.

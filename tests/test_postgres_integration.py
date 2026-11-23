@@ -196,8 +196,13 @@ def test_fictional_demo_exports_reconcile_with_expected_values(tmp_path):
         with (tmp_path / f'{name}.csv').open(encoding='utf-8', newline='') as stream:
             return list(csv.DictReader(stream))
     observations, changes, comparisons, quality = (rows(n) for n in ('observations', 'changes', 'comparisons', 'quality'))
-    assert (len(observations), len(changes), len(comparisons), len(quality)) == (24, 16, 12, 6)
-    assert all(Decimal(row['price_difference']) == Decimal('-0.10') for row in comparisons)
+    assert (len(observations), len(changes), len(comparisons), len(quality)) == (36, 24, 36, 9)
+    gaps = {("spar", "kaufland"): Decimal("-0.10"), ("spar", "konzum"): Decimal("0.05"),
+            ("kaufland", "konzum"): Decimal("0.15")}
+    for chains, gap in gaps.items():
+        values = [Decimal(row["price_difference"]) for row in comparisons
+                  if (row["left_chain"], row["right_chain"]) == chains]
+        assert values == [gap] * 12
     assert all(row['priced_fraction'] == '1.00000000000000000000' for row in quality)
 
 

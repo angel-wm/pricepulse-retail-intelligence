@@ -2,7 +2,7 @@
 
 PricePulse is a **documentation-first Data Engineering portfolio project** to acquire official Croatian grocery price-list files responsibly with Scrapy, validate product identities, store durable historical observations in PostgreSQL, and analyze comparable offers in Tableau.
 
-**Current status (2026-11-23): Phase 5 validation is in progress.** Phases 0–2 and private Phase 4 are closed. The English Tableau snapshot covers 112,170 real price observations from two Zagreb stores and two dates. Phase 3 remains open for review of normal operation. See [Current state](CURRENT_STATE.md).
+**Current status (2026-11-23): Phase 5 validation is in progress.** Phases 0–2 and private Phase 4 are closed. The private English Tableau snapshot covers 165,322 real price observations from three Zagreb stores and two dates. Phase 3 remains open for review of normal operation. See [Current state](CURRENT_STATE.md).
 
 ## What PricePulse aims to answer
 
@@ -21,9 +21,9 @@ Actual local source-access, two-date history, and price/identity evidence is in 
 
 ### Data sources
 
-The real-data analysis uses official retail price lists published by SPAR Croatia and Kaufland Croatia. The validated Tableau snapshot covers SPAR Zagreb Jankomir (8702) and Kaufland Zagreb Antuna Šoljana (5630) for 17 and 23 November 2026. [SPAR price lists](https://www.spar.hr/usluge/cjenici) · [Kaufland price lists](https://www.kaufland.hr/akcije-novosti/popis-mpc.html) · [Tableau data attribution](TABLEAU.md#data-attribution)
+The private Tableau snapshot uses official price lists for SPAR Zagreb Jankomir (8702), Kaufland Zagreb Antuna Šoljana (5630) and Konzum Zagreb Super (1280) for 17 and 23 November 2026. [SPAR price lists](https://www.spar.hr/usluge/cjenici) · [Kaufland price lists](https://www.kaufland.hr/akcije-novosti/popis-mpc.html) · [Tableau data attribution](TABLEAU.md#data-attribution)
 
-Local collection and PostgreSQL also support Konzum Zagreb Super 1280. See [Konzum price lists](https://www.konzum.hr/cjenici) and [bounded acquisition](ACQUISITION.md).
+See [Konzum price lists](https://www.konzum.hr/cjenici) and [bounded acquisition](ACQUISITION.md).
 
 ## Local quick start (Windows PowerShell)
 

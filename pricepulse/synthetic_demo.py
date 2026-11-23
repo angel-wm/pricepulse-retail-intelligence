@@ -3,6 +3,7 @@ import csv
 import io
 import os
 from datetime import date
+from itertools import combinations
 from pathlib import Path
 from uuid import uuid4
 
@@ -10,7 +11,7 @@ import psycopg
 from psycopg import sql
 
 from pricepulse.analytics import export_analytics
-from pricepulse.contracts import FIELDS
+from pricepulse.contracts import DIALECTS, FIELDS, STORES
 from pricepulse.ingest import apply_schema, ingest_file
 from pricepulse.matching import record_review
 
@@ -29,22 +30,31 @@ def build(dsn, directory):
             conn.execute(sql.SQL("SET search_path TO {} ").format(sql.Identifier(schema)))
             apply_schema(conn)
             ids = []
+            price_offsets = {"spar": 0, "kaufland": 10, "konzum": -5}
             for day_index, day in enumerate(("2026-01-01", "2026-01-02", "2026-01-03")):
-                pair = []
-                for source, store in (("spar", "8702"), ("kaufland", "5630")):
+                daily_files = []
+                for source, store in STORES.items():
                     fields = FIELDS[source]
+                    encoding, delimiter = DIALECTS[source]
                     stream = io.StringIO(newline="")
-                    writer = csv.DictWriter(stream, fieldnames=list(fields.values()), delimiter=";" if source == "spar" else "\t", lineterminator="\n")
+                    writer = csv.DictWriter(stream, fieldnames=list(fields.values()), delimiter=delimiter, lineterminator="\n")
                     writer.writeheader()
                     for i in range(1, 5):
-                        cents = 100 + i * 35 + day_index * (i - 2) * 5 + (10 if source == "kaufland" else 0)
-                        writer.writerow({fields["code"]: f"fiction-{i}", fields["title"]: f"Synthetic item {i}", fields["brand"]: "Fictional", fields["quantity"]: "1", fields["unit"]: "KOM", fields["regular"]: f"{cents // 100},{cents % 100:02d}", fields["gtin"]: gtin(i)})
-                    body = stream.getvalue().encode("cp1250" if source == "spar" else "utf-8-sig")
+                        cents = 100 + i * 35 + day_index * (i - 2) * 5 + price_offsets[source]
+                        row = dict(code=f"fiction-{i}", title=f"Synthetic item {i}", brand="Fictional",
+                                   quantity="1", unit="KOM", gtin=gtin(i))
+                        if source == "konzum":
+                            row.update(listed=f"{cents // 100}.{cents % 100:02d}", promotion="NE")
+                        else:
+                            row["regular"] = f"{cents // 100},{cents % 100:02d}"
+                        writer.writerow({fields[key]: value for key, value in row.items()})
+                    body = stream.getvalue().encode(encoding)
                     result = ingest_file(conn, source=source, store=store, day=day, url=f"https://www.{source}.hr/fictional-demo.csv", collected_at=f"{day}T12:00:00+00:00", status=200, body=body)
                     ids.append(result["file_id"])
-                    pair.append(result["file_id"])
-                for row in range(2, 6):
-                    record_review(conn, (pair[0], row), (pair[1], row), "verified", "Fictional matching descriptors")
+                    daily_files.append(result["file_id"])
+                for left, right in combinations(daily_files, 2):
+                    for row in range(2, 6):
+                        record_review(conn, (left, row), (right, row), "verified", "Fictional matching descriptors")
             export_analytics(conn, ids, directory, as_of=date(2026, 1, 3))
         finally:
             conn.execute("SET search_path TO public")

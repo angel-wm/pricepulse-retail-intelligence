@@ -4,7 +4,7 @@ All products, identifiers, prices and review decisions in these CSV files are fi
 
 ## Inspect in Tableau
 
-Open `comparisons.csv` as a text file data source. Put `price_list_date` and `left_sku` on Rows and add `price_difference` to Text. Use the exact date as a discrete dimension and set SKU fields to text. Expect 12 records across three dates, each with a left-minus-right gap of −€0.10. The companion files contain 24 price observations, 16 same-store comparisons and six file-quality records. See [Tableau analytics](../../TABLEAU.md#private-analytical-export) for each file's grain.
+Open `comparisons.csv` as a text file data source. Put `left_chain`, `right_chain`, `price_list_date` and `left_sku` on Rows, then add `price_difference` to Text. Use a discrete exact date and text SKU fields. Expect 36 records across three dates, with 12 per retailer pair. Left-minus-right differences are −€0.10 for SPAR–Kaufland, €0.05 for SPAR–Konzum and €0.15 for Kaufland–Konzum. The companion files contain 36 price observations, 24 same-store comparisons and nine file-quality records. See [Tableau analytics](../../TABLEAU.md#private-analytical-export) for each file's grain.
 
 ## Regenerate from PostgreSQL
 
