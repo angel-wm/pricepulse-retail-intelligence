@@ -1,6 +1,6 @@
 # Agent instructions
 
-PricePulse is a **documentation-first, phase-gated** project. Phase 0 closed on 2026-11-19; the owner formally closed Phase 1 and authorized Phase 2 on 2026-11-22, then authorized Phase 3 before reviewing Phases 2 and 3. Neither later phase is formally closed. Do not equate tests in user-local temporary scripts with a production spider or pipeline.
+PricePulse is a **documentation-first, phase-gated** project. Phase 0 closed on 2026-11-19; the owner formally closed Phase 1 and authorized Phase 2 on 2026-11-22, then authorized Phase 3 before Phase 2 closeout. The owner formally closed Phase 2 on 2026-11-23. Phase 3 remains open. Do not equate tests in user-local temporary scripts with a production spider or pipeline.
 
 ## Read before working
 
@@ -20,7 +20,8 @@ PricePulse is a **documentation-first, phase-gated** project. Phase 0 closed on 
 - Respect source terms, robots.txt, access controls and rate limits; never bypass CAPTCHA, authentication or anti-bot defenses.
 - Keep raw files, product names, codes and retailer-specific prices out of public GitHub/Tableau assets unless their reuse rights are verified. A synthetic portfolio demo is preferable; the legal automated-access mandate is not a blanket redistribution license.
 - Prefer free, locally reproducible tooling and measured evidence. Do not invent implementation progress or test results.
-- Keep documentation **in English**; communicate with the user **in Spanish**, unless requested otherwise.
+- Keep documentation and the Tableau portfolio presentation **in English**. Communicate with the user **in Spanish**, unless requested otherwise.
+- Keep Jira and repository documentation current at material checkpoints. Commit and push validated code and documentation milestones when appropriate. Keep private real-data artifacts out of those commits.
 - A separate Crawlee project must solve a different problem.
 - The owner approved Phase 0 closeout and Phase 1 coding on 2026-11-19, then approved Phase 1 closeout and Phase 2 implementation on 2026-11-22, and subsequently authorized Phase 3 before reviewing Phases 2 and 3. Publication of genuine retailer data remains outside those authorizations.
 

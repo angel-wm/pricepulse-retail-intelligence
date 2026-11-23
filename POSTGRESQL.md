@@ -22,6 +22,8 @@ Each file version is keyed by chain, store, publication date and raw-byte SHA-25
 
 For a fixed store on two different dates, `queue_history_changes` flags changed GTIN or descriptors for the same SKU and records a review entry. It does not automatically resolve that change or add it back to `price_changes`.
 
+Cross-retailer candidates are joined by normalized GTIN. The quantity check compares the declared mass only when both sources provide one. For SPAR, the quantity goes with its `kg` or `g` unit. For Kaufland, the quantity column explicitly says `(KG)` and the separate unit field is retained as source evidence. The check compares exact decimal values after converting to kilograms. It distinguishes different declared masses from quantities that cannot be compared, such as pieces or volume against mass. A mass agreement alone says nothing about the variant or sale package. Existing queued explanations and review events are historical records.
+
 ## Validation
 
 Set `PRICEPULSE_TEST_DSN` to a **disposable test database** whose user may create and drop schemas, then run `uv run --locked python -m pytest -q`. Integration tests create and drop their own randomly named schemas. Without that variable they are skipped; a passing offline-only suite is not PostgreSQL integration evidence. The CI service uses a disposable synthetic PostgreSQL database. See [Validation](VALIDATION.md) for the observed results and remaining limits.

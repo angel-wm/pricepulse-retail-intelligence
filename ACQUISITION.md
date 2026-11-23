@@ -20,4 +20,6 @@ Each JSON Lines feed starts with a `manifest` containing source, store, requeste
 
 Successful manifests include discovery counts: total entries in the index, selected files for the requested store/date and fetched files. The index scopes differ by retailer: the SPAR index is date-specific, whereas the Kaufland index may contain multiple dates. Do not compare their total entry counts as store or product coverage.
 
+Kaufland filenames have two observed store/date layouts. The older layout puts `DDMMYYYY` after the store ID. The newer layout inserts the price-list descriptor and a numeric field before `YYYYMMDD`, followed by a four-digit time. The collector checks both layouts and requires one unambiguous match. See [Validation](VALIDATION.md) for the recorded filename change and manual recovery.
+
 Inspect the manifest and Scrapy logs after every run: Scrapy can return exit code zero even when a spider closes early. A failed request, blocked robots policy, schema change or absent manifest is not a successful acquisition. This prototype does not persist raw files, provide durable failure manifests, schedule runs, or guarantee completeness. See [Validation](VALIDATION.md) for the bounded evidence and remaining work.

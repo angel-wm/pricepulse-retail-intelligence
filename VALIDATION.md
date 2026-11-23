@@ -1,5 +1,81 @@
 # Validation and evidence
 
+## Phase 4 private real Tableau review — 2026-11-23
+
+The synthetic PostgreSQL fixture regenerated four CSVs that matched the workbook's synthetic inputs byte for byte. The full local suite passed 65 tests with PostgreSQL. This served as a control while developing the local workbook.
+
+The private real export verified four archived capture hashes and reconciled source row counts. PostgreSQL exported 112,170 price observations, 17,803 eligible same-store changes, four verified pair comparisons and four file-quality rows for the selected dates and versions. The focused Tableau workbook narrows price history and changes to the four owner-reviewed product pairs. Live Tableau query readback agreed with the exported values for 16 price observations, four comparisons, four qualifying changes and four records in each of the three quality worksheets. In a separate workbook copy, a store, product and date filter intersection returned one expected history record. The dashboard image was rendered and inspected. The cross-store comparisons apply to 17 November only. The workbook and exports remain local.
+
+After owner feedback, the opening dashboard was replaced in a new private workbook with two Spanish tables that state the cheaper retailer and price gap, and show changes within SPAR separately. All 28 visible table values matched the SQL-derived inputs in Tableau readback. The rendered dashboard was inspected after shortening labels, with all four product names and pack sizes visible.
+
+A subsequent private portfolio version presents the same verified cohort with comparative bars, summary indicators and a promotion callout. Tableau readback reconciled all eight price marks and four gap marks to the exported data. The filter action from the price chart to the gap chart was verified in Tableau metadata and in the saved package. A click-through test was not performed. The rendered 1240 by 790 image was inspected. The packaged workbook contains eight CSV sources with package-relative connections. Both outputs remain private pending a verified basis for public reuse.
+
+### Expanded catalog and live interaction
+
+The first click-through test found that the source chart highlighted the selected product without filtering the gap chart. The filter expression was corrected to use the gap chart's data source for the target field. In the expanded workbook, clicking the Dessert Chef price mark displayed only its gap. Clicking away restored the four approved pairs.
+
+The expanded private Tableau workbook exposes 112,170 listed-price observations and 17,803 same-store SKU comparisons, including unchanged prices. Readback from the four catalog coverage marks and six same-store change summary marks matched the private exports. Both detail worksheets returned data in Tableau.
+
+| File date | Shared priced GTINs | Eligible cross-store pairs | Approved comparisons | Pending with brand and mass agreement and only a descriptor flag |
+| --- | ---: | ---: | ---: | ---: |
+| 2026-11-17 | 8,869 | 6,418 | 4 | 2,096 |
+| 2026-11-23 | 8,854 | 6,405 | 0 | 2,097 |
+
+The remaining candidates have additional flags or unavailable comparable mass. Counts are per date and file version. The private audit used read-only SQL and did not create approval decisions. The workbook exposes the expanded observations and same-store history separately from approved cross-store pricing.
+
+### English portfolio review
+
+The private portfolio workbook uses English for dashboard copy, sheet names, field captions and presentation labels. Source product titles are preserved in the catalog. Tableau Desktop readback returned the expected eight price marks, four gap marks, four catalog coverage marks and six same-store change summary marks. Selecting a product showed one gap and clearing the selection restored all four. All 65 local repository tests passed with PostgreSQL.
+
+## Phase 3 owner review evidence — 2026-11-23
+
+The local collection-only daily marker records a real attempt for 2026-11-23 at 11:35 Bogotá time. The batch took about 21 seconds and was marked incomplete. SPAR 8702 captured 32,410 rows with zero reported price exceptions and 97.68% checksum-valid GTINs. There was no prior successful SPAR file in the scheduled directory for the row-count comparison.
+
+Kaufland 5630 recorded three HTTP 200 responses and zero assets selected by the store/date filter. A separate bounded manual attempt at 13:14 Bogotá time repeated that result and exited with code 1. Neither attempt establishes whether the file was absent from the index or present under a label the filter missed. The first batch and the manual attempt have separate private evidence.
+
+The Windows task was enabled, interactive only, and its last observed tick at 12:20 Bogotá time returned code 1. The operational history was disabled, so the 11:35 capture cannot be attributed to the normal hourly trigger. The daily marker retained the incomplete outcome for subsequent ticks. The focused reliability and scheduling test suite passed 38 tests.
+
+### Kaufland filename change and manual recovery
+
+At 13:19 Bogotá time, an index-only Scrapy probe received three HTTP 200 responses and downloaded no price-list files. The index contained 2,544 entries. Store 5630 had exactly one new-format entry for 2026-11-23. The old filter selected none for that date and still selected one for 2026-11-17. The new filename puts a price-list descriptor between the store ID and the date and uses `YYYYMMDD` instead of `DDMMYYYY`.
+
+The collector now accepts both observed filename formats and still requires exactly one match for the requested store and date. A manual recovery at 13:20 downloaded and validated the 2026-11-23 file with 23,830 rows and a verified raw hash. The original daily marker remains incomplete, and recovery evidence is stored separately. The offline suite passed 53 tests, with 11 PostgreSQL integration tests skipped because no test database was configured for this run. Normal daily capture through the registered task and missed-run behavior remain unverified. Phase 3 remains open.
+
+### Timed Windows collection and controlled missed-tick check
+
+At 13:25 Bogotá time on 2026-11-23, a temporary Windows scheduled task started at its defined trigger time without manual launch. It ran the normal collection-only entry point in a separate private directory. The task returned code 0 and the batch succeeded for SPAR (32,410 rows) and Kaufland (23,830 rows). The permanent task's incomplete marker retained the same hash, and the temporary task was removed. This confirms one timed live collection with the corrected code. The permanent task's next eligible date is 2026-11-24.
+
+Using a controlled clock and a synthetic batch, the scheduler logic collected once when the first eligible tick was missed and a later tick occurred on the same Zagreb date. When every tick for the following date was missed, the next eligible tick collected only the new date and created no backfill marker. The nine focused scheduling tests passed. This check exercises application behavior when ticks are absent. It does not measure Windows resume or logon behavior after a real interruption.
+
+## Phase 2 private real-file review — 2026-11-23
+
+An isolated local PostgreSQL instance loaded previously collected private SPAR 8702 and Kaufland 5630 files dated 2026-11-17. The successful crawl report, feed summary and raw SHA-256 agreed for each file. An independent CSV reader counted raw rows; these counts matched loaded source rows. Replaying each file retained the same file version and observation counts while recording another acquisition run. The server was stopped after the review; its private database and a 20-pair sample remain under ignored `data/`.
+
+| Source | Raw and loaded rows | Price observations | Rows with review exceptions |
+| --- | ---: | ---: | ---: |
+| SPAR | 32,347 | 32,347 | 15,231 |
+| Kaufland | 23,593 | 23,591 | 378 |
+
+SPAR observations include 3,103 special-only prices. Its exceptions include 15,127 missing-brand rows and 213 invalid-GTIN rows; categories can overlap. Kaufland has two duplicate-SKU rows without price observations, 355 invalid-GTIN rows and 35 missing-brand rows. The exact-GTIN queue produced 6,418 exception-free candidates; none was automatically verified. A deterministic 20-pair sample is prepared for human review but has not yet been adjudicated.
+
+This checks two historical files and replay behavior, not daily operation, independent reconciliation of every price, same-store changes across dates, or product identity. No real retailer records were published.
+
+### Cross-retailer quantity reassessment
+
+The initial literal quantity and unit comparison flagged all 6,418 candidates. The owner identified examples involving decimal formatting and unrelated measurement dimensions. The revised check uses the declared mass from each source when both provide one. The same 6,418 pairs were regenerated in temporary review tables and compared by exact file and row keys. Repeating the queue added no entries and all regenerated decisions were pending.
+
+| Result | Candidate pairs |
+| --- | ---: |
+| Same declared mass after exact normalization | 3,121 |
+| Different declared masses requiring review | 190 |
+| Declared quantities not comparable as mass | 3,107 |
+
+The unrelated brand and title checks still flagged 1,804 and 6,386 pairs respectively, with overlapping flags. These checks prioritize human review and do not measure match accuracy. A private Spanish guide explains the same 20 examples. The reassessment covered one file date and left the original review records intact. All 63 local tests passed with a disposable PostgreSQL instance.
+
+Four sample pairs were corroborated with external product references and both source barcodes. A separate read-only check reconciled all eight sample prices and their origins between the original CSVs and PostgreSQL, using the exact file hashes to select observations.
+
+On 2026-11-23, the owner approved these four pairs. The private database recorded one verification event per pair. The verified comparison view returned exactly those four pairs, and their prices and differences agreed with the source reconciliation. The other 6,414 candidates remain queued. This check covers the selected file versions on one date. The owner separately approved formal Phase 2 closeout on 2026-11-23 with this bounded scope. Additional pairs remain eligible for later review. The closeout does not establish catalogue-wide match accuracy, multi-day real ingestion, or operational reliability.
+
 ## Phase 2 and 3 technical review — 2026-11-23
 
 The repository at `1d73f3dfb1c6675af1411c0e666c89054667f357`, Jira acceptance criteria, Phase 2 SQL and ingestion, and Phase 3 scheduling and recovery were reviewed. The full local suite passed **62 tests** with a temporary PostgreSQL instance, stopped after the run. The [hosted CI run](https://github.com/angel-wm/pricepulse-retail-intelligence/actions/runs/45125414064) for that commit succeeded. This is an agent review of work produced in this project, not independent human review.
@@ -7,7 +83,7 @@ The repository at `1d73f3dfb1c6675af1411c0e666c89054667f357`, Jira acceptance cr
 - **Phase 2:** synthetic integration tests cover idempotent replay, file versions, exceptions, reviewed comparisons and selected-file price changes. Actual retailer CSV ingestion, reconciliation against real source files and independent review of real matching decisions remain untested. Without those checks, the synthetic pass does not establish a real-data dashboard.
 - **Phase 3:** the permanent collection-only Windows task was observed after its 01:20 Bogotá tick with last result zero; it was before the 12:15 Zagreb due time. A separate accelerated recurring task previously produced two successful historical batches. Neither observation demonstrates a normal due-time daily capture, missed-run behavior or multi-day reliability. Synthetic recovery tests and provisional alerts are not live operational evidence.
 
-Both epics remain in Jira **In Review**. The owner has not formally closed either phase. The existing local task does not ingest into PostgreSQL; a persistent private database and explicit real-data ingestion are separate operational choices.
+At this technical review checkpoint, both epics were in Jira **In Review** and awaited owner closeout. The owner subsequently closed Phase 2 and its epic [PULSE-3](https://angel231995.atlassian.net/browse/PULSE-3) moved to **Done**. Phase 3 remains open. The existing local task does not ingest into PostgreSQL. A persistent private database and explicit real-data ingestion are separate operational choices.
 
 ## Phase 4 initial analytical export — 2026-11-23
 

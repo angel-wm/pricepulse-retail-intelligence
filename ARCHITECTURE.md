@@ -1,6 +1,6 @@
 # Intended architecture
 
-**Status: Phase 1 is closed; Phases 2 and 3 await owner review; Phase 4 is in progress.** The source adapters were bounded smoke-tested. An initial PostgreSQL schema, loader and comparison review are implemented and validated with synthetic data; real-source ingestion and operational reliability remain unverified. A local collection-only task is registered but recurring live capture has not been observed. An initial synthetic Tableau worksheet and local analytical exports exist; the dashboard is incomplete. See [Acquisition](ACQUISITION.md), [PostgreSQL](POSTGRESQL.md), [Reliability](RELIABILITY.md) and [Validation](VALIDATION.md).
+**Status: Phases 1 and 2 are closed, Phase 3 awaits owner review, and Phase 4 is in progress.** The source adapters were bounded smoke-tested. An initial PostgreSQL schema, loader and comparison review are implemented and validated with synthetic data; a bounded private review also loaded and replayed one historical file from each retailer. Daily operational reliability remains unverified. A local collection-only task is registered but recurring live capture has not been observed. An initial synthetic Tableau worksheet and local analytical exports exist; the dashboard is incomplete. See [Acquisition](ACQUISITION.md), [PostgreSQL](POSTGRESQL.md), [Reliability](RELIABILITY.md) and [Validation](VALIDATION.md).
 
 ## Proposed data flow
 

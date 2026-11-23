@@ -1,6 +1,6 @@
 # PricePulse project specification
 
-**Status (2026-11-22):** Phase 0 and Phase 1 are formally closed. Phase 2 awaits owner review after synthetic PostgreSQL validation; the owner authorized Phase 3 work before that review. Kaufland + SPAR Croatia passed bounded source feasibility, including a 102-pair descriptor-consistency gate; this is not manufacturer certification.
+**Status (2026-11-23):** Phases 0, 1 and 2 are formally closed. Phase 3 awaits owner review. Kaufland + SPAR Croatia passed bounded source feasibility, including a 102-pair descriptor-consistency gate; this is not manufacturer certification.
 
 ## Problem and value
 

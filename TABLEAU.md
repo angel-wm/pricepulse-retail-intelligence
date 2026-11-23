@@ -1,6 +1,22 @@
 # Tableau analytics: work in progress
 
-Phase 4 is authorized. Its dashboard and SQL-to-Tableau reconciliation are not yet complete. Phase 2 and Phase 3 still await owner review.
+Phase 4 is authorized. Its target is a private Tableau dashboard using real retailer data. Phase 2 is closed. Phase 3 still awaits owner review.
+
+## Private real-data workbook
+
+Open `data/pricepulse-coverage-private-en.twbx` in Tableau Desktop. The English portfolio dashboard shows the four approved cross-store comparisons. Selecting a product in the price chart filters the gap chart to that product. Clearing the selection restores the four comparisons.
+
+The expanded workbook includes 112,170 listed-price observations across both stores and both dates. **Price catalog** exposes individual observations. **Catalog coverage** shows counts by store and date. **Product price history** and **Price changes by store** cover the 17,803 same-store SKU comparisons returned by PostgreSQL for 17 to 23 November. These include unchanged prices. Raw retailer product titles are preserved as published.
+
+The private review lists in `data/tableau-real-private/expanded/` rank additional same-date cross-store candidates. Start with the pairs whose brand and declared mass agree and whose remaining flag is the description or variant. Identity review is still required for each selected pair and exact file version.
+
+The portfolio screenshot is stored locally at `data/phase4-check/pricepulse-portfolio-private-en.png`.
+
+The workbook uses captures from SPAR 8702 and Kaufland 5630 for 17 and 23 November 2026. The full PostgreSQL export stays in ignored `data/tableau-real-private/`. Review decisions apply to exact file versions, so the 23 November observations do not carry forward the earlier approvals.
+
+The supporting worksheets display same-store price changes and one record per store and date for coverage and freshness. The focused history has 16 priced rows for two dates. Four same-store changes satisfy the SQL identity and exception rules in that cohort. The quality worksheets describe all four source files. The 6-day gap is an interval between selected file dates. It does not describe a daily series or guarantee publication at a particular time.
+
+The real workbook and screenshot are private. A future GitHub release needs a verified rights basis for retailer information shown in the image and embedded in the packaged workbook.
 
 ## Private analytical export
 
@@ -31,4 +47,4 @@ Tableau Desktop Free Edition opened the fictional observations and displayed a p
 
 ## Outstanding work
 
-Complete the Tableau workbook, reconcile displayed results and filters with the exported SQL, and review presentation and sharing rights before publishing. No public dashboard or source-data publication is claimed.
+Review the real workbook with the owner, confirm any remaining interactive filter scenarios and agree on the final presentation. Additional real pairs can be added after their exact file versions are reviewed. The Phase 4 closeout remains a separate owner decision.

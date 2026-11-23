@@ -12,7 +12,7 @@ A decision records approved direction and trade-offs; it does **not** imply impl
 
 ### D-002 — PostgreSQL for historical storage
 
-- **Status:** accepted direction; an initial Phase 2 implementation has synthetic local and hosted validation, with owner review pending.
+- **Status:** accepted direction; Phase 2 formally closed on 2026-11-23 following synthetic integration checks and a bounded private real-file review.
 - **Rationale:** relational product/store identity, idempotent ingestion, file provenance and dated price observations.
 
 ### D-003 — Tableau as primary BI
@@ -91,3 +91,7 @@ The owner authorized continuing with Phase 3 and reviewing Phases 2 and 3 later.
 ### D-014 — Use local collection-only scheduling for now (2026-11-23)
 
 The owner selected local collection only for the daily task. The installed task does not automatically ingest into PostgreSQL or publish source files. A real recurring capture and operational reliability remain to be observed; the owner will review Phases 2 and 3 later.
+
+### D-015 — Close Phase 2 with bounded validation (2026-11-23)
+
+The owner formally closed Phase 2 after reviewing the private PostgreSQL validation in [Validation](VALIDATION.md). The accepted scope covers one historical file per retailer, idempotent replay and four owner-approved comparisons with prices reconciled against the source files. Additional candidate pairs can be reviewed later in private batches. Phase 3 still awaits owner review.
