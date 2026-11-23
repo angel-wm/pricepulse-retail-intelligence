@@ -1,5 +1,29 @@
 # Validation and evidence
 
+## Phase 5 reproducible setup — 2026-11-23
+
+A fresh Windows virtual environment created with `uv sync --locked --python 3.12` loaded Python 3.12.16 and Scrapy 2.20.0. The full suite passed **65 tests**, including the PostgreSQL integration tests, against a disposable PostgreSQL 18.7 cluster. The suite covers malformed inputs, immutable file replay, explicit matching and export version selection.
+
+The initial test run discovered dependency tests in a project-local cache. The repository now limits pytest discovery to `tests/`. The documented default command passed after that change. The PostgreSQL-backed synthetic generator produced four CSVs byte-identical to the tracked fixture files.
+
+### Manual real-source capture
+
+```powershell
+uv run --locked python -m pricepulse.batch --date 2026-11-23 --directory data/phase5-private/live
+```
+
+The bounded manual run returned `success` for both stores. The raw SHA-256 matched the successful run report and the archived 23 November version for SPAR 8702 (32,410 rows) and Kaufland 5630 (23,830 rows). This verifies manual collection of the fixed baseline. Normal execution through the permanent scheduled task remains a Phase 3 check.
+
+### Private replay
+
+An isolated PostgreSQL schema replayed the four archived captures for 17 and 23 November. Before each load, the run report, feed manifest, raw SHA-256 and independently counted CSV rows agreed. PostgreSQL preserved 112,180 source rows. Reloading the same bytes created another acquisition record per file, while retaining four file versions and the original price observations. The replay used the existing ingestion, candidate review and analytical export functions. The local harness and results are under ignored `data/phase5-private/`.
+
+### Tableau reconciliation
+
+The fresh SQL export reconciled with the packaged workbook for **112,170 price observations**, **17,803 same-store SKU comparisons**, four price-list quality records and all four approved cross-store pairs. The checks compared catalog rows by store/date/SKU, grouped coverage and change counts, and eight price marks and four gaps in the comparison dashboard. Both original CSV prices were checked for each approved pair. Only the prior approvals for the exact November 17 file versions were replayed.
+
+The focused workbook source uses a reviewed-product label in a column originally named `left_sku`. The reconciliation uses the original SQL SKU to locate raw source rows and uses the label for display values. Price differences are compared numerically, and store names are normalized for case. This pass verified the workbook's embedded data. Interactive filter behavior was exercised in Desktop during Phase 4.
+
 ## Phase 4 private real Tableau review — 2026-11-23
 
 The synthetic PostgreSQL fixture regenerated four CSVs that matched the workbook's synthetic inputs byte for byte. The full local suite passed 65 tests with PostgreSQL. This served as a control while developing the local workbook.

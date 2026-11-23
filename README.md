@@ -2,7 +2,7 @@
 
 PricePulse is a **documentation-first Data Engineering portfolio project** to acquire official Croatian grocery price-list files responsibly with Scrapy, validate product identities, store durable historical observations in PostgreSQL, and analyze comparable offers in Tableau.
 
-**Current status (2026-11-23): Phases 0–2 and private Phase 4 are closed.** The English Tableau snapshot covers two Zagreb stores across 17 and 23 November 2026, with 112,170 real price observations, 17,803 same-store comparisons and four approved cross-store pairs. Phase 3 remains open for review of normal operation. The public portfolio edition is pending. See [Current state](CURRENT_STATE.md).
+**Current status (2026-11-23): Phase 5 validation is in progress.** Phases 0–2 and private Phase 4 are closed. The English Tableau snapshot covers 112,170 real price observations from two Zagreb stores and two dates. Phase 3 remains open for review of normal operation. See [Current state](CURRENT_STATE.md).
 
 ## What PricePulse aims to answer
 
@@ -21,20 +21,20 @@ Actual local source-access, two-date history, and price/identity evidence is in 
 
 ## Local quick start (Windows PowerShell)
 
-**Prerequisites:** Git and `uv` installed; the repository targets Python **3.12**. These commands set up the Python environment but **do not** start production scraping or create a PostgreSQL database.
+Install Git and [uv](https://docs.astral.sh/uv/), then run these commands in PowerShell. The locked setup targets Python 3.12.
 
 ```powershell
-cd "C:\Users\angel\Documents\Proyectos\pricepulse-retail-intelligence"
-git pull --ff-only
-uv sync
-uv run python --version
-uv run scrapy version
+git clone https://github.com/angel-wm/pricepulse-retail-intelligence.git
+Set-Location pricepulse-retail-intelligence
+uv sync --locked --python 3.12
+uv run --locked python --version
+uv run --locked scrapy version
+uv run --locked python -m pytest -q
 ```
 
-- `uv sync` creates or updates the project's `.venv` using `pyproject.toml` and `uv.lock`. No separate `uv venv` command is required for the usual project setup.
-- `uv run <command>` uses the project environment **without requiring activation**. If you prefer activating it in the current PowerShell session, run `.\.venv\Scripts\Activate.ps1`; use `deactivate` to exit.
-- Git commands (`status`, `pull`, `add`, `commit`, `push`) do **not** require an activated Python virtual environment. Check `git status` before committing or pulling if local changes exist.
-- The repository includes two bounded Scrapy adapters, PostgreSQL ingestion and review, and private Tableau analytical exports. A temporary Windows task collected both real files at its scheduled trigger. Normal operation through the permanent collection-only task remains unverified. See [Acquisition](ACQUISITION.md), [PostgreSQL](POSTGRESQL.md) and [Reliability](RELIABILITY.md).
+The initial test run skips PostgreSQL integration cases unless `PRICEPULSE_TEST_DSN` points to a disposable database. See [PostgreSQL tests](POSTGRESQL.md#validation) to run the full suite.
+
+To inspect the analytical output without retailer access, use the [synthetic Tableau example](examples/tableau_synthetic/README.md). For private runs with genuine data, follow the [acquisition](ACQUISITION.md), [ingestion](POSTGRESQL.md) and [Tableau export](TABLEAU.md#private-analytical-export) guides.
 
 ## Planned workflow
 
@@ -43,7 +43,7 @@ uv run scrapy version
 3. **Phase 2 — Data engineering (closed 2026-11-23):** preserve file provenance and hashes; parse **SPAR cp1250/semicolon** and **Kaufland UTF-8 BOM/tab** sources; handle regular/special price origins, GTIN and package checks, and ingest versioned, deduplicated store/date observations into PostgreSQL.
 4. **Phase 3 — Reliability (awaiting owner review):** run evidence, recovery, local scheduling and provisional quality monitoring are implemented; see [Reliability](RELIABILITY.md).
 5. **Phase 4 — Tableau (closed for private use):** compare approved cross-store offers and explore catalog coverage and same-store price history. The real workbook and screenshot remain private. See [Tableau analytics](TABLEAU.md).
-6. **Phase 5 — Release:** provide tested reproduction steps, measured results, documentation, and a portfolio-ready repository.
+6. **Phase 5 — Validation and release (in progress):** verify the complete workflow, document reproduction and prepare the portfolio release.
 
 These phases mix completed work and planned deliverables; [Current state](CURRENT_STATE.md) and [Validation](VALIDATION.md) describe the implemented scope and its evidence.
 

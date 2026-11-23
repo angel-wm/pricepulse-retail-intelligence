@@ -1,6 +1,6 @@
 # Agent instructions
 
-PricePulse is a **documentation-first, phase-gated** project. Phase 0 closed on 2026-11-19. Phase 1 closed on 2026-11-22. Phases 2 and 4 closed on 2026-11-23. Phase 4 closeout covers the private Tableau workbook. Phase 3 remains open. Do not equate tests in user-local temporary scripts with a production spider or pipeline.
+PricePulse is a **documentation-first, phase-gated** project. Phase 0 closed on 2026-11-19. Phase 1 closed on 2026-11-22. Phases 2 and 4 closed on 2026-11-23. Phase 4 closeout covers the private Tableau workbook. Phase 5 was authorized on 2026-11-23 for validation and release preparation. Phase 3 remains open. Do not equate tests in user-local temporary scripts with a production spider or pipeline.
 
 ## Read before working
 

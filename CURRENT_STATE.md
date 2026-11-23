@@ -1,6 +1,6 @@
 # Current state
 
-**Phase 4 — CLOSED for private Tableau analytics on 2026-11-23.** Phases 0–2 are closed. Phase 3 remains open and Phase 5 awaits authorization.
+**Phase 5 — AUTHORIZED AND IN PROGRESS from 2026-11-23.** Phases 0–2 and private Phase 4 are closed. Phase 3 remains open.
 
 PULSE-12 implements bounded SPAR 8702 and Kaufland 5630 Scrapy acquisition, source-specific parsing and synthetic tests. One file per retailer for 2026-11-17 was retrieved and parsed in bounded local smoke tests. See [Validation](VALIDATION.md) and [Acquisition](ACQUISITION.md). These checks do not establish production reliability.
 
@@ -14,4 +14,6 @@ Phase 3 has a local run journal, two-store batch, feed completeness and index di
 
 Phase 4 delivered an interactive English Tableau snapshot built from real data for two stores and two dates. It covers 112,170 listed-price observations, 17,803 same-store comparisons, four approved cross-store gaps and source-file quality. The private workbook and screenshot are ready for local use. Additional pair review, automatic refresh and public delivery remain open. See [Tableau analytics](TABLEAU.md) and [Validation](VALIDATION.md).
 
-**Next gate:** validate the permanent collection task and complete owner review of Phase 3. Phase 5 requires separate authorization. Public delivery remains tracked under PULSE-23.
+Phase 5 has a verified clean Windows setup, 65 passing PostgreSQL-backed tests, a successful manual capture of both 23 November files, and a four-file replay reconciled with the private Tableau workbook. See [Validation](VALIDATION.md) for the evidence.
+
+**Next gate:** observe a normal run of the permanent collection task and complete Phase 3 review. Public delivery remains tracked under PULSE-23 and PULSE-26.
