@@ -18,6 +18,16 @@ To run the fixed two-store cohort manually, use `uv run --locked python -m price
 
 `quality_summary` calculates file age, usable price exceptions, checksum-valid GTIN rate and optional row-count change against an explicitly supplied earlier successful run for the same source/store. The feed summary includes regular, special and equal dual-price counts. `batch_metrics` summarizes only the supplied finished batch reports, including per-source successes and elapsed durations; it does not discover omitted runs or establish a global reliability rate. Callers supply their own age and change thresholds; no production alert thresholds or reliability baseline have been established. An old or missing file does not prove missing inventory or store stock. Age is calculated from the supplied publication date and an explicitly supplied reference date; it is not proof of an actual publication timestamp.
 
+The `pricepulse.monitor` command exposes these checks. Use actual private report paths and operator-selected thresholds; the following are illustrative:
+
+```powershell
+uv run --locked python -m pricepulse.monitor source --current data/runs/<run-id>.json --as-of 2026-11-23 --max-age-days 2
+uv run --locked python -m pricepulse.monitor batches data/runs/<batch-id>.json
+uv run --locked python -m pricepulse.monitor coverage <file-id-1> <file-id-2>
+```
+
+`source` and `batches` return exit code 2 when the selected thresholds or completed batch status indicate an alert. `coverage` requires `PRICEPULSE_DSN` and measures only eligible pairs already queued for review for the two explicitly selected files. It is not a percentage of either full catalogue or a measure of real-world availability. The source index counts in a successful run describe source-specific index scope, not product counts; see [Acquisition](ACQUISITION.md).
+
 ## Scheduling recommendation and dry run
 
 The reviewed regulation specifies changed lists by 11:00 on the effective date and at least 15 days' availability of replaced files; see [Source feasibility](SOURCE_FEASIBILITY.md). A preliminary **12:15 Europe/Zagreb** daily check gives a margin, but is not a guarantee that either source will have a file available. Confirm current terms, robots rules and actual publication behavior before enabling a recurring live job.

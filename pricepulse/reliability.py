@@ -50,7 +50,8 @@ def inspect_feed(path, source, day):
             "sha256": manifest["sha256"], "row_count": counts["rows"],
             "usable_price_count": counts["usable_price"], "checksum_valid_gtin_count": counts["checksum_valid_gtin"],
             "price_exception_count": counts["review"],
-            "price_origin_counts": {origin: counts["origin_" + origin] for origin in ("regular", "special", "both_equal")}}
+            "price_origin_counts": {origin: counts["origin_" + origin] for origin in ("regular", "special", "both_equal")},
+            "discovery": manifest.get("discovery")}
 
 
 def write_report(path, report):

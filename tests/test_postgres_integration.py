@@ -16,6 +16,7 @@ from psycopg import sql
 from pricepulse.contracts import FIELDS, parse_csv
 from pricepulse.ingest import apply_schema, ingest_file
 from pricepulse.matching import queue_candidates, queue_history_changes, record_review
+from pricepulse.metrics import reviewed_pair_coverage
 from pricepulse.reliability import run_crawl
 from pricepulse.recovery import resume_ingestion
 from pricepulse.batch import run_batch
@@ -118,6 +119,7 @@ def test_comparison_requires_version_specific_review_and_reconciles(db):
     left, right = (first["file_id"], 2), (second["file_id"], 2)
     assert db.execute("SELECT count(*) FROM verified_price_comparison").fetchone()[0] == 0
     assert queue_candidates(db, first["file_id"], second["file_id"]) == {"candidates": 2, "queued": 2}
+    assert reviewed_pair_coverage(db, first["file_id"], second["file_id"]) == {"eligible_queued_pairs": 2, "pending_pairs": 2, "verified_pairs": 0, "rejected_pairs": 0, "verified_fraction_of_queued": 0.0}
     assert "description_variant_or_pack_review" in db.execute("SELECT explanation FROM comparison_review WHERE left_row=3").fetchone()[0]
     assert queue_candidates(db, second["file_id"], first["file_id"]) == {"candidates": 2, "queued": 0}
     assert db.execute("SELECT count(*) FROM verified_price_comparison").fetchone()[0] == 0
@@ -131,6 +133,7 @@ def test_comparison_requires_version_specific_review_and_reconciles(db):
     assert db.execute("SELECT price_difference FROM verified_price_comparison ORDER BY price_difference").fetchall() == [(Decimal("-0.20"),), (Decimal("0.50"),)]
     record_review(db, right, left, "rejected", "Synthetic review reversed")
     assert db.execute("SELECT count(*) FROM verified_price_comparison").fetchone()[0] == 1
+    assert reviewed_pair_coverage(db, second["file_id"], first["file_id"])["verified_fraction_of_queued"] == 0.5
     assert db.execute("SELECT decision FROM comparison_review_event ORDER BY id").fetchall() == [("review",), ("review",), ("verified",), ("verified",), ("rejected",)]
 
 

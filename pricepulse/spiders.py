@@ -37,12 +37,12 @@ class BaseSpider(scrapy.Spider):
         self.selected = self.day.isoformat()
         self.raw_path = Path(raw_path) if raw_path else None
 
-    def file_request(self, base, path, sha=None):
+    def file_request(self, base, path, sha=None, discovery=None):
         try:
             url = safe_url(base, path, self.host)
         except (ValueError, TypeError) as exc:
             self.stop("unsafe_url", str(exc))
-        yield scrapy.Request(url, callback=self.parse_file, cb_kwargs={"expected_sha": sha}, errback=self.failed)
+        yield scrapy.Request(url, callback=self.parse_file, cb_kwargs={"expected_sha": sha, "discovery": discovery}, errback=self.failed)
 
     def stop(self, reason, detail):
         self.logger.error("Acquisition stopped [%s]: %s", reason, detail)
@@ -58,7 +58,7 @@ class BaseSpider(scrapy.Spider):
         reason = {403: "http_forbidden", 404: "http_not_found", 429: "http_rate_limited"}.get(status, "http_error" if status else "download_error")
         self.stop(reason, f"HTTP {status}" if status else failure.getErrorMessage())
 
-    def parse_file(self, response, expected_sha):
+    def parse_file(self, response, expected_sha, discovery=None):
         self.require_complete(response)
         digest = hashlib.sha256(response.body).hexdigest()
         if expected_sha and digest.lower() != expected_sha.lower():
@@ -73,7 +73,7 @@ class BaseSpider(scrapy.Spider):
                     raw.write(response.body)
             except OSError as exc:
                 self.stop("raw_storage_error", str(exc))
-        yield {"type": "manifest", "source": self.name, "store_id": self.store, "publication_date": self.selected, "source_url": response.url, "retrieved_at_utc": datetime.now(timezone.utc).isoformat(), "http_status": response.status, "sha256": digest, "source_sha256": expected_sha, "encoding": self.encoding, "delimiter": self.delimiter, "row_count": len(rows)}
+        yield {"type": "manifest", "source": self.name, "store_id": self.store, "publication_date": self.selected, "source_url": response.url, "retrieved_at_utc": datetime.now(timezone.utc).isoformat(), "http_status": response.status, "sha256": digest, "source_sha256": expected_sha, "encoding": self.encoding, "delimiter": self.delimiter, "row_count": len(rows), "discovery": discovery}
         for row in rows:
             yield {"type": "record", **row}
 
@@ -96,7 +96,7 @@ class SparSpider(BaseSpider):
             self.stop("expected_one_spar_file", f"Found {len(matches)} files for selected store and date")
         if not isinstance(matches[0].get("URL"), str) or (matches[0].get("SHA") is not None and not re.fullmatch(r"[0-9a-fA-F]{64}", str(matches[0]["SHA"]))):
             self.stop("index_schema_error", "Invalid SPAR file URL or hash")
-        yield from self.file_request(response.url, matches[0]["URL"], matches[0].get("SHA"))
+        yield from self.file_request(response.url, matches[0]["URL"], matches[0].get("SHA"), {"index_url": response.url, "index_item_count": len(entries), "selected_file_count": len(matches), "fetched_file_count": 1})
 
 class KauflandSpider(BaseSpider):
     name, store, host, encoding, delimiter = "kaufland", "5630", "www.kaufland.hr", "utf-8-sig", "tab"
@@ -128,4 +128,4 @@ class KauflandSpider(BaseSpider):
             self.stop("expected_one_kaufland_file", f"Found {len(matches)} files for selected store and date")
         if not isinstance(matches[0].get("path"), str):
             self.stop("index_schema_error", "Missing Kaufland file path")
-        yield from self.file_request(response.url, matches[0]["path"])
+        yield from self.file_request(response.url, matches[0]["path"], discovery={"index_url": response.url, "index_item_count": len(entries), "selected_file_count": len(matches), "fetched_file_count": 1})

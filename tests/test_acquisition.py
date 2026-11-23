@@ -32,13 +32,17 @@ def test_selection_and_url_safety():
     spar = SparSpider(date="2026-11-17")
     body = json.dumps({"files": [{"name": "test_8702_x_20261117_0330.csv", "URL": "/data.csv"}, {"name": "test_8703_x_20261117_0330.csv", "URL": "/other.csv"}]}).encode()
     response = TextResponse("https://www.spar.hr/index", body=body, encoding="utf-8")
-    assert list(spar.parse_index(response))[0].url == "https://www.spar.hr/data.csv"
+    request = list(spar.parse_index(response))[0]
+    assert request.url == "https://www.spar.hr/data.csv"
+    assert request.cb_kwargs["discovery"] == {"index_url": response.url, "index_item_count": 2, "selected_file_count": 1, "fetched_file_count": 1}
     spider = KauflandSpider(date="2026-11-17")
     html = b'''<div data-component="AssetList" data-props='{"settings":{"dataUrlAssets":"/index.json"}}'></div>'''
     response = HtmlResponse("https://www.kaufland.hr/page", body=html, encoding="utf-8")
     assert list(spider.parse(response))[0].url == "https://www.kaufland.hr/index.json"
     data = json.dumps([{"label": "Store_5630_17112026_7-30.csv", "path": "/file.csv"}]).encode()
     response = TextResponse("https://www.kaufland.hr/index.json", body=data, encoding="utf-8")
-    assert list(spider.parse_index(response))[0].url == "https://www.kaufland.hr/file.csv"
+    request = list(spider.parse_index(response))[0]
+    assert request.url == "https://www.kaufland.hr/file.csv"
+    assert request.cb_kwargs["discovery"]["index_item_count"] == 1
     with pytest.raises(ValueError):
         safe_url(response.url, "https://evil.test/file.csv", spider.host)
