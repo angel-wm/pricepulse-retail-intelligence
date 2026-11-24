@@ -449,5 +449,18 @@ from fictional product observations. The full local PostgreSQL suite passed
 The [GitHub Actions run](https://github.com/angel-wm/pricepulse-retail-intelligence/actions/runs/45292807748)
 passed for commit `c5dc27f`.
 
-The private workbook and screenshot remain under ignored `data/`. Regular
-scheduled collection with three sources remains an operational checkpoint.
+The private workbook and screenshot remain under ignored `data/`.
+
+## Installed Windows collection with three retailers — 2026-11-24
+
+The installed Windows collection task completed a three-store capture for
+24 November. The daily marker ran from 12:17:50 to 12:28:21 Bogotá time and
+reported success without alerts. Windows reported exit code 0 after completion.
+The marker, manifests and raw SHA-256 checks agreed for SPAR 8702 (32,477
+rows), Kaufland 5630 (23,828 rows) and Konzum 1280 (26,583 rows).
+
+The collector's parent process traced to the Windows Schedule service. The task
+uses `StartWhenAvailable`, and its operational event log was disabled. The
+evidence establishes a successful installed-task capture. The exact trigger
+behind the earlier marker start could not be reconstructed. The task collects
+files locally. The Tableau workbook remains the 17 and 23 November snapshot.

@@ -18,4 +18,9 @@ The Phase 5 technical review is complete for the original two-store baseline and
 
 [PULSE-46](https://angel231995.atlassian.net/browse/PULSE-46) adds Konzum 1280 as the third local source. The manual and scheduled collectors use the three-store cohort. Apply the schema update before loading into an existing database. The updated private Tableau workbook covers all three stores on 17 and 23 November 2026. It includes 165,322 listed prices, 41,363 same-store comparisons and four reviewed products across all three chains. See [Tableau analytics](TABLEAU.md#three-source-workbook).
 
-**Next gate:** review Phase 3 with the permanent-task capture evidence and observe the regular cadence on another date. Public delivery remains tracked under PULSE-23 and PULSE-26.
+On 24 November, the installed Windows task captured all three source files and
+finished with code 0 and no quality alerts. [Validation](VALIDATION.md#installed-windows-collection-with-three-retailers--2026-11-24)
+records the evidence and the limit on determining the original trigger.
+
+**Next gate:** owner review of Phase 3, including regular cadence and behavior
+after a real interruption. Public delivery remains tracked under PULSE-23 and PULSE-26.
