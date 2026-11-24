@@ -28,7 +28,8 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 ## Phase 5 release preparation
 
 The owner authorized Konzum 1280 as the third local source on 2026-11-23.
-[PULSE-46](https://angel231995.atlassian.net/browse/PULSE-46) tracks integration and validation.
+[PULSE-46](https://angel231995.atlassian.net/browse/PULSE-46) records the completed integration and validation.
+The owner confirmed on 2026-11-24 that Lidl stays outside this release.
 See [Source feasibility](SOURCE_FEASIBILITY.md#two-date-expansion-decision) for the comparison with Lidl.
 
 | Work item | Evidence required |

@@ -40,7 +40,7 @@ uv run --locked python -m pytest -q
 
 The initial test run skips PostgreSQL integration cases unless `PRICEPULSE_TEST_DSN` points to a disposable database. Use the [Docker Compose setup](POSTGRESQL.md#local-postgresql-with-docker-compose) for local development and full integration tests, or [supply an existing disposable database](POSTGRESQL.md#validation).
 
-To inspect the analytical output without retailer access, use the [synthetic Tableau example](examples/tableau_synthetic/README.md). For private runs with genuine data, follow the [acquisition](ACQUISITION.md), [ingestion](POSTGRESQL.md) and [Tableau export](TABLEAU.md#private-analytical-export) guides.
+To inspect the analytical output without retailer access, use the [synthetic Tableau example](examples/tableau_synthetic/README.md). To find the current private workbook and the archived baseline, see the [Tableau handoff](TABLEAU.md#private-tableau-workbooks-and-screenshots). For private runs with genuine data, follow the [acquisition](ACQUISITION.md), [ingestion](POSTGRESQL.md) and [Tableau export](TABLEAU.md#private-analytical-export) guides.
 
 ## Planned workflow
 

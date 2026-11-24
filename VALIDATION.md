@@ -464,3 +464,27 @@ uses `StartWhenAvailable`, and its operational event log was disabled. The
 evidence establishes a successful installed-task capture. The exact trigger
 behind the earlier marker start could not be reconstructed. The task collects
 files locally. The Tableau workbook remains the 17 and 23 November snapshot.
+
+## Tableau handoff and cleanup — 2026-11-24
+
+The owner confirmed SPAR, Kaufland and Konzum as the release cohort. The
+local inventory contained 13 Tableau workbook files, each with one dashboard.
+The handoff retains the current three-store workbook and the historical
+two-store validation baseline. Four superseded packaged variants and seven
+loose drafts or test workbooks were moved to the Windows Recycle Bin. The two
+originals were recycled after their renamed replacements were verified. Five
+previous dashboard images were replaced by the two new captures.
+
+Both retained workbooks opened and rendered in Tableau Desktop. Each package
+has one dashboard, 14 worksheets and 12 embedded CSV files. Every embedded
+CSV matched its source package byte for byte. Both dashboard titles and the
+source references of their product-filter actions were checked in the saved
+packages. Tableau returned six store-date coverage rows and 12 reviewed price
+marks for the three-store workbook. The archived two-store workbook returned
+four coverage rows and four reviewed gaps.
+
+The new 1,240 by 790 PNGs were exported from Tableau and inspected. The
+[private handoff inventory](TABLEAU.md#private-tableau-workbooks-and-screenshots)
+lists their local locations. The real workbooks, images, exports and raw
+captures remain under ignored `data/`. The synthetic public Tableau workbook
+is still tracked under PULSE-23.
