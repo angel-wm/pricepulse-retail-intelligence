@@ -189,8 +189,8 @@ def test_price_change_counts_reconcile_with_fixture(db):
     assert result == (1, 1, 0)  # Independently calculated from the two synthetic input rows.
 
 
-def test_fictional_demo_exports_reconcile_with_expected_values(tmp_path):
-    from pricepulse.synthetic_demo import build
+def test_three_retailer_exports_reconcile_with_expected_values(tmp_path):
+    from analytics_fixture import build
     build(DSN, tmp_path)
     def rows(name):
         with (tmp_path / f'{name}.csv').open(encoding='utf-8', newline='') as stream:

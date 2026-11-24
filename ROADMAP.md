@@ -29,14 +29,14 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 
 The owner authorized Konzum 1280 as the third local source on 2026-11-23.
 [PULSE-46](https://angel231995.atlassian.net/browse/PULSE-46) records the completed integration and validation.
-The owner confirmed on 2026-11-24 that Lidl stays outside this release.
+The owner confirmed on 2026-11-24 that Lidl stays outside this release and selected a real-data-only portfolio.
 See [Source feasibility](SOURCE_FEASIBILITY.md#two-date-expansion-decision) for the comparison with Lidl.
 
 | Work item | Evidence required |
 | --- | --- |
 | [PULSE-24](https://angel231995.atlassian.net/browse/PULSE-24) — Validate the flow | Record source acquisition or the archived capture baseline, replay exact file versions, and reconcile SQL results with Tableau. |
 | [PULSE-25](https://angel231995.atlassian.net/browse/PULSE-25) — Verify local setup | Test a clean locked installation and the disposable PostgreSQL path. Check the links and reproduction commands. |
-| [PULSE-26](https://angel231995.atlassian.net/browse/PULSE-26) — Prepare portfolio release | Review the exact workbook, screenshot and supporting files intended for publication. Keep the genuine artifacts private until the sharing basis is verified. |
+| [PULSE-26](https://angel231995.atlassian.net/browse/PULSE-26) — Prepare portfolio release | Review the measured findings and exact real workbook, screenshot and supporting files intended for publication. Verify the reuse basis before issuing them. |
 
 ## Phase 0 evidence checklist (completed; owner approved closeout 2026-11-19)
 

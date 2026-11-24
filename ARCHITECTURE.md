@@ -64,7 +64,7 @@ The diagram shows the intended end-to-end architecture. The loader accepts local
 - **Identifiers:** preserve raw codes as strings, validate checksums, normalize for comparison and isolate duplicate/colliding GTINs. Matching is separate from acquisition.
 - **Quantity:** maintain source net quantity and unit separately from text-derived package size; explicitly handle multipacks, drained weights and ambiguous variant labels. Never equate a source-local `KOM` unit to the physical product volume.
 - **Coverage:** track total rows, valid GTINs, field completeness and store/date counts; a +47.9% row-count discontinuity was observed in a Kaufland sample at the regulatory transition, making drift alerting necessary.
-- **Publication:** local analytics may use validly accessed source observations within applicable terms, but genuine retailer files/real-data public extracts are not cleared for Tableau Public. Use synthetic public demo data unless a separate rights basis is established.
+- **Publication:** the portfolio uses real observations and measured results. The exact workbook, screenshot and retailer extracts require a verified reuse basis before public release.
 
 ## Architectural constraints
 

@@ -17,7 +17,7 @@ PricePulse is a **documentation-first Data Engineering portfolio project** to ac
 
 Croatian retailers publish official machine-readable price lists. The regulation effective **17 November 2026** expressly provides for automated collection and CSV/XML price lists. This is stronger evidence for the acquisition use case than attempting to crawl individual product pages protected by anti-bot systems.
 
-Actual local source-access, two-date history, and price/identity evidence is in [Validation](VALIDATION.md) and [Source feasibility](SOURCE_FEASIBILITY.md). Initial same-date codes with price totaled 8,869 after promotional-price handling, but these are **not all verified product matches**. Previous music-retailer candidates were dropped after access blocks or restrictions. Public real-data redistribution remains on hold; the portfolio data approach has not been decided.
+Actual local source-access, two-date history, and price/identity evidence is in [Validation](VALIDATION.md) and [Source feasibility](SOURCE_FEASIBILITY.md). Initial same-date codes with price totaled 8,869 after promotional-price handling, but these are **not all verified product matches**. Previous music-retailer candidates were dropped after access blocks or restrictions. The portfolio uses only real observations and measured results. Public redistribution of the real workbook, screenshot and extracts remains pending a verified sharing basis.
 
 ### Data sources
 
@@ -40,7 +40,7 @@ uv run --locked python -m pytest -q
 
 The initial test run skips PostgreSQL integration cases unless `PRICEPULSE_TEST_DSN` points to a disposable database. Use the [Docker Compose setup](POSTGRESQL.md#local-postgresql-with-docker-compose) for local development and full integration tests, or [supply an existing disposable database](POSTGRESQL.md#validation).
 
-To inspect the analytical output without retailer access, use the [synthetic Tableau example](examples/tableau_synthetic/README.md). To find the current private workbook and the archived baseline, see the [Tableau handoff](TABLEAU.md#private-tableau-workbooks-and-screenshots). For private runs with genuine data, follow the [acquisition](ACQUISITION.md), [ingestion](POSTGRESQL.md) and [Tableau export](TABLEAU.md#private-analytical-export) guides.
+To find the current private three-store workbook and its screenshot, see the [Tableau handoff](TABLEAU.md#private-tableau-workbook). For private runs with genuine data, follow the [acquisition](ACQUISITION.md), [ingestion](POSTGRESQL.md) and [Tableau export](TABLEAU.md#private-analytical-export) guides.
 
 ## Planned workflow
 

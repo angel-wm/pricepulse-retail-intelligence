@@ -1,10 +1,8 @@
-"""Build a fictional local BI dataset in a disposable PostgreSQL schema."""
+"""Create isolated inputs for the analytics export integration test."""
 import csv
 import io
-import os
 from datetime import date
 from itertools import combinations
-from pathlib import Path
 from uuid import uuid4
 
 import psycopg
@@ -59,10 +57,3 @@ def build(dsn, directory):
         finally:
             conn.execute("SET search_path TO public")
             conn.execute(sql.SQL("DROP SCHEMA {} CASCADE").format(sql.Identifier(schema)))
-
-
-if __name__ == "__main__":
-    dsn = os.environ.get("PRICEPULSE_TEST_DSN")
-    if not dsn:
-        raise SystemExit("PRICEPULSE_TEST_DSN for a disposable database is required")
-    build(dsn, Path("examples/tableau_synthetic"))

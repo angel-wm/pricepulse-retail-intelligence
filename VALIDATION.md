@@ -328,7 +328,7 @@ In the tested files, **every** row rejected by the initial `MPC (EUR)` parser ha
 | SPAR Jankomir 8702 | **31,277** | 14 | 54 | 31,209 |
 | Kaufland Zagreb 5630 | **15,533** | 9 | 69 | 15,455 |
 
-**Quality caveats:** The unusual +47.9% Kaufland row-count change across the regulation transition is a source coverage issue to monitor. SPAR files used cp1250 and semicolon, Kaufland UTF-8 BOM and tab; never assume homogeneous CSV dialects. Published presence is not inventory availability. Site publication rights constrain releasing real retailer source extracts; use a synthetic public portfolio demo unless sharing rights are verified.
+**Quality caveats:** The unusual +47.9% Kaufland row-count change across the regulation transition is a source coverage issue to monitor. SPAR files used cp1250 and semicolon, Kaufland UTF-8 BOM and tab; never assume homogeneous CSV dialects. Published presence is not inventory availability. Site publication rights constrain releasing real retailer source extracts; the later real-data-only release decision is recorded in [Decisions](DECISIONS.md).
 
 **Status:** Technical source feasibility supported; **Phase 0 formally closed by owner approval on 2026-11-19. Phase 1 was separately authorized later on 2026-11-19.**
 
@@ -374,7 +374,7 @@ Earlier GitHub documentation review (baseline `861062303de56dfa39199e07f50dc287b
 
 - [SPAR's general terms, section 2.1](https://www.spar.hr/o-nama/opci-uvjeti-koristenja) describe website content, including data, as covered and limit use to personal information; they require prior written permission for modification, reproduction, distribution or incorporation into other sites or media.
 - [Croatian regulation NN 132/2026, article 5](https://narodne-novine.nn.hr/clanci/sluzbeni/2026_11_132_1584.html) requires technical accessibility to automated collection; it does not directly grant unrestricted republication rights.
-- Engineering conclusion: **do not publish the genuine price-list files or a real-data Tableau Public extract without an independently verified sharing basis**. A synthetic public showcase can demonstrate the pipeline and dashboard design without copying source data. This is a publication constraint, **not** a reason to cancel bounded local source feasibility checks.
+- Engineering conclusion: **do not publish the genuine price-list files or a real-data Tableau Public extract without an independently verified sharing basis**. The subsequent real-data-only portfolio decision is recorded in [Decisions](DECISIONS.md). Bounded local feasibility checks remain separate.
 
 ## Sources referenced during Phase 0
 
@@ -484,7 +484,28 @@ marks for the three-store workbook. The archived two-store workbook returned
 four coverage rows and four reviewed gaps.
 
 The new 1,240 by 790 PNGs were exported from Tableau and inspected. The
-[private handoff inventory](TABLEAU.md#private-tableau-workbooks-and-screenshots)
-lists their local locations. The real workbooks, images, exports and raw
-captures remain under ignored `data/`. The synthetic public Tableau workbook
-is still tracked under PULSE-23.
+[private handoff](TABLEAU.md#private-tableau-workbook) lists the current local location. The real workbooks, images, exports and raw
+captures remain under ignored `data/`. The following checkpoint supersedes
+the earlier two-workbook handoff and synthetic demo plan.
+
+## Single-workbook and real-data handoff — 2026-11-24
+
+The two-store workbook and its screenshot were moved to the Recycle Bin.
+The three-store package was reopened in Tableau after removal, and the
+six store-date coverage rows rendered. The package contains one dashboard,
+14 worksheets and 12 CSV files. Its data connections refer to members of
+the same package.
+
+The private rebuild now uses the three-store package as its layout source.
+With the two-store archive absent, the rebuild used local PostgreSQL and
+the saved review decisions. It reproduced all 12 embedded CSVs byte for
+byte. The opening view still covers four reviewed products. The catalog
+contains 165,322 observations and the history contains 41,363 same-store
+comparisons. The 16 verified pairs include four historical two-store
+decisions carried inside the current workbook.
+
+The public fictional CSV example and its demo command were removed. The
+isolated PostgreSQL test inputs remain in the test suite, which passed all
+67 tests. The public portfolio is real-data only. PULSE-23 tracks reuse rights
+for the exact workbook, screenshot and any extracts. PULSE-26 tracks the
+release handoff.

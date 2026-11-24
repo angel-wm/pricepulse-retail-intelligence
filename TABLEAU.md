@@ -2,45 +2,24 @@
 
 The private English dashboard covers three Zagreb stores on 17 and 23 November 2026. It uses exact file versions exported from local PostgreSQL.
 
-## Private Tableau workbooks and screenshots
+## Private Tableau workbook
 
-The local handoff contains two packaged workbooks, each with one dashboard and
-14 worksheets. Open the workbook from the path below in Tableau Desktop. Both
-packages and screenshots contain genuine retailer information and stay under
-ignored `data/`.
+Open `data/tableau/PricePulse - Three-Store Price Comparison - Private.twbx`
+in Tableau Desktop. The matching PNG has the same filename stem. This is the
+sole dashboard and contains its CSV data within the package. The private
+rebuild starts from this workbook, the PostgreSQL export and the local review
+records. The original two-store Tableau package and screenshot were retired.
 
-| Dashboard | Purpose | Local folder |
-| --- | --- | --- |
-| **Three-Store Price Comparison** | Current private workbook for SPAR, Kaufland and Konzum | `data/tableau/` |
-| **Two-Store Validation Baseline** | Private archive of the original SPAR–Kaufland review | `data/tableau/archive/` |
-
-### Three-source workbook
-
-Open `data/tableau/PricePulse - Three-Store Price Comparison - Private.twbx`.
-The matching PNG has the same filename stem. **Price catalog** shows 165,322
-listed prices, including offers from products listed by only one store.
-**Catalog coverage** shows all six store-date counts. **Product price history**
-shows 41,363 same-store comparisons, including unchanged prices.
+**Price catalog** shows 165,322 listed prices, including offers from products
+listed by only one store. **Catalog coverage** shows all six store-date
+counts and **Product price history** shows 41,363 same-store comparisons,
+including unchanged prices.
 
 The opening dashboard shows four products reviewed across all three stores on
 23 November 2026. It displays each listed price and the spread between the
-highest and lowest prices. The underlying pair view includes 12 comparisons
-for the three-store products and four earlier SPAR–Kaufland comparisons.
-Each documented review covers its exact source rows, GTIN, brand, variant,
-package and price context.
-
-### Original two-store baseline
-
-Open `data/tableau/archive/PricePulse - Two-Store Validation Baseline - Private.twbx`.
-The matching PNG sits next to it. This archived package supports the original
-Phase 4 closeout and the Phase 5 technical review. It covers 112,170 price
-observations, 17,803 same-store comparisons and four reviewed cross-store
-pairs. The original SQL export and candidate lists stay under
-`data/tableau-real-private/`.
-
-The local inventory initially held 13 dashboard files. Cleanup removed four
-superseded packaged copies and seven loose drafts or test workbooks. See
-[validation](VALIDATION.md#tableau-handoff-and-cleanup--2026-11-24).
+highest and lowest prices. The supporting pair worksheet includes the 12
+comparisons for those four products plus four historical SPAR–Kaufland
+decisions. The workbook carries the historical pair data internally.
 
 ## Data attribution
 
@@ -69,7 +48,7 @@ With a private database initialized and populated as described in [PostgreSQL](P
 uv run --locked python -m pricepulse.analytics --file-id 1 --file-id 2 --directory data/tableau-private --as-of 2026-11-23
 ```
 
-The IDs and reference date are examples, not verified source records. An invalid, duplicate or conflicting file selection fails before writing CSVs. The output may contain genuine retailer names, codes and prices: keep it private and do not commit, upload or publish it. Use the separately labelled synthetic dataset for the planned public demonstration.
+The IDs and reference date are examples, not verified source records. An invalid, duplicate or conflicting file selection fails before writing CSVs. The output may contain genuine retailer names, codes and prices: keep it private and do not commit, upload or publish it. The portfolio is based on real observations. Review reuse rights for the exact workbook, image or extract before release.
 
 | Export | Grain and meaning |
 | --- | --- |
@@ -82,14 +61,14 @@ The same verified-pair rules and version guard used by Phase 2 apply here. GTIN 
 
 Tableau inferred normalized GTIN as a number when the CSV was opened. Change identifiers to text before using them in a view or join, so leading zeroes are preserved; use exact product/store/date grain and avoid summing prices across products or days.
 
-## Fictional portfolio data
+## Public portfolio
 
-The CSV files in `examples/tableau_synthetic` are generated from invented products and prices by `python -m pricepulse.synthetic_demo`, using `PRICEPULSE_TEST_DSN` for a disposable PostgreSQL database and a temporary schema. The named chains and store IDs define the demonstration context; values are not retailer observations. Synthetic match decisions are simulated, not a real review. The fixture comprises 36 observations, 24 changes, 36 reviewed pairs and nine file-quality records. PostgreSQL tests check the counts and the three retailer-pair differences.
-
-The early two-store Tableau draft was retired during cleanup. The
-[three-store fictional CSVs](examples/tableau_synthetic/README.md) remain
-available for the future Tableau Public workbook. Publication remains open
-under [PULSE-23](https://angel231995.atlassian.net/browse/PULSE-23).
+The owner selected a real-data-only portfolio. The GitHub documentation uses
+measured results and cites the retailers' official price-list pages. Publishing
+the genuine packaged workbook, screenshot or data extracts remains pending
+verification of the reuse basis for the exact artifacts. See
+[PULSE-23](https://angel231995.atlassian.net/browse/PULSE-23) and the
+[source assessment](SOURCE_FEASIBILITY.md).
 
 ## Refresh and expansion
 
