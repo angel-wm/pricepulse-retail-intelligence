@@ -438,10 +438,16 @@ Tableau rendered all 12 price marks and four product spreads on the opening
 dashboard. Selecting a Konzum mark isolated its product spread. Clearing
 the selection restored all four products.
 
+A subsequent Tableau check showed 165,322 catalog marks with all stores and
+53,152 marks with Konzum selected. Adding the 23 November date filter returned
+Konzum observations for that date in the Tableau readback.
+
 The synthetic example now covers all three retailers. It contains 36 prices,
 24 same-store changes, 36 reviewed pairs and nine quality records, all built
 from fictional product observations. The full local PostgreSQL suite passed
-67 tests.
+67 tests. A second generation matched the four published CSVs byte for byte.
+The [GitHub Actions run](https://github.com/angel-wm/pricepulse-retail-intelligence/actions/runs/45292807748)
+passed for commit `c5dc27f`.
 
 The private workbook and screenshot remain under ignored `data/`. Regular
 scheduled collection with three sources remains an operational checkpoint.
