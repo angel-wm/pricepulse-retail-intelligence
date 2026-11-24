@@ -509,3 +509,18 @@ isolated PostgreSQL test inputs remain in the test suite, which passed all
 67 tests. The public portfolio is real-data only. PULSE-23 tracks reuse rights
 for the exact workbook, screenshot and any extracts. PULSE-26 tracks the
 release handoff.
+
+## Tableau barcode explorer — 2026-11-24
+
+The private dashboard compares 13,700 normalized codes on 23 November
+2026. It uses one positive-priced listing per participating store for each
+code and excludes a code if a participating store has multiple priced
+listings for it. The table reconciles to 7,739 codes across two stores and
+5,961 across all three. Four of the 5,961 have all three pair decisions
+verified in the selected files.
+
+In Tableau Desktop, a barcode search returned one two-store row with a
+dash for the third store. A partial name search returned a separate row
+with prices in all three stores. Clearing the field restored 13,700 rows
+with all three retailer columns visible. The workbook and matching
+1,240 × 1,150 screenshot were saved locally.

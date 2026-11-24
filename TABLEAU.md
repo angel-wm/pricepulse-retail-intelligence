@@ -15,11 +15,18 @@ listed by only one store. **Catalog coverage** shows all six store-date
 counts and **Product price history** shows 41,363 same-store comparisons,
 including unchanged prices.
 
-The opening dashboard shows four products reviewed across all three stores on
-23 November 2026. It displays each listed price and the spread between the
-highest and lowest prices. The supporting pair worksheet includes the 12
-comparisons for those four products plus four historical SPAR–Kaufland
-decisions. The workbook carries the historical pair data internally.
+The opening dashboard compares 13,700 barcodes across at least two stores on
+23 November 2026. Of those, 5,961 appear at all three stores and 7,739
+appear at two. Enter part of a product name or a barcode in **Search** and
+press Enter. Clear the field and press Enter to restore all results. The
+three retailer columns stay visible. A dash means there is no comparable
+priced listing in that store's selected file.
+
+**Barcode match** indicates a shared normalized code with one priced listing
+per participating store. **Verified** identifies the four products that also
+passed manual product, variant and pack review. Their charts appear below the
+searchable table. The supporting pair worksheet includes their 12 reviewed
+pairs and four historical SPAR–Kaufland decisions.
 
 ## Data attribution
 
@@ -33,12 +40,18 @@ The official pages are the source links for a portfolio description or screensho
 | --- | --- |
 | Listed price | Resolved price in EUR for one store, selected file date and source SKU. Use a valid regular or special amount when the other field is blank, or the common amount when both valid values agree. Invalid, missing or conflicting prices do not enter the priced catalog. |
 | Same-store price change | Current price minus previous price for the preceding selected observation of the same store/SKU, with matching valid GTIN and unchanged descriptors. Positive means an increase. Zero counts as unchanged. |
-| Three-store price spread | Highest listed price minus lowest listed price for a product reviewed at all three selected stores on the same date. |
+| Price spread | Highest listed price minus lowest listed price among the stores shown for the same code and date. The manually verified charts use all three stores. |
 | Pair price difference | Left price minus right price in the recorded review orientation for the exact, same-date source rows. A positive value means the right-hand store costs less. |
 | Relative change and gap | If calculated for analysis, divide same-store change by the previous price and cross-store gap by the right-hand comparison price. Multiply by 100 and omit a percentage if the denominator is missing or zero. The private workbook displays the absolute EUR values. |
 | File quality | Priced and valid-GTIN row counts divided by the source row count. File age is the reference date minus the price-list date. Quality counts describe the file. |
 
-The opening dashboard filters its gap chart by selected product. Its summary callouts describe the full reviewed cohort. The **Price catalog** has store, date and product filters. Each chain identifies one physical store in this snapshot. **Reviewed product prices** also carries a store ID filter. The catalog shows the regular, special or equal-dual-price origin as **Price type**. The current package has no dedicated promotion filter or category field. See the [three-source validation](VALIDATION.md#three-source-tableau-validation--2026-11-23) for the tested interactions and their scope.
+Search filters the barcode table. The summary cards describe the full
+23 November comparison set. Selecting a product in the manually verified
+price chart filters its spread chart. The **Price catalog** has store, date
+and product filters. Each chain identifies one physical store in this
+snapshot. The catalog shows the regular, special or equal-dual-price origin
+as **Price type**. See the [barcode explorer validation](VALIDATION.md#tableau-barcode-explorer--2026-11-24)
+for the search checks.
 
 ## Private analytical export
 
@@ -74,6 +87,8 @@ verification of the reuse basis for the exact artifacts. See
 
 The Windows task collects source files. To update Tableau, load the selected captures into PostgreSQL, verify cross-store pairs for those exact file versions, and rerun the private analytical export. Refresh the workbook's packaged sources and the derived chart inputs, update the summary callouts, reconcile counts and gaps in Desktop, and save a new package and screenshot. The current workbook uses curated presentation inputs, so replacing the four core exports alone does not update every view. An automated collection-to-dashboard refresh remains follow-up work.
 
-The catalog already includes all priced observations from the six selected files. Expand cross-store coverage in private review batches, starting with the prioritized candidates above. A candidate becomes a confirmed comparison after an explicit review decision for the selected files.
+The catalog includes all priced observations from the six selected files. The
+barcode comparison table uses the same-day subset described above. Expand
+verified coverage through private review batches for the selected files.
 
 Public portfolio delivery remains open under PULSE-23. See [Source feasibility](SOURCE_FEASIBILITY.md) for the sharing constraint and [Validation](VALIDATION.md) for the private closeout evidence.
