@@ -48,23 +48,36 @@ def parse_csv(body, source, store_id, date, url, sha256):
     encoding, delimiter = DIALECTS[source]
     reader = csv.DictReader(io.StringIO(body.decode(encoding), newline=""), delimiter=delimiter, strict=True)
     mapping = FIELDS[source]
-    if not reader.fieldnames or len(set(reader.fieldnames)) != len(reader.fieldnames) or not set(mapping.values()).issubset(reader.fieldnames):
+    required_columns = set(mapping.values())
+    if source == "spar":
+        required_columns.remove(mapping["category"])
+    if not reader.fieldnames or len(set(reader.fieldnames)) != len(reader.fieldnames) or not required_columns.issubset(reader.fieldnames):
         raise ValueError("unknown or duplicate CSV headers")
+    # SPAR's indicator layout puts the promotion column immediately after MPC.
+    spar_promotion_flag = (
+        source == "spar"
+        and "sidrena cijena (EUR)" in reader.fieldnames
+        and reader.fieldnames.index(mapping["special"]) == reader.fieldnames.index(mapping["regular"]) + 1
+    )
+    uses_promotion_flag = source == "konzum" or spar_promotion_flag
     for row_number, row in enumerate(reader, 2):
         if None in row or any(v is None for v in row.values()):
             raise ValueError(f"malformed CSV row {row_number}")
-        record = {key: row[column] for key, column in mapping.items()}
+        record = {key: row.get(column) for key, column in mapping.items()}
         record.update(source_chain=source, source_store_id=store_id, price_list_date=date, source_url=url, source_file_hash=sha256, raw_row=row, row_number=row_number)
         record["gtin_raw"] = record.pop("gtin")
         record["gtin_normalized"] = gtin(record["gtin_raw"])
-        if source == "konzum":
-            listed = record.pop("listed")
-            promotion = record.pop("promotion").strip().upper()
+        if uses_promotion_flag:
+            if spar_promotion_flag:
+                listed, indicator = record["regular"], record["special"]
+            else:
+                listed, indicator = record.pop("listed"), record.pop("promotion")
+            promotion = indicator.strip().upper()
             record.update(regular=listed if promotion == "NE" else "", special=listed if promotion == "DA" else "")
-            if record["gtin_normalized"] == "00000000000000":
-                record["gtin_normalized"] = None
+        if source == "konzum" and record["gtin_normalized"] == "00000000000000":
+            record["gtin_normalized"] = None
         try:
-            if source == "konzum" and promotion not in {"DA", "NE"}:
+            if uses_promotion_flag and promotion not in {"DA", "NE"}:
                 raise ValueError("unknown promotion indicator")
             regular = amount(record["regular"], allow_dot=source == "konzum")
             special = amount(record["special"], allow_dot=source == "konzum")

@@ -540,3 +540,32 @@ packaged workbook and returned all six store-date coverage rows, totaling
 165,322 priced listings, and four manually verified price spreads. The
 dashboard export and the presentation-mode search capture show the same
 23 November comparison snapshot.
+
+## Regular Windows tick and SPAR schema recovery — 2026-11-25
+
+There was no morning daily marker. The owner reported that the computer was
+off at the planned 06:20 Bogotá tick. At the regular 12:20 tick, the Windows
+Schedule service started the installed task. The collector wrote the daily
+marker at 12:20:02 and finished at 12:20:31 with status `incomplete`.
+Windows recorded exit code 1. Kaufland 5630 and Konzum 1280 returned 23,830
+and 26,590 usable prices, respectively. The raw CSV hashes agreed with
+their manifests and reports.
+
+SPAR 8702 stopped at header validation. A separate bounded retrieval matched
+the SHA-256 supplied by SPAR. The CSV omitted the category column and used
+`DA` and `NE` in the field that previously held a separate promotional
+amount. The new layout marks whether the price in `MPC (EUR)` is promotional.
+Article 3 of the [Croatian price-list regulation](https://narodne-novine.nn.hr/clanci/sluzbeni/2026_11_132_1584.html)
+describes the listed price and its promotional indicator.
+
+With the parser updated, a separate journaled SPAR retry finished at
+12:25:35. The 25 November manifest, feed, raw file and report reconciled to
+32,329 rows, all with usable prices. The parser recorded 26,565 regular and
+5,764 promotional prices. Replaying the 23 and 24 November SPAR files
+preserved their row totals and price-origin counts. The local suite passed
+58 tests. Eleven PostgreSQL integration tests were skipped because no test
+database was configured.
+
+The 25 November automatic marker remains `incomplete`. The SPAR retry was
+run separately. A full regular three-store tick with the corrected parser
+and Phase 3 owner review remain open.

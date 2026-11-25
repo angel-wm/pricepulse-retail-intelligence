@@ -21,6 +21,13 @@ Each JSON Lines feed starts with a `manifest` containing source, store, requeste
 
 Successful manifests include discovery counts: total entries in the index, selected files for the requested store/date and fetched files. The index scopes differ by retailer: the SPAR index is date-specific, whereas the Kaufland index may contain multiple dates. Do not compare their total entry counts as store or product coverage.
 
+SPAR uses semicolon-delimited CP1250 CSV in both observed layouts. Its older
+layout provides separate regular and special amounts. The layout observed on
+25 November 2026 puts the promotion indicator immediately after the listed
+price and includes an anchor-price column. `NE` identifies a regular price
+and `DA` identifies a promotional price. The anchor price stays in the raw
+row. Category is optional and is null when its column is absent.
+
 Kaufland filenames have two observed store/date layouts. The older layout puts `DDMMYYYY` after the store ID. The newer layout inserts the price-list descriptor and a numeric field before `YYYYMMDD`, followed by a four-digit time. The collector checks both layouts and requires one unambiguous match. See [Validation](VALIDATION.md) for the recorded filename change and manual recovery.
 
 Konzum uses a dated HTML index and a comma-delimited UTF-8 CSV. The spider deduplicates repeated links to the same file and requires one file for store 1280 and the requested date. The retail-price column supplies the listed price. The promotion indicator routes it to the regular field (`NE`) or special field (`DA`). Unknown indicators are price exceptions. The promotion label, reference price and unit price remain in the raw row. Promotion eligibility still requires review for like-for-like comparisons.

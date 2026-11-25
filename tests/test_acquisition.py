@@ -23,6 +23,52 @@ def test_prices_and_dialect(source, encoding, sep):
     with pytest.raises(ValueError, match="headers"):
         list(parse_csv(b"unknown\n", source, "1", "2026-11-17", "x", "x"))
 
+
+def test_spar_accepts_a_missing_category_but_requires_price_headers():
+    fields = FIELDS["spar"]
+    values = dict(title="Čaj", code="101", brand="Example", quantity="0,1",
+                  unit="kg", regular="2,40", special="", gtin="4006381333931")
+
+    def parse(fields_to_emit):
+        headers = ";".join(fields[key] for key in fields_to_emit)
+        row = ";".join(values[key] for key in fields_to_emit)
+        body = f"{headers}\n{row}\n".encode("cp1250")
+        return list(parse_csv(body, "spar", "8702", "2026-11-25", "x", "x"))
+
+    (record,) = parse(list(values))
+    assert record["category"] is None
+    assert record["effective_price_eur"] == "2.40"
+    assert record["gtin_normalized"] == "04006381333931"
+    with pytest.raises(ValueError, match="headers"):
+        parse([key for key in values if key != "special"])
+    with pytest.raises(ValueError, match="headers"):
+        parse([*values, "regular"])
+    values["category"] = "Čajevi"
+    assert parse(list(values))[0]["category"] == "Čajevi"
+
+
+def test_spar_routes_the_listed_price_from_the_new_promotion_flag_layout():
+    fields = FIELDS["spar"]
+    header = ";".join(
+        [fields[key] for key in ("title", "code", "brand", "quantity", "unit", "regular", "special")]
+        + ["cijena za jedinicu mjere (EUR)", fields["gtin"], "sidrena cijena (EUR)"]
+    )
+    body = (
+        header + "\n"
+        "Čaj;101;Example;0,1;kg;2,40;NE;24,00;4006381333931;3,10\n"
+        "Čaj;102;Example;0,1;kg;1,80;DA;18,00;4006381333931;3,10\n"
+        "Čaj;103;Example;0,1;kg;1,80;UNKNOWN;18,00;4006381333931;3,10\n"
+    ).encode("cp1250")
+
+    regular, special, unknown = parse_csv(body, "spar", "8702", "2026-11-25", "x", "x")
+    assert (regular["price_origin"], regular["regular_price_eur"]) == ("regular", "2.40")
+    assert (special["price_origin"], special["effective_price_eur"]) == ("special", "1.80")
+    assert special["regular_price_eur"] is None and special["category"] is None
+    assert special["raw_row"]["sidrena cijena (EUR)"] == "3,10"
+    assert unknown["ingestion_status"] == "unknown promotion indicator"
+    assert unknown["effective_price_eur"] is None
+
+
 def test_gtin():
     assert str(amount(",99")) == "0.99"
     assert gtin("4006381333931") == "04006381333931"
