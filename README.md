@@ -12,6 +12,16 @@ Search by product name or barcode across **13,700 matches** from the 23 November
 
 ![PricePulse dashboard showing three-store barcode comparisons, verified price charts, and catalog coverage](portfolio/tableau/dashboard.png)
 
+### More views from the same workbook
+
+**Catalog coverage** shows how many listed prices each store contributed on each of the two dates.
+
+![Catalog coverage bar chart with six counts, one for each store and date](portfolio/tableau/catalog-coverage.png)
+
+**Price changes by store** shows how many comparable products had higher, lower, or unchanged prices between the two dates at the same store.
+
+![Same-store price change bar chart showing increased, decreased, and unchanged product counts for each retailer](portfolio/tableau/price-changes-by-store.png)
+
 ## What PricePulse aims to answer
 
 - How do published prices for the same grocery product change over time?

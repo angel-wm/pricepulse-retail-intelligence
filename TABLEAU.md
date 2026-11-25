@@ -10,6 +10,11 @@ are included in the package. Press **F7** to view the **1840 × 920** layout in
 presentation mode. [Dashboard screenshot](portfolio/tableau/dashboard.png) ·
 [Search in presentation mode](portfolio/tableau/search-presentation.jpg)
 
+Two supporting worksheets are also shown in the README.
+[Catalog coverage](portfolio/tableau/catalog-coverage.png) shows the six
+store-date counts. [Price changes by store](portfolio/tableau/price-changes-by-store.png)
+shows how often listed prices increased, decreased, or stayed the same.
+
 ## Private Tableau workbook
 
 Open `data/tableau/PricePulse - Three-Store Price Comparison - Private.twbx`
