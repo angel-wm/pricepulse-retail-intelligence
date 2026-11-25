@@ -32,8 +32,8 @@ The diagram shows the intended end-to-end architecture. The loader accepts local
                                    |
                          Tableau Desktop Free
                                    |
-                       Tableau Public (only if
-                       publication is permitted)
+                       Packaged Tableau workbook
+                          + GitHub portfolio
 ```
 
 ## Responsibilities and important grain decisions
@@ -64,10 +64,10 @@ The diagram shows the intended end-to-end architecture. The loader accepts local
 - **Identifiers:** preserve raw codes as strings, validate checksums, normalize for comparison and isolate duplicate/colliding GTINs. Matching is separate from acquisition.
 - **Quantity:** maintain source net quantity and unit separately from text-derived package size; explicitly handle multipacks, drained weights and ambiguous variant labels. Never equate a source-local `KOM` unit to the physical product volume.
 - **Coverage:** track total rows, valid GTINs, field completeness and store/date counts; a +47.9% row-count discontinuity was observed in a Kaufland sample at the regulatory transition, making drift alerting necessary.
-- **Publication:** the portfolio uses real observations and measured results. The exact workbook, screenshot and retailer extracts require a verified reuse basis before public release.
+- **Portfolio:** GitHub hosts the packaged Tableau workbook and two screenshots. The workbook embeds the analytical extracts for the selected snapshot.
 
 ## Architectural constraints
 
-Python/Scrapy, PostgreSQL, pytest, optional GitHub Actions and Tableau remain the planned primary stack. No additional browser/scraping framework or paid platform is authorized. Tableau Public is optional and limited to data with verified publication rights.
+Python/Scrapy, PostgreSQL, pytest, optional GitHub Actions and Tableau remain the planned primary stack. No additional browser/scraping framework or paid platform is authorized.
 
 See [Source feasibility](SOURCE_FEASIBILITY.md), [Project specification](PROJECT_SPEC.md), and [Decisions](DECISIONS.md).

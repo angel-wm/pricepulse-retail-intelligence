@@ -119,7 +119,7 @@ See [PULSE-46](https://angel231995.atlassian.net/browse/PULSE-46) and
 ### D-019 — Use a single real-data Tableau deliverable (2026-11-24)
 
 The owner selected the three-store workbook as the sole Tableau deliverable
-and removed the fictional portfolio example. Any public analysis uses real
-observations and measured findings. The historical two-store evidence remains
-documented. The real workbook, screenshot and extracts stay private until a
-reuse basis is verified for the specific artifacts.
+and removed the fictional portfolio example. The GitHub deliverable is a
+downloadable workbook and presentation screenshots with real observations.
+See the [portfolio workbook](TABLEAU.md#portfolio-workbook). The historical
+two-store evidence remains documented.

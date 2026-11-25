@@ -524,3 +524,19 @@ dash for the third store. A partial name search returned a separate row
 with prices in all three stores. Clearing the field restored 13,700 rows
 with all three retailer columns visible. The workbook and matching
 1,240 × 1,150 screenshot were saved locally.
+
+## Tableau portfolio presentation — 2026-11-25
+
+The 1,840 × 920 dashboard places barcode search and results beside the
+manually verified price and spread charts. On a 1,920 × 1,080 Windows
+display in Tableau Desktop Public Edition 2026.3 presentation mode, the
+header, table, charts and catalog footer fit without dashboard scrolling.
+Searching a partial product name returned four rows with all three price
+columns visible.
+
+The [portfolio workbook](TABLEAU.md#portfolio-workbook) has one dashboard,
+seven worksheets and seven embedded Hyper extracts. Desktop reopened the
+packaged workbook and returned all six store-date coverage rows, totaling
+165,322 priced listings, and four manually verified price spreads. The
+dashboard export and the presentation-mode search capture show the same
+23 November comparison snapshot.

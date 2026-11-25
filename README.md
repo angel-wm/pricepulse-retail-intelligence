@@ -2,7 +2,15 @@
 
 PricePulse is a **documentation-first Data Engineering portfolio project** to acquire official Croatian grocery price-list files responsibly with Scrapy, validate product identities, store durable historical observations in PostgreSQL, and analyze comparable offers in Tableau.
 
-**Current status (2026-11-23): Phase 5 validation is in progress.** Phases 0–2 and private Phase 4 are closed. The private English Tableau snapshot covers 165,322 real price observations from three Zagreb stores and two dates. Phase 3 remains open for review of normal operation. See [Current state](CURRENT_STATE.md).
+**Current status (2026-11-25): Phase 5 validation is in progress.** Phases 0–2 and Phase 4 are closed. Phase 3 remains open for review of normal operation. See [Current state](CURRENT_STATE.md).
+
+## Explore the Tableau dashboard
+
+Download the [interactive Tableau workbook](portfolio/tableau/PricePulse-Three-Store-Price-Comparison.twbx?raw=true) and open it in Tableau Desktop Public Edition 2026.3 or later. The package includes the data extracts. Press **F7** for presentation mode.
+
+Search by product name or barcode across **13,700 matches** from the 23 November price lists. **5,961** codes have prices in all three stores. Open **Price catalog** for **165,322 listed prices** across 17 and 23 November 2026. [Search in presentation mode](portfolio/tableau/search-presentation.jpg) · [Tableau guide](TABLEAU.md)
+
+![PricePulse dashboard showing three-store barcode comparisons, verified price charts, and catalog coverage](portfolio/tableau/dashboard.png)
 
 ## What PricePulse aims to answer
 
@@ -17,13 +25,11 @@ PricePulse is a **documentation-first Data Engineering portfolio project** to ac
 
 Croatian retailers publish official machine-readable price lists. The regulation effective **17 November 2026** expressly provides for automated collection and CSV/XML price lists. This is stronger evidence for the acquisition use case than attempting to crawl individual product pages protected by anti-bot systems.
 
-Actual local source-access, two-date history, and price/identity evidence is in [Validation](VALIDATION.md) and [Source feasibility](SOURCE_FEASIBILITY.md). Initial same-date codes with price totaled 8,869 after promotional-price handling, but these are **not all verified product matches**. Previous music-retailer candidates were dropped after access blocks or restrictions. The portfolio uses only real observations and measured results. Public redistribution of the real workbook, screenshot and extracts remains pending a verified sharing basis.
+See [Validation](VALIDATION.md) and [Source feasibility](SOURCE_FEASIBILITY.md) for the source-access checks, two-date history, and product matching evidence.
 
 ### Data sources
 
-The private Tableau snapshot uses official price lists for SPAR Zagreb Jankomir (8702), Kaufland Zagreb Antuna Šoljana (5630) and Konzum Zagreb Super (1280) for 17 and 23 November 2026. [SPAR price lists](https://www.spar.hr/usluge/cjenici) · [Kaufland price lists](https://www.kaufland.hr/akcije-novosti/popis-mpc.html) · [Tableau data attribution](TABLEAU.md#data-attribution)
-
-See [Konzum price lists](https://www.konzum.hr/cjenici) and [bounded acquisition](ACQUISITION.md).
+The Tableau snapshot uses official price lists for SPAR Zagreb Jankomir (8702), Kaufland Zagreb Antuna Šoljana (5630) and Konzum Zagreb Velimira Škorpika (1280) for 17 and 23 November 2026. [SPAR price lists](https://www.spar.hr/usluge/cjenici) · [Kaufland price lists](https://www.kaufland.hr/akcije-novosti/popis-mpc.html) · [Konzum price lists](https://www.konzum.hr/cjenici)
 
 ## Local quick start (Windows PowerShell)
 
@@ -40,7 +46,7 @@ uv run --locked python -m pytest -q
 
 The initial test run skips PostgreSQL integration cases unless `PRICEPULSE_TEST_DSN` points to a disposable database. Use the [Docker Compose setup](POSTGRESQL.md#local-postgresql-with-docker-compose) for local development and full integration tests, or [supply an existing disposable database](POSTGRESQL.md#validation).
 
-To find the current private three-store workbook and its screenshot, see the [Tableau handoff](TABLEAU.md#private-tableau-workbook). For private runs with genuine data, follow the [acquisition](ACQUISITION.md), [ingestion](POSTGRESQL.md) and [Tableau export](TABLEAU.md#private-analytical-export) guides.
+For local runs with genuine data, follow the [acquisition](ACQUISITION.md), [ingestion](POSTGRESQL.md) and [Tableau export](TABLEAU.md#private-analytical-export) guides.
 
 ## Planned workflow
 
@@ -48,7 +54,7 @@ To find the current private three-store workbook and its screenshot, see the [Ta
 2. **Phase 1 — Scrapy (closed 2026-11-22):** two source-specific spiders discover SPAR's dated JSON manifests and Kaufland's asset index, then fetch permitted store price lists with bounded request rates and explicit parsing/error contracts.
 3. **Phase 2 — Data engineering (closed 2026-11-23):** preserve file provenance and hashes; parse **SPAR cp1250/semicolon** and **Kaufland UTF-8 BOM/tab** sources; handle regular/special price origins, GTIN and package checks, and ingest versioned, deduplicated store/date observations into PostgreSQL.
 4. **Phase 3 — Reliability (awaiting owner review):** run evidence, recovery, local scheduling and provisional quality monitoring are implemented; see [Reliability](RELIABILITY.md).
-5. **Phase 4 — Tableau (closed for private use):** compare approved cross-store offers and explore catalog coverage and same-store price history. The real workbook and screenshot remain private. See [Tableau analytics](TABLEAU.md).
+5. **Phase 4 — Tableau (closed):** compare cross-store prices and explore catalog coverage and same-store price history. See [Tableau analytics](TABLEAU.md).
 6. **Phase 5 — Validation and release (in progress):** verify the complete workflow, document reproduction and prepare the portfolio release.
 
 These phases mix completed work and planned deliverables; [Current state](CURRENT_STATE.md) and [Validation](VALIDATION.md) describe the implemented scope and its evidence.
@@ -61,7 +67,7 @@ These phases mix completed work and planned deliverables; [Current state](CURREN
 | File parsing and validation | Python standard library initially; explicit data contracts |
 | Database and transformations | PostgreSQL, SQL, Python |
 | Testing and automation | pytest; GitHub Actions where feasible |
-| BI | Tableau Desktop Free Edition; Tableau Public only for appropriately shareable outputs |
+| BI | Tableau Desktop and Tableau Desktop Public Edition |
 | Version control | Git and GitHub |
 
 Scrapy remains the primary acquisition framework. No additional scraping framework, paid service, or infrastructure is planned.

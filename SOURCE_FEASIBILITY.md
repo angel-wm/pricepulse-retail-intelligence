@@ -183,5 +183,5 @@ Integration is tracked in [PULSE-46](https://angel231995.atlassian.net/browse/PU
 The owner confirmed that Lidl stays outside the current release on 2026-11-24. Consider Lidl later for a defined basket if
 audited variants and promotion eligibility confirm that its incremental cheapest
 offers justify maintaining the additional adapter. Verify regular scheduled
-capture and matching on the selected stores. Keep real retailer artifacts local
-pending a verified basis for reuse.
+capture and matching on the selected stores. The
+[portfolio workbook](TABLEAU.md#portfolio-workbook) uses the three-store snapshot.

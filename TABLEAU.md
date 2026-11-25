@@ -1,6 +1,14 @@
 # Tableau analytics
 
-The private English dashboard covers three Zagreb stores on 17 and 23 November 2026. It uses exact file versions exported from local PostgreSQL.
+The English dashboard covers three Zagreb stores on 17 and 23 November 2026. It uses exact file versions exported from local PostgreSQL.
+
+## Portfolio workbook
+
+Download the [packaged workbook](portfolio/tableau/PricePulse-Three-Store-Price-Comparison.twbx?raw=true).
+Open it in Tableau Desktop Public Edition 2026.3 or later. Seven Hyper extracts
+are included in the package. Press **F7** to view the **1840 × 920** layout in
+presentation mode. [Dashboard screenshot](portfolio/tableau/dashboard.png) ·
+[Search in presentation mode](portfolio/tableau/search-presentation.jpg)
 
 ## Private Tableau workbook
 
@@ -24,9 +32,10 @@ priced listing in that store's selected file.
 
 **Barcode match** indicates a shared normalized code with one priced listing
 per participating store. **Verified** identifies the four products that also
-passed manual product, variant and pack review. Their charts appear below the
-searchable table. The supporting pair worksheet includes their 12 reviewed
-pairs and four historical SPAR–Kaufland decisions.
+passed manual product, variant and pack review. Their charts appear to the
+right of the searchable table. The local authoring workbook has a supporting
+worksheet with their 12 reviewed pairs and four historical SPAR–Kaufland
+decisions.
 
 ## Data attribution
 
@@ -61,7 +70,9 @@ With a private database initialized and populated as described in [PostgreSQL](P
 uv run --locked python -m pricepulse.analytics --file-id 1 --file-id 2 --directory data/tableau-private --as-of 2026-11-23
 ```
 
-The IDs and reference date are examples, not verified source records. An invalid, duplicate or conflicting file selection fails before writing CSVs. The output may contain genuine retailer names, codes and prices: keep it private and do not commit, upload or publish it. The portfolio is based on real observations. Review reuse rights for the exact workbook, image or extract before release.
+The example uses illustrative IDs and a reference date. An invalid,
+duplicate or conflicting file selection fails before writing CSVs. The
+analytical CSVs are local inputs for the packaged workbook.
 
 | Export | Grain and meaning |
 | --- | --- |
@@ -74,15 +85,6 @@ The same verified-pair rules and version guard used by Phase 2 apply here. GTIN 
 
 Tableau inferred normalized GTIN as a number when the CSV was opened. Change identifiers to text before using them in a view or join, so leading zeroes are preserved; use exact product/store/date grain and avoid summing prices across products or days.
 
-## Public portfolio
-
-The owner selected a real-data-only portfolio. The GitHub documentation uses
-measured results and cites the retailers' official price-list pages. Publishing
-the genuine packaged workbook, screenshot or data extracts remains pending
-verification of the reuse basis for the exact artifacts. See
-[PULSE-23](https://angel231995.atlassian.net/browse/PULSE-23) and the
-[source assessment](SOURCE_FEASIBILITY.md).
-
 ## Refresh and expansion
 
 The Windows task collects source files. To update Tableau, load the selected captures into PostgreSQL, verify cross-store pairs for those exact file versions, and rerun the private analytical export. Refresh the workbook's packaged sources and the derived chart inputs, update the summary callouts, reconcile counts and gaps in Desktop, and save a new package and screenshot. The current workbook uses curated presentation inputs, so replacing the four core exports alone does not update every view. An automated collection-to-dashboard refresh remains follow-up work.
@@ -91,4 +93,4 @@ The catalog includes all priced observations from the six selected files. The
 barcode comparison table uses the same-day subset described above. Expand
 verified coverage through private review batches for the selected files.
 
-Public portfolio delivery remains open under PULSE-23. See [Source feasibility](SOURCE_FEASIBILITY.md) for the sharing constraint and [Validation](VALIDATION.md) for the private closeout evidence.
+See [Validation](VALIDATION.md) for the presentation and data checks.

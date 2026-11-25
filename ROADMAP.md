@@ -9,7 +9,7 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 - **Phase 0 — formally CLOSED by explicit owner approval on 2026-11-19.** Bounded source access, price-field interpretation, same-store history and 102 description-consistent matches are recorded in [Validation](VALIDATION.md). This does not amount to external GS1 validation or operational reliability proof.
 - **Phase 1 was formally closed by the owner on 2026-11-22. Phase 2 was authorized on the same date and formally closed on 2026-11-23 after synthetic integration checks and a bounded private real-file review.** Publication of real data remained outside that authorization.
 - **Phase 3 was subsequently authorized by the owner before Phase 2 review and closeout.** Phase 3 awaits owner review, and real-source publication remains restricted. Phase 3 includes an owner-selected local collection-only schedule.
-- **Phase 4 was authorized before the Phase 2 and Phase 3 reviews and closed on 2026-11-23 for private Tableau analytics.** Phase 3 remains open. Public delivery remains under PULSE-23.
+- **Phase 4 was authorized before the Phase 2 and Phase 3 reviews and closed on 2026-11-23 for private Tableau analytics.** Phase 3 remains open.
 - **Phase 5 was authorized on 2026-11-23.** Validation and release preparation may proceed while Phase 3 awaits review.
 - Close a phase only with the results and evidence recorded in [Validation](VALIDATION.md) and [Current state](CURRENT_STATE.md).
 - An external Jira board may track tasks; do not treat issue statuses as runtime verification.
@@ -36,7 +36,7 @@ See [Source feasibility](SOURCE_FEASIBILITY.md#two-date-expansion-decision) for 
 | --- | --- |
 | [PULSE-24](https://angel231995.atlassian.net/browse/PULSE-24) — Validate the flow | Record source acquisition or the archived capture baseline, replay exact file versions, and reconcile SQL results with Tableau. |
 | [PULSE-25](https://angel231995.atlassian.net/browse/PULSE-25) — Verify local setup | Test a clean locked installation and the disposable PostgreSQL path. Check the links and reproduction commands. |
-| [PULSE-26](https://angel231995.atlassian.net/browse/PULSE-26) — Prepare portfolio release | Review the measured findings and exact real workbook, screenshot and supporting files intended for publication. Verify the reuse basis before issuing them. |
+| [PULSE-26](https://angel231995.atlassian.net/browse/PULSE-26) — Prepare portfolio release | Verify the packaged workbook, presentation screenshots and download instructions for the real-data snapshot. |
 
 ## Phase 0 evidence checklist (completed; owner approved closeout 2026-11-19)
 

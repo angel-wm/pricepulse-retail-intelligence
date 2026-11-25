@@ -53,7 +53,6 @@ This table remains the intended contract, not a claim that every attribute is mo
 | 100 documented comparable-product candidates | **102/160** descriptor-consistent after conservative manual review; **58 unresolved** | Independent manufacturer/GS1 checks and full-catalog precision not established |
 | Two-date same-store price history | **Passed** for both store IDs, 2026-11-16/17 | Not evidence of scheduled operational reliability |
 | SPAR promotional price recovery | **Passed** on two store files, all blank primary-price rows had populated special-price fields | Both-different price cases were not observed; require exception strategy |
-| Redistribution clearance | **Not established** | Real data and source-derived public extracts remain blocked; public portfolio is real-data only |
 
 **Phase 1 acceptance must be measured independently:** source-specific spiders and contracts, test fixtures, correct source-file provenance, bounded request handling, field-level validation and reproducible evidence. Do not treat the temporary Phase 0 scripts as a production implementation.
 
@@ -63,7 +62,7 @@ This table remains the intended contract, not a claim that every attribute is mo
 - Prefer free, locally reproducible workflows and bounded daily batch ingestion.
 - Respect website terms, robots guidance, access controls and fair request pacing.
 - Do not copy third-party crawler implementations or datasets without assessing their licenses.
-- Do not publish raw price lists or individual-source datasets to Tableau Public without verifying sharing rights.
+- The GitHub portfolio contains a packaged Tableau snapshot and screenshots. Raw acquisition files and processing artifacts stay local.
 - Phase 0 exit evidence was reviewed and approved on 2026-11-19. Phase 1 implementation was separately authorized on 2026-11-19.
 
 See [Source feasibility](SOURCE_FEASIBILITY.md), [Roadmap](ROADMAP.md), and [Validation](VALIDATION.md).
