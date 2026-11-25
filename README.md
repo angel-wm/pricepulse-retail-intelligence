@@ -2,7 +2,7 @@
 
 PricePulse is a **documentation-first Data Engineering portfolio project** to acquire official Croatian grocery price-list files responsibly with Scrapy, validate product identities, store durable historical observations in PostgreSQL, and analyze comparable offers in Tableau.
 
-**Current status (2026-11-25): Phase 5 validation is in progress.** Phases 0–2 and Phase 4 are closed. Phase 3 remains open for review of normal operation. See [Current state](CURRENT_STATE.md).
+**Current status (2026-11-25): the public portfolio is complete.** Phases 0–2, 4 and 5 are closed. Phase 3 remains open for the automatic collection check and owner review. See [Current state](CURRENT_STATE.md).
 
 ## Explore the Tableau dashboard
 
@@ -65,7 +65,7 @@ For local runs with genuine data, follow the [acquisition](ACQUISITION.md), [ing
 3. **Phase 2 — Data engineering (closed 2026-11-23):** preserve file provenance and hashes; parse **SPAR cp1250/semicolon** and **Kaufland UTF-8 BOM/tab** sources; handle regular/special price origins, GTIN and package checks, and ingest versioned, deduplicated store/date observations into PostgreSQL.
 4. **Phase 3 — Reliability (awaiting owner review):** run evidence, recovery, local scheduling and provisional quality monitoring are implemented; see [Reliability](RELIABILITY.md).
 5. **Phase 4 — Tableau (closed):** compare cross-store prices and explore catalog coverage and same-store price history. See [Tableau analytics](TABLEAU.md).
-6. **Phase 5 — Validation and release (in progress):** verify the complete workflow, document reproduction and prepare the portfolio release.
+6. **Phase 5 — Validation and release (closed 2026-11-25):** validated the workflow, checked the reproducible setup and published the Tableau portfolio.
 
 These phases mix completed work and planned deliverables; [Current state](CURRENT_STATE.md) and [Validation](VALIDATION.md) describe the implemented scope and its evidence.
 

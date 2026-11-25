@@ -569,3 +569,16 @@ database was configured.
 The 25 November automatic marker remains `incomplete`. The SPAR retry was
 run separately. A full regular three-store tick with the corrected parser
 and Phase 3 owner review remain open.
+
+## Phase 5 closeout — 2026-11-25
+
+The owner approved closure of the validation and portfolio release phase on
+25 November 2026. The closeout covers the following recorded deliverables.
+
+| Deliverable | Verified evidence |
+| --- | --- |
+| End-to-end validation | The fixed real-data baseline reconciled source files, PostgreSQL and Tableau. See the [technical review](#phase-5-technical-review--2026-11-23) and [PULSE-24](https://angel231995.atlassian.net/browse/PULSE-24). |
+| Reproducible setup | The clean Windows setup and disposable PostgreSQL tests passed. See the [setup evidence](#phase-5-reproducible-setup--2026-11-23) and [PULSE-25](https://angel231995.atlassian.net/browse/PULSE-25). |
+| Public portfolio | The three-store workbook opened with its embedded extracts, and the dashboard fit the tested presentation viewport. The workbook and screenshots are publicly downloadable from GitHub. See [Tableau presentation evidence](#tableau-portfolio-presentation--2026-11-25) and [PULSE-26](https://angel231995.atlassian.net/browse/PULSE-26). |
+
+Regular automatic collection and its owner review remain under Phase 3.

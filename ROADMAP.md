@@ -10,7 +10,7 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 - **Phase 1 was formally closed by the owner on 2026-11-22. Phase 2 was authorized on the same date and formally closed on 2026-11-23 after synthetic integration checks and a bounded private real-file review.** Publication of real data remained outside that authorization.
 - **Phase 3 was subsequently authorized by the owner before Phase 2 review and closeout.** Phase 3 awaits owner review, and real-source publication remains restricted. Phase 3 includes an owner-selected local collection-only schedule.
 - **Phase 4 was authorized before the Phase 2 and Phase 3 reviews and closed on 2026-11-23 for private Tableau analytics.** Phase 3 remains open.
-- **Phase 5 was authorized on 2026-11-23.** Validation and release preparation may proceed while Phase 3 awaits review.
+- **Phase 5 was authorized on 2026-11-23 and closed by the owner on 2026-11-25.** See the [closeout evidence](VALIDATION.md#phase-5-closeout--2026-11-25).
 - Close a phase only with the results and evidence recorded in [Validation](VALIDATION.md) and [Current state](CURRENT_STATE.md).
 - An external Jira board may track tasks; do not treat issue statuses as runtime verification.
 
@@ -23,9 +23,9 @@ The work unit is a **phase**: **planned → explicitly authorized → in progres
 | 2 — Data engineering | File provenance, parsing, validated PostgreSQL schema, daily immutable observations | **CLOSED 2026-11-23:** private load and replay of one historical file per retailer and four owner-approved price comparisons. See [Validation](VALIDATION.md). |
 | 3 — Reliability | Scheduling, logs, monitoring, failure recovery and expanded CI as appropriate (PULSE-19) | Recorded successful and failed runs with measured behavior |
 | 4 — Tableau analytics | Private Tableau workbook with real price history, catalog coverage and strict matching | **CLOSED 2026-11-23:** SQL-reconciled metrics and verified Desktop interaction. See [Validation](VALIDATION.md). |
-| 5 — Validation and release | **IN PROGRESS:** README, architecture, test evidence, reproducible local setup and portfolio presentation | End-to-end tests, release documentation and explicit closeout |
+| 5 — Validation and release | End-to-end checks, reproducible local setup, documentation and public Tableau portfolio | **CLOSED 2026-11-25:** validated workflow, published workbook and screenshots, and owner approval |
 
-## Phase 5 release preparation
+## Phase 5 deliverables
 
 The owner authorized Konzum 1280 as the third local source on 2026-11-23.
 [PULSE-46](https://angel231995.atlassian.net/browse/PULSE-46) records the completed integration and validation.

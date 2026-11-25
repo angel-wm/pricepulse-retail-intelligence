@@ -123,3 +123,12 @@ and removed the fictional portfolio example. The GitHub deliverable is a
 downloadable workbook and presentation screenshots with real observations.
 See the [portfolio workbook](TABLEAU.md#portfolio-workbook). The historical
 two-store evidence remains documented.
+
+### D-020 — Close Phase 5 validation and portfolio release (2026-11-25)
+
+The owner approved the Phase 5 closeout after the end-to-end review,
+reproducible setup and three-store Tableau release. The workbook and
+screenshots are available in the public GitHub repository. Phase 3 remains
+open for the automatic collection check and owner review.
+
+See the [closeout evidence](VALIDATION.md#phase-5-closeout--2026-11-25).
