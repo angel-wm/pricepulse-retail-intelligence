@@ -58,6 +58,14 @@ def test_failure_classification_and_logging(status, reason, caplog):
     assert reason in caplog.text and str(status) in caplog.text
 
 
+def test_robots_denial_is_classified_as_blocked(caplog):
+    spider = SparSpider(date="2026-11-17")
+    with pytest.raises(CloseSpider) as exc:
+        spider.failed(Failure(IgnoreRequest("Forbidden by robots.txt")))
+    assert exc.value.reason == "request_blocked"
+    assert "Forbidden by robots.txt" in caplog.text
+
+
 def test_request_controls_and_robots(crawler):
     settings = crawler.settings
     assert settings.getbool("ROBOTSTXT_OBEY")

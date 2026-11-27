@@ -7,7 +7,7 @@ from urllib.parse import urlsplit
 
 from psycopg.types.json import Jsonb
 
-from pricepulse.contracts import STORES, parse_csv
+from pricepulse.contracts import KONZUM_CDN_HOST, STORES, parse_csv
 
 
 def ingest_file(conn, *, source, store, day, url, collected_at, status, body):
@@ -18,7 +18,10 @@ def ingest_file(conn, *, source, store, day, url, collected_at, status, body):
     if when.utcoffset() is None:
         raise ValueError("collection timestamp must have a timezone")
     parts = urlsplit(url)
-    if parts.scheme != "https" or parts.hostname != f"www.{source}.hr" or parts.username or parts.password or parts.port not in (None, 443):
+    allowed_hosts = {f"www.{source}.hr"}
+    if source == "konzum":
+        allowed_hosts.add(KONZUM_CDN_HOST)
+    if parts.scheme != "https" or parts.hostname not in allowed_hosts or parts.username or parts.password or parts.port not in (None, 443):
         raise ValueError("unapproved source URL")
     if status != 200:
         raise ValueError("only successful file retrievals may be ingested")

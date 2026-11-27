@@ -5,6 +5,7 @@ import re
 from decimal import Decimal, InvalidOperation
 
 STORES = {"spar": "8702", "kaufland": "5630", "konzum": "1280"}
+KONZUM_CDN_HOST = "d2depcln7eup0h.cloudfront.net"
 DIALECTS = {"spar": ("cp1250", ";"), "kaufland": ("utf-8-sig", "\t"), "konzum": ("utf-8-sig", ",")}
 
 FIELDS = {

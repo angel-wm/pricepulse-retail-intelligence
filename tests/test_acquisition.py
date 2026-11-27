@@ -146,3 +146,12 @@ def test_konzum_selects_unique_store_and_date_from_download_links():
     with pytest.raises(CloseSpider) as unsafe:
         list(spider.parse_index(response("https://example.test" + link)))
     assert unsafe.value.reason == "unsafe_url"
+
+    cdn = "https://d2depcln7eup0h.cloudfront.net/20261123-SUPER%2CEXAMPLE%2C1280%2C1000%2C23.11.2026%2C%2010-45.CSV"
+    (request,) = spider.parse_index(response(cdn, cdn, other_store, cdn.replace("20261123-", "20261122-")))
+    assert request.url == cdn
+    assert request.cb_kwargs["discovery"]["selected_file_count"] == 1
+    assert not request.meta.get("dont_obey_robotstxt")
+    with pytest.raises(CloseSpider) as mixed:
+        list(spider.parse_index(response(link, cdn)))
+    assert mixed.value.reason == "expected_one_konzum_file"

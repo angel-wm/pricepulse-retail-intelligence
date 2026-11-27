@@ -4,11 +4,11 @@ import json
 import re
 from datetime import datetime, timezone
 from pathlib import Path
-from urllib.parse import parse_qs, urljoin, urlsplit
+from urllib.parse import parse_qs, unquote, urljoin, urlsplit
 
 import scrapy
-from scrapy.exceptions import CloseSpider
-from pricepulse.contracts import STORES, parse_csv
+from scrapy.exceptions import CloseSpider, IgnoreRequest
+from pricepulse.contracts import KONZUM_CDN_HOST, STORES, parse_csv
 
 def safe_url(base, url, host):
     result = urljoin(base, url)
@@ -37,9 +37,9 @@ class BaseSpider(scrapy.Spider):
         self.selected = self.day.isoformat()
         self.raw_path = Path(raw_path) if raw_path else None
 
-    def file_request(self, base, path, sha=None, discovery=None):
+    def file_request(self, base, path, sha=None, discovery=None, *, delivery_host=None):
         try:
-            url = safe_url(base, path, self.host)
+            url = safe_url(base, path, delivery_host or self.host)
         except (ValueError, TypeError) as exc:
             self.stop("unsafe_url", str(exc))
         yield scrapy.Request(url, callback=self.parse_file, cb_kwargs={"expected_sha": sha, "discovery": discovery}, errback=self.failed)
@@ -54,6 +54,8 @@ class BaseSpider(scrapy.Spider):
 
     def failed(self, failure):
         response = getattr(failure.value, "response", None)
+        if response is None and failure.check(IgnoreRequest):
+            self.stop("request_blocked", failure.getErrorMessage())
         status = response.status if response is not None else None
         reason = {403: "http_forbidden", 404: "http_not_found", 429: "http_rate_limited"}.get(status, "http_error" if status else "download_error")
         self.stop(reason, f"HTTP {status}" if status else failure.getErrorMessage())
@@ -151,20 +153,32 @@ class KonzumSpider(BaseSpider):
         entries = set()
         matches = set()
         filename = re.compile(rf",{self.store},\d+,{self.day:%d.%m.%Y},\s*\d{{1,2}}-\d{{2}}\.csv$", re.I)
+        cdn_prefix = f"{self.day:%Y%m%d}-"
         for href in response.css("a::attr(href)").getall():
-            parts = urlsplit(href)
-            if parts.path != "/cjenici/download":
-                continue
-            names = parse_qs(parts.query).get("title", [])
-            if len(names) != 1 or not names[0].lower().endswith(".csv"):
-                continue
             url = urljoin(response.url, href)
+            parts = urlsplit(url)
+            delivery_host = self.host
+            if parts.path == "/cjenici/download":
+                names = parse_qs(parts.query).get("title", [])
+                if len(names) != 1:
+                    continue
+                name = names[0]
+            elif parts.hostname == KONZUM_CDN_HOST:
+                name = unquote(parts.path.removeprefix("/"))
+                if "/" in name or "\\" in name:
+                    continue
+                delivery_host = KONZUM_CDN_HOST
+            else:
+                continue
+            if not name.lower().endswith(".csv"):
+                continue
             entries.add(url)
-            if filename.search(names[0]):
-                matches.add(url)
+            if filename.search(name) and (delivery_host == self.host or name.startswith(cdn_prefix)):
+                matches.add((url, delivery_host))
         if len(matches) != 1:
             self.stop("expected_one_konzum_file", f"Found {len(matches)} files for selected store and date")
-        yield from self.file_request(response.url, matches.pop(), discovery={
+        url, delivery_host = matches.pop()
+        yield from self.file_request(response.url, url, delivery_host=delivery_host, discovery={
             "index_url": response.url, "index_item_count": len(entries),
             "selected_file_count": 1, "fetched_file_count": 1,
         })

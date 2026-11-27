@@ -260,6 +260,8 @@ def test_three_store_batch_and_replay(db, tmp_path):
         body = stream.getvalue().encode(encoding)
         digest = sha256(body).hexdigest()
         url = f"https://www.{source}.hr/file.csv"
+        if source == "konzum":
+            url = "https://d2depcln7eup0h.cloudfront.net/synthetic.csv"
         rows = list(parse_csv(body, source, store, day, url, digest))
         def runner(command, **kwargs):
             feed = Path(command[command.index("-O") + 1])

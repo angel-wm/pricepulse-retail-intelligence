@@ -591,6 +591,66 @@ specific test from the remaining work. Successful automatic collection of
 the complete three-store cohort with the corrected SPAR parser remains
 unverified, and Phase 3 remains in owner review.
 
+## Phase 3 operational review — 2026-11-27
+
+### Scheduling and interruption
+
+The installed collection-only task remains enabled for the interactive Windows
+user. The regular 25 November tick is recorded above. The Windows Operational
+history was disabled at the 27 November inspection, so it did not provide
+additional evidence about how the 24, 26 or 27 November batches started.
+The owner waived the separate 06:20 Bogotá test.
+
+A temporary Windows task ran the scheduler function with a controlled eligible
+time, an isolated directory and a synthetic batch. Windows stopped the task
+after the batch started. Its daily marker remained `starting`. A second
+launch returned `already_attempted` without starting another batch or
+changing the marker. After the original marker was archived, a third launch
+created a new successful marker. The archived SHA-256 matched the original.
+The test task was removed. This verifies interruption and restart for a
+controlled Windows task stop. Power loss and recoverability of live downloads
+were outside this experiment.
+
+### Konzum discovery and failed capture
+
+The official indexes for [26 November](https://www.konzum.hr/cjenici?date=2026-11-26)
+and [27 November](https://www.konzum.hr/cjenici?date=2026-11-27) listed store
+1280 via direct CDN links. The old parser looked only for the legacy download
+route. The corrected parser accepts the observed CDN hostname and checks
+both filename dates, retailer store ID and unique selection. Legacy links
+remain supported. A bounded 27 November run made three HTTP requests:
+official robots.txt and index returned 200, and CDN robots.txt returned 403.
+Scrapy reported `request_blocked` and the journal reported
+`crawler_closed_request_blocked`. The crawler did not request the CSV.
+An approved retrieval route or successful CDN robots.txt check permitting
+the file request is required for a new automatic three-store baseline.
+
+The full local suite passed **70 tests** using disposable PostgreSQL. It
+covered the old and new link formats, fail-closed request classification,
+incomplete-run handling and idempotent synthetic replay with CDN provenance.
+The test database and network were removed afterwards.
+
+### Measured quality from four daily markers
+
+The 24–27 November daily markers reference four finished batches. One batch
+was complete and three were incomplete. Batch durations were 630.29, 28.45,
+39.55 and 49.79 seconds. The first duration is the full recorded batch interval.
+The table aggregates the successful source reports for these four batches.
+
+| Source | Successful / attempted | Index entries per success | Valid GTIN share | Regular / special / equal price rows |
+| --- | ---: | ---: | ---: | --- |
+| SPAR 8702 | 3 / 4 | 140–144 | 97.68–97.72% | 82,316 / 14,924 / 0 |
+| Kaufland 5630 | 4 / 4 | 2,598–2,815 | 98.48–98.56% | 85,610 / 0 / 9,683 |
+| Konzum 1280 | 2 / 4 | 50 | 90.89% | 46,708 / 6,465 / 0 |
+
+Each successful report selected and fetched one file. All nine archived CSV
+hashes matched the corresponding report. Each successful file had age zero
+days and zero price exceptions. Discovery totals have different source
+scopes. The alert thresholds are documented in [Reliability](RELIABILITY.md#provisional-scheduled-quality-signals).
+For match coverage and replay evidence, see the [Phase 2 private review](#phase-2-private-real-file-review--2026-11-23).
+These observations establish a finite operational baseline with failures.
+A stable recurring three-store baseline remains pending.
+
 ## Phase 5 closeout — 2026-11-25
 
 The owner approved closure of the validation and portfolio release phase on
