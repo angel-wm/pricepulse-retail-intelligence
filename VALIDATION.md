@@ -570,6 +570,27 @@ The 25 November automatic marker remains `incomplete`. The SPAR retry was
 run separately. A full regular three-store tick with the corrected parser
 and Phase 3 owner review remain open.
 
+## Three-store collection review — 2026-11-27
+
+The local daily markers, linked batch reports and Konzum logs show two
+incomplete collection-only batches. Times below are Bogotá local time.
+The reports establish the batch outcomes. The trigger origin for these two
+batches was not independently verified.
+
+| Publication date | Batch start | SPAR 8702 rows | Kaufland 5630 rows | Konzum 1280 |
+| --- | --- | ---: | ---: | --- |
+| 2026-11-26 | 08:08 | 32,358 | 23,812 | No matching file found during discovery |
+| 2026-11-27 | 11:20 | 32,405 | 23,823 | No matching file found during discovery |
+
+SPAR and Kaufland recorded no quality alerts. Konzum stopped both times with
+`expected_one_konzum_file` after finding zero files for the selected store and
+date. The cause of the missing matches was not established.
+
+The owner waived the planned 06:20 Bogotá test. The waiver removes that
+specific test from the remaining work. Successful automatic collection of
+the complete three-store cohort with the corrected SPAR parser remains
+unverified, and Phase 3 remains in owner review.
+
 ## Phase 5 closeout — 2026-11-25
 
 The owner approved closure of the validation and portfolio release phase on

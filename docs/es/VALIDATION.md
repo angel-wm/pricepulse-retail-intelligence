@@ -19,6 +19,8 @@ Esta página resume en español los resultados registrados. Los enlaces llevan a
 - El 24 de noviembre la tarea instalada obtuvo las tres listas, terminó con código 0 y no registró alertas. La evidencia no permite confirmar el disparador original. [Captura instalada](../../VALIDATION.md#installed-windows-collection-with-three-retailers--2026-11-24)
 - El 25 de noviembre, el disparador regular de las 12:20 de Bogotá inició la tarea. Kaufland y Konzum aportaron 23.830 y 26.590 precios utilizables. SPAR se detuvo en la comprobación de encabezados y el lote quedó `incomplete`, código 1. El reintento independiente con el analizador actualizado recuperó 32.329 precios de SPAR, 26.565 regulares y 5.764 promocionales. La repetición de los archivos anteriores de SPAR conservó sus recuentos. Pasaron 58 pruebas locales y se omitieron 11 de integración por falta de una base de pruebas configurada. [Disparo regular y recuperación de SPAR](../../VALIDATION.md#regular-windows-tick-and-spar-schema-recovery--2026-11-25)
 
+- El 26 y 27 de noviembre, los lotes de captura quedaron incompletos. SPAR y Kaufland completaron ambos intentos y Konzum registró cero archivos coincidentes para la tienda y fecha seleccionadas. El responsable descartó la prueba prevista de las 06:20 de Bogotá. [Registro original](../../VALIDATION.md#three-store-collection-review--2026-11-27)
+
 ## Tableau y cierre de la entrega
 
 - **Fase 4.** El libro privado original de dos tiendas se concilió con PostgreSQL. Se verificó la interacción en Desktop. El cierre del 23 de noviembre cubre ese libro privado. [Revisión privada](../../VALIDATION.md#phase-4-private-real-tableau-review--2026-11-23)
