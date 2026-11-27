@@ -1,0 +1,17 @@
+# Estado actual
+
+[English](../../CURRENT_STATE.md) · [Inicio en español](../../README.es.md)
+
+**Fase 5 cerrada el 25 de noviembre de 2026.** También están cerradas las fases 0–2 y 4. La fase 3 sigue abierta para observar una captura automática completa y obtener la revisión del responsable.
+
+- **Adquisición.** PULSE-12 implementó la captura acotada de SPAR 8702 y Kaufland 5630, con analizadores específicos y pruebas sintéticas. Las pruebas directas recuperaron un archivo del 17 de noviembre por cadena. PULSE-13 añadió límites de espera y reintentos, clasificación de fallos y rechazo de respuestas incompletas. PULSE-14 cubrió casos de contratos y esquemas.
+- **Integración continua.** PULSE-44 añadió comprobaciones en GitHub Actions. PULSE-19 amplió la validación y recuperación operativa y figura en revisión en el registro de referencia. La versión examinada pasó 62 pruebas locales y comprobaciones alojadas.
+- **Fase 2.** Se implementó la carga de CSV en PostgreSQL. La revisión privada volvió a cargar un archivo histórico por cadena, concilió los recuentos y aprobó cuatro de 6.418 pares elegibles del 17 de noviembre. La vista SQL concilió los precios revisados.
+- **Fase 3.** Hay registro de ejecuciones, colección por lotes para tres tiendas, comprobación de integridad, alertas provisionales y recuperación explícita de la carga. La ejecución automática del 25 de noviembre a las 12:20 de Bogotá obtuvo Kaufland y Konzum y quedó incompleta por un cambio de formato de SPAR. El analizador actualizado acepta ambos formatos y un reintento independiente recuperó los 32.329 precios de SPAR.
+- **Fase 4.** La revisión privada original de dos tiendas y dos fechas cubrió 112.170 precios, 17.803 comparaciones dentro de una tienda y cuatro diferencias verificadas entre tiendas. El libro de tres tiendas reemplazó ese paquete. Quedan pendientes más revisiones de pares y la actualización automática del libro.
+- **Fase 5.** Se validó el flujo de extremo a extremo con la cohorte original, se comprobó una instalación reproducible de Windows y PostgreSQL y se publicó el portafolio de tres tiendas con verificación propia en Tableau Desktop.
+- **PULSE-46.** Konzum 1280 se incorporó a las colecciones manuales y programadas. Las bases existentes requieren aplicar el esquema actualizado antes de cargar datos de la nueva fuente. El portafolio cubre 165.322 precios, 41.363 comparaciones dentro de una tienda y 13.700 códigos compartidos consultables. Cuatro productos pasaron revisión manual. Lidl quedó fuera del lanzamiento.
+
+El 24 de noviembre, la tarea instalada obtuvo los tres archivos, terminó con código 0 y no generó alertas. El registro de [validación](VALIDATION.md) explica el límite para identificar el disparador de esa ejecución.
+
+**Siguiente condición de cierre.** Revisión de la fase 3 con evidencia de la cadencia normal y del comportamiento tras una interrupción real.

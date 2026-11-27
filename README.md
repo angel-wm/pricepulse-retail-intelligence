@@ -1,5 +1,7 @@
 # PricePulse — Grocery Price Intelligence
 
+[Ver versión en español](README.es.md)
+
 PricePulse is a **documentation-first Data Engineering portfolio project** to acquire official Croatian grocery price-list files responsibly with Scrapy, validate product identities, store durable historical observations in PostgreSQL, and analyze comparable offers in Tableau.
 
 **Current status (2026-11-25): the public portfolio is complete.** Phases 0–2, 4 and 5 are closed. Phase 3 remains open for the automatic collection check and owner review. See [Current state](CURRENT_STATE.md).
