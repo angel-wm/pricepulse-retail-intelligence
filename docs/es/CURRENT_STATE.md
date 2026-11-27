@@ -15,3 +15,5 @@
 El 24 de noviembre, la tarea instalada obtuvo los tres archivos, terminó con código 0 y no generó alertas. El registro de [validación](VALIDATION.md) explica el límite para identificar el disparador de esa ejecución.
 
 **Siguiente condición de cierre.** Revisión de la fase 3 tras una captura automática completa y una línea base de varias ejecuciones. La validación en vivo depende de una ruta permitida para descargar las listas de Konzum.
+
+[PULSE-18](https://angel231995.atlassian.net/browse/PULSE-18) se cerró tras verificar la programación y la gestión de interrupciones. [PULSE-19](https://angel231995.atlassian.net/browse/PULSE-19), [PULSE-20](https://angel231995.atlassian.net/browse/PULSE-20) y la [épica de la fase 3](https://angel231995.atlassian.net/browse/PULSE-4) siguen en revisión.

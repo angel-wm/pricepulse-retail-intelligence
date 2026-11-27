@@ -629,6 +629,8 @@ The full local suite passed **70 tests** using disposable PostgreSQL. It
 covered the old and new link formats, fail-closed request classification,
 incomplete-run handling and idempotent synthetic replay with CDN provenance.
 The test database and network were removed afterwards.
+[Hosted GitHub Actions](https://github.com/angel-wm/pricepulse-retail-intelligence/actions/runs/46061069552)
+also passed for the adapter change at `2cdc207`.
 
 ### Measured quality from four daily markers
 

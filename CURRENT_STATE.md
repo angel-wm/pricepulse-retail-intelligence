@@ -23,3 +23,5 @@ finished with code 0 and no quality alerts. [Validation](VALIDATION.md#installed
 records the evidence and the limit on determining the original trigger.
 
 **Next gate:** owner review of Phase 3, after successful regular three-store collection and a multi-run baseline. Windows interruption handling has been observed in a controlled test. The remaining live check depends on a permitted Konzum file route.
+
+[PULSE-18](https://angel231995.atlassian.net/browse/PULSE-18) is Done for scheduling and interruption handling. [PULSE-19](https://angel231995.atlassian.net/browse/PULSE-19), [PULSE-20](https://angel231995.atlassian.net/browse/PULSE-20) and the [Phase 3 epic](https://angel231995.atlassian.net/browse/PULSE-4) remain In Review.
