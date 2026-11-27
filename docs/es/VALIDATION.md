@@ -29,6 +29,8 @@ Esta página resume en español los resultados registrados. Los enlaces llevan a
 
 ## Validación pendiente
 
+La revisión posterior confirmó que el CDN era la única ruta enlazada para la tienda 1280 en las listas del 25 al 27 de noviembre. Se reprodujeron las tres capturas del 24 de noviembre en PostgreSQL desechable. Al repetir la carga, se conservaron las tres versiones, las 82.888 filas de origen y las 82.880 observaciones de precio sin duplicados. La cola produjo 6.439 pares SPAR–Kaufland, 6.890 SPAR–Konzum y 7.485 Kaufland–Konzum. Todos quedaron pendientes de revisión en la base temporal. [Detalle de la reproducción](../../VALIDATION.md#archived-three-store-replay)
+
 En cuatro lotes registrados del 24 al 27 de noviembre hubo un éxito completo y tres lotes incompletos. Los éxitos por fuente fueron SPAR 3/4, Kaufland 4/4 y Konzum 2/4. Se comprobaron las huellas SHA-256 de los nueve archivos exitosos. Se verificó con una tarea temporal de Windows que una detención conserva el marcador y que archivar ese marcador permite reintentar con datos sintéticos. La suite local pasó 70 pruebas con PostgreSQL desechable.
 
 El índice oficial de Konzum publica la tienda 1280 en un CDN. El colector identifica el enlace y se detiene antes de descargar el CSV cuando robots.txt devuelve HTTP 403. Queda pendiente observar una captura automática completa y medir una línea base estable de tres tiendas. El cierre requiere revisión del responsable. [Revisión operativa en inglés](../../VALIDATION.md#phase-3-operational-review--2026-11-27) Consulta [estado actual](CURRENT_STATE.md) y [fiabilidad](RELIABILITY.md).

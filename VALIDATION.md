@@ -653,6 +653,30 @@ For match coverage and replay evidence, see the [Phase 2 private review](#phase-
 These observations establish a finite operational baseline with failures.
 A stable recurring three-store baseline remains pending.
 
+### Official-route recheck
+
+A bounded recheck of the official indexes for 25, 26 and 27 November found
+one listed file link for store 1280 on each date. All three links used the
+same CDN, and none used the legacy download route. The CDN returned HTTP 403
+for its robots.txt again. The recheck ended after reading the indexes and
+robots policies.
+
+### Archived three-store replay
+
+The 24 November successful batch was replayed into disposable PostgreSQL
+using the existing recovery command path. The original private reports,
+JSON Lines feeds and CSVs were copied to an isolated directory before replay.
+The first load stored three file versions, 82,888 source rows and 82,880
+price observations. The same three files were loaded again with the original
+hashes and file IDs. All three counts remained steady, while the audit
+record grew from three to six acquisition runs.
+
+The disposable database queued 6,439 eligible SPAR–Kaufland pairs, 6,890
+SPAR–Konzum pairs and 7,485 Kaufland–Konzum pairs. All were pending review.
+The replay used the selected file versions and did not import prior
+product review decisions. The temporary database container and network
+were removed after the check.
+
 ## Phase 5 closeout — 2026-11-25
 
 The owner approved closure of the validation and portfolio release phase on
