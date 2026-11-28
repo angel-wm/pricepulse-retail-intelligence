@@ -4,6 +4,8 @@
 
 ## Libro del portafolio
 
+El libro publicado y sus capturas representan una selección fija del 17 y 23 de noviembre de 2026. La recuperación de la descarga de Konzum se comprobó con las listas del día 27. Incorporar otra fecha requiere cargarla, revisar los pares correspondientes y actualizar el libro. [Evidencia de la captura](VALIDATION.md#recuperación-y-validación-pendiente)
+
 [Descarga el archivo empaquetado](../../portfolio/tableau/PricePulse-Three-Store-Price-Comparison.twbx?raw=true) y ábrelo en Tableau Desktop Public Edition 2026.3 o posterior. Incluye siete extractos Hyper. Pulsa **F7** para ver el diseño de 1840 × 920 en modo presentación. [Panel](../../portfolio/tableau/dashboard.png) · [Búsqueda en modo presentación](../../portfolio/tableau/search-presentation.jpg)
 
 El libro está en inglés. La vista inicial compara 13.700 códigos de barras del 23 de noviembre de 2026. De ellos, 5.961 aparecen en tres tiendas y 7.739 en dos. Escribe parte del nombre o un código en **Search** y pulsa Enter. Borra el campo y pulsa Enter para restaurar todos los resultados. Un guion indica que la lista seleccionada de la tienda carece de una observación comparable con precio.

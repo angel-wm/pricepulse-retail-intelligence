@@ -1,6 +1,6 @@
 # Intended architecture
 
-**Status:** Phases 1, 2 and private Phase 4 are closed. Phase 3 remains open. The private English Tableau workbook uses packaged exports from PostgreSQL. A temporary Windows task captured both real feeds at its trigger time. The permanent collection-only task still awaits a successful normal run. See [Reliability](RELIABILITY.md), [Tableau analytics](TABLEAU.md) and [Validation](VALIDATION.md).
+The implemented workflow covers SPAR 8702, Kaufland 5630 and Konzum 1280. Scrapy collects their CSV files, PostgreSQL stores versioned observations and Tableau presents a fixed portfolio snapshot. The Windows task automates collection. The regular three-store collection check remains part of Phase 3. See [Current state](CURRENT_STATE.md), [Reliability](RELIABILITY.md) and [Tableau analytics](TABLEAU.md).
 
 ## Proposed data flow
 
@@ -64,7 +64,7 @@ The diagram shows the intended end-to-end architecture. The loader accepts local
 - **Identifiers:** preserve raw codes as strings, validate checksums, normalize for comparison and isolate duplicate/colliding GTINs. Matching is separate from acquisition.
 - **Quantity:** maintain source net quantity and unit separately from text-derived package size; explicitly handle multipacks, drained weights and ambiguous variant labels. Never equate a source-local `KOM` unit to the physical product volume.
 - **Coverage:** track total rows, valid GTINs, field completeness and store/date counts; a +47.9% row-count discontinuity was observed in a Kaufland sample at the regulatory transition, making drift alerting necessary.
-- **Portfolio:** GitHub hosts the packaged Tableau workbook and two screenshots. The workbook embeds the analytical extracts for the selected snapshot.
+- **Portfolio:** GitHub hosts the packaged Tableau workbook and four screenshots. The workbook embeds the analytical extracts for the selected snapshot.
 
 ## Architectural constraints
 

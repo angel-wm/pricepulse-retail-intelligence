@@ -2,6 +2,11 @@
 
 The English dashboard covers three Zagreb stores on 17 and 23 November 2026. It uses exact file versions exported from local PostgreSQL.
 
+The published workbook and screenshots represent that fixed selection. The
+successful 27 November capture after the Konzum download fix is documented
+in [Validation](VALIDATION.md#konzum-cdn-capture-recovery--2026-11-27).
+A new dashboard snapshot requires a separate ingestion, review and refresh.
+
 ## Portfolio workbook
 
 Download the [packaged workbook](portfolio/tableau/PricePulse-Three-Store-Price-Comparison.twbx?raw=true).
