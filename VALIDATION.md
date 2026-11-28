@@ -677,6 +677,27 @@ The replay used the selected file versions and did not import prior
 product review decisions. The temporary database container and network
 were removed after the check.
 
+## Konzum CDN capture recovery — 2026-11-27
+
+The owner authorized resolving the Konzum download after reviewing the prior
+policy. PricePulse now treats HTTP 403 from robots.txt as an unavailable
+robots file only for the exact CDN used by the Konzum spider. The
+[official index](https://www.konzum.hr/cjenici) advertises those CSVs for
+automated processing. The implementation applies
+[RFC 9309 §2.3.1.3](https://www.rfc-editor.org/rfc/rfc9309.html#section-2.3.1.3)
+to that narrow case. Successful robots responses still govern requests.
+Other robots failures and forbidden index or CSV responses still stop the run.
+
+One bounded manual collection-only batch for the 27 November lists completed
+in 35.38 seconds. SPAR returned 32,405 usable prices, Kaufland 23,823 and
+Konzum 26,641. The three CSV hashes matched their manifests. Konzum recorded
+HTTP 403 only on the CDN robots request and HTTP 200 on its CSV request.
+The original incomplete daily marker was preserved. The full local suite
+passed 76 tests with disposable PostgreSQL, which was removed afterwards.
+
+The regular Windows capture and multi-run baseline remain Phase 3 checks.
+The separate 06:20 Bogotá test remains waived.
+
 ## Phase 5 closeout — 2026-11-25
 
 The owner approved closure of the validation and portfolio release phase on

@@ -15,7 +15,8 @@ from twisted.python.failure import Failure
 from twisted.internet.defer import Deferred
 
 from pricepulse.robots import StrictRobotsMiddleware
-from pricepulse.spiders import KauflandSpider, SparSpider, safe_url
+from pricepulse.contracts import KONZUM_CDN_HOST
+from pricepulse.spiders import KauflandSpider, KonzumSpider, SparSpider, safe_url
 
 
 @pytest.fixture
@@ -145,3 +146,29 @@ def test_robots_unavailable_denies_requests(crawler, failure_mode, monkeypatch):
     parser = middleware._parsers["www.spar.hr"]
     assert not parser.allowed("https://www.spar.hr/file", "PricePulse")
     assert crawler.stats.get_value("pricepulse/robots_unavailable") == 1
+
+
+@pytest.mark.parametrize("status,spider_class,allowed", [
+    (403, KonzumSpider, True),
+    (403, SparSpider, False),
+    (404, KonzumSpider, False),
+    (429, KonzumSpider, False),
+    (503, KonzumSpider, False),
+    (200, KonzumSpider, False),
+])
+def test_konzum_cdn_robots_policy(crawler, monkeypatch, status, spider_class, allowed):
+    crawler.spider = spider_class(date="2026-11-27")
+    middleware = StrictRobotsMiddleware.from_crawler(crawler)
+    url = f"https://{KONZUM_CDN_HOST}"
+    request = Request(url + "/robots.txt")
+
+    async def parse_fixture(self, response, netloc, request):
+        self._parsers[netloc] = ProtegoRobotParser.from_crawler(crawler, response.body)
+
+    monkeypatch.setattr(RobotsTxtMiddleware, "_parse_robots", parse_fixture)
+    response = Response(request.url, status=status, body=b"User-agent: *\nDisallow: /\n")
+    coroutine = middleware._parse_robots(response, KONZUM_CDN_HOST, request)
+    with pytest.raises(StopIteration):
+        coroutine.send(None)
+    assert middleware._parsers[KONZUM_CDN_HOST].allowed(url + "/file.csv", "PricePulse") is allowed
+    assert crawler.stats.get_value("pricepulse/konzum_cdn_robots_unavailable", 0) == int(allowed)
